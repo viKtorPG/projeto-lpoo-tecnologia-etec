@@ -45,7 +45,7 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
                         TelaDesktop.jmRelatorio.setVisible(true);
                     }
                 } else {
-                    new TelaLogin().execute("");
+                    new TelaLogin().execute();
                 }
             }
         } finally {

@@ -44,9 +44,9 @@ public class TelaLogin {
         } 
     }
 
-    public void execute(String title) {
+    public void execute() {
         // Criação da Tela
-        final JFrame jf = new JFrame(title);
+        final JFrame jf = new JFrame("Tela de Login");
         jf.setSize(400, 330);
 
         // Panel que será responsavel por add todos os elementos

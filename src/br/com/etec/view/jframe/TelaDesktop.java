@@ -149,7 +149,7 @@ public class TelaDesktop {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TelaLogin login = new TelaLogin();
-                login.execute("");
+                login.execute();
                 jf.dispose();
             }
         });
