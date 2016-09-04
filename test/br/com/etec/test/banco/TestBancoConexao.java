@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
+
 import org.junit.Test;
 
 
@@ -23,7 +24,7 @@ public class TestBancoConexao {
     @Test
     public void setUpClass() throws ClassNotFoundException {
         try {
-            Assert.assertNotEquals(DbUtils.getConnection(), null);
+            Assert.assertNotNull(null, DbUtils.getConnection());
         } catch (InstantiationException ex) {
             Logger.getLogger(TestBancoConexao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -31,6 +32,7 @@ public class TestBancoConexao {
         } catch (SQLException ex) {
             Logger.getLogger(TestBancoConexao.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
    
    

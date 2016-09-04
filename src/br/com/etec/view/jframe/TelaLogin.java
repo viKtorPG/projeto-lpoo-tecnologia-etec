@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -39,19 +37,11 @@ public class TelaLogin {
             connection = DbUtils.getConnection();
             if (connection != null) {
                 icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_verde.png"));
-            } else {
-                icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_vermelha.png"));
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+             JOptionPane.showMessageDialog(null, "Sem conexão");
+             icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_vermelha.png"));
+        } 
     }
 
     public void execute(String title) {
@@ -109,7 +99,6 @@ public class TelaLogin {
                 Login fazerLogin = new Login();
                 fazerLogin.setLogin(txtUsuario.getText());
                 fazerLogin.setSenha(new String(txtSenha.getPassword()));
-                System.out.print(new String(txtSenha.getPassword()));
                 if (new String(txtSenha.getPassword()).isEmpty() || txtUsuario.getText().isEmpty()) {
 
                 } else {
@@ -131,7 +120,7 @@ public class TelaLogin {
         panelBelow.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelBelow.setBackground(new Color(0, 51, 204));
 
-        JLabel lblCopri = new JLabel("Sistem de cadastro de eleitores 2° IIA - 2016");
+        JLabel lblCopri = new JLabel("Sistema de cadastro de eleitores 2° IIA - 2016");
         lblCopri.setBounds(70, 5, 300, 20);
         lblCopri.setForeground(Color.WHITE);
 
