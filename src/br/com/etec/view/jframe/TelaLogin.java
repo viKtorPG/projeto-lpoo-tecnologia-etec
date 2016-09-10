@@ -3,11 +3,15 @@
  */
 package br.com.etec.view.jframe;
 
+import br.com.etec.persist.Login;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -20,7 +24,7 @@ public class TelaLogin{
     
     public static void execute(String title){
          // Criação da Tela
-        JFrame jf = new JFrame(title);
+        final JFrame jf = new JFrame(title);
         jf.setSize(400, 330);
 
         // Panel que será responsavel por add todos os elementos
@@ -52,19 +56,33 @@ public class TelaLogin{
         JLabel lblUsuario = new JLabel("Usuário");
         lblUsuario.setBounds(90, 20, 100, 20);
         
-        JTextField txtUsuario = new JTextField();
+        final JTextField txtUsuario = new JTextField();
         txtUsuario.setBounds(90, 45, 200, 30);
         
         
         JLabel lblSenha = new JLabel("Senha");
         lblSenha.setBounds(90, 80, 100, 20);
         
-        JPasswordField txtSenha = new JPasswordField();
+        final JPasswordField txtSenha = new JPasswordField();
         txtSenha.setBounds(90, 105, 200, 30);
         
         JButton btnLogin = new JButton("Login");
         btnLogin.setBounds(30, 150, 80, 30);
         jf.getRootPane().setDefaultButton(btnLogin);
+        final Login login = new Login();
+        
+        btnLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                if(login.logar(txtUsuario.getText(), txtSenha.getText()) == true){
+                    jf.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null, "******************");
+                }
+                
+            }
+        });
         
         // Panel Below
         JPanel panelBelow = new JPanel();
@@ -73,7 +91,7 @@ public class TelaLogin{
         panelBelow.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelBelow.setBackground(new Color(0, 51, 204));
         
-        JLabel lblCopri = new JLabel("Sistem de cadastro de eleitores 1° IIA - 2016");
+        JLabel lblCopri = new JLabel("Sistem de cadastro de eleitores 2° IIA - 2016");
         lblCopri.setBounds(70, 5, 300, 20);
         lblCopri.setForeground(Color.WHITE);
         

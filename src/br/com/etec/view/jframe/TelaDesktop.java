@@ -3,6 +3,7 @@
  */
 package br.com.etec.view.jframe;
 
+import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JDesktopPane;
@@ -18,8 +19,8 @@ import javax.swing.JPanel;
  */
 public class TelaDesktop{
     
-    private static JMenu jmCadastado;
-    private static JMenu jmRelatorio;
+    public static JMenu jmCadastado;
+    public static JMenu jmRelatorio;
     
     public TelaDesktop(){
         
@@ -38,6 +39,10 @@ public class TelaDesktop{
         //Menu
         JMenuBar jMenu = new JMenuBar();
         jMenu.setBounds(0, 0, 1010, 25);
+        
+        //Desktop
+        final JDesktopPane desktopPane = new JDesktopPane();
+        desktopPane.setBounds(5, 30, 995, 635);
         
         //Item de Menu (Cadastro)
         jmCadastado = new JMenu("Cadastro");
@@ -74,7 +79,9 @@ public class TelaDesktop{
         jmCadastadoUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                TelaCadastroUsuario usuario = new TelaCadastroUsuario();
+                usuario.setVisible(true);
+                desktopPane.add(usuario);
             }
         });
         jmCadastado.add(jmCadastadoUsuario);
@@ -172,9 +179,7 @@ public class TelaDesktop{
         jMenu.add(jmOpcoes);
         jMenu.add(jmAjuda);
         
-        //Desktop
-        JDesktopPane desktopPane = new JDesktopPane();
-        desktopPane.setBounds(5, 30, 995, 635);
+        
         
         //Add elementos ao Panel
         panel.add(jMenu);
