@@ -5,6 +5,8 @@
  */
 package br.com.etec.model;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author jose
@@ -16,6 +18,7 @@ public class Usuario {
     private String login;
     private String senha;
     private String perfil;
+    private ResultSet resultSet;
 
     public Usuario(){
         
@@ -69,4 +72,13 @@ public class Usuario {
         this.perfil = perfil;
     }
 
+    
+
+    public ResultSet getResultSet() {
+        return resultSet;
+    }
+
+    public void setResultSet(ResultSet resultSet) {
+        this.resultSet = resultSet;
+    }
 }

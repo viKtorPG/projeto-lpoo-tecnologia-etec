@@ -5,6 +5,8 @@
  */
 package br.com.etec.model;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author jose
@@ -12,6 +14,7 @@ package br.com.etec.model;
 public class Login {
     private String login;
     private String senha;
+    
 
     public Login(String login, String senha) {
         this.login = login;

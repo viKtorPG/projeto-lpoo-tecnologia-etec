@@ -115,6 +115,7 @@ public class TelaLogin {
                 } else {
                     try {
                         new LoginDao().fazerLogin(fazerLogin);
+                        jf.dispose();
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
                     }

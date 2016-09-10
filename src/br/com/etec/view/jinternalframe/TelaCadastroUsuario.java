@@ -12,6 +12,7 @@ import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,9 +31,8 @@ public class TelaCadastroUsuario extends JInternalFrame {
 
     public TelaCadastroUsuario() {
         iniciandoCompomentes();
-       
-    }
 
+    }
 
     private void iniciandoCompomentes() {
         setTitle("Usuários");
@@ -69,7 +69,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
         lblPerfil = new JLabel("*Perfil");
         lblPerfil.setBounds(450, 140, 80, 25);
         jcPerfil = new JComboBox<>();
-        jcPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
+        jcPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Admin", "User"}));
         jcPerfil.setBounds(500, 140, 200, 25);
 
         //Senha
@@ -139,7 +139,15 @@ public class TelaCadastroUsuario extends JInternalFrame {
         btnPesquisar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               
+                Usuario usuario = new Usuario();
+                try {
+                    
+                    usuario.setId(Integer.parseInt(JOptionPane.showInputDialog("")));
+                    new UsuarioDao().consultar(usuario);
+                    
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
+                }
             }
         });
 
@@ -174,7 +182,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
         setLocation(100, 50);
 
     }
-    
+
     // Atributos da Classe
     private JLabel lblCamposObri;
     private JLabel lblId;
