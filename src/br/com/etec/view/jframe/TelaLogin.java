@@ -3,13 +3,18 @@
  */
 package br.com.etec.view.jframe;
 
-import br.com.etec.dal.Conexao;
-import br.com.etec.persist.Login;
+import br.com.etec.dal.LoginDao;
+import br.com.etec.model.Login;
+import br.com.etec.utils.DbUtils;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,16 +33,27 @@ public class TelaLogin {
     private JButton btnLogin;
     private ImageIcon icon;
 
-    public TelaLogin(){
-        Connection connection = Conexao.conector();
-        
-        if (connection != null) {
-            icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_verde.png"));
-        }else{
-            icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_vermelha.png"));
+    public TelaLogin() {
+        Connection connection;
+        try {
+            connection = DbUtils.getConnection();
+            if (connection != null) {
+                icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_verde.png"));
+            } else {
+                icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_vermelha.png"));
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
-    
+
     public void execute(String title) {
         // Criação da Tela
         final JFrame jf = new JFrame(title);
@@ -90,15 +106,23 @@ public class TelaLogin {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (login.logar(txtUsuario.getText(), txtSenha.getText()) == true) {
-                    jf.dispose();
+                Login fazerLogin = new Login();
+                fazerLogin.setLogin(txtUsuario.getText());
+                fazerLogin.setSenha(txtSenha.getText());
+
+                if (txtSenha.getText().isEmpty() || txtUsuario.getText().isEmpty()) {
+
                 } else {
-                    JOptionPane.showMessageDialog(null, "******************");
+                    try {
+                        new LoginDao().fazerLogin(fazerLogin);
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
+                    }
                 }
 
             }
         });
-        
+
         // Panel Below
         JPanel panelBelow = new JPanel();
         panelBelow.setBounds(0, 265, 393, 40);
@@ -125,7 +149,6 @@ public class TelaLogin {
         panelCenter.add(lblSenha);
         panelCenter.add(txtSenha);
         panelCenter.add(btnLogin);
-       
 
         //Add elementos PanelBelow
         panelBelow.add(lblCopri);

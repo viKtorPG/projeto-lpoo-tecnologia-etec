@@ -29,7 +29,7 @@ public class TelaDesktop{
     public static void exibir(String title){
         
         // Criação da Tela
-        JFrame jf = new JFrame(title);
+        final JFrame jf = new JFrame(title);
         jf.setSize(1010, 700);
 
         // Panel que será responsavel por add todos os elementos
@@ -127,7 +127,7 @@ public class TelaDesktop{
                 
             }
         });
-        jmRelatorioSTitulo.add(jmRelatorioPartido);
+        jmImprimir.add(jmRelatorioSTitulo);
         
         //Item de Menu (Válidar voto)
         JMenu jmValidarValor = new JMenu("Válidar Voto");
@@ -145,7 +145,9 @@ public class TelaDesktop{
         jmOpcoesSairLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                TelaLogin login = new TelaLogin();
+                login.execute("");
+                jf.dispose();
             }
         });
         jmOpcoes.add(jmOpcoesSairLogin);
@@ -154,7 +156,7 @@ public class TelaDesktop{
         jmOpcoesSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                System.exit(0);
             }
         });
         jmOpcoes.add(jmOpcoesSair);
