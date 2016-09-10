@@ -9,7 +9,6 @@ package br.com.etec.view.jframe;
  */
 public class TelaMain {
     public static void main(String args[]){
-        TelaLogin login = new TelaLogin();
-        login.execute("");
+        new TelaLogin().execute("");
     }
 }

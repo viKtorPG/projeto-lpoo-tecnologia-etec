@@ -96,13 +96,16 @@ public class TelaCadastroUsuario extends JInternalFrame {
                 addUser.setNome(txtNome.getText());
                 addUser.setLogin(txtLogin.getText());
                 addUser.setSenha(txtSenha.getText());
-                addUser.setPerfil(jcPerfil.getSelectedItem().toString());
-                if (txtNome.getText().isEmpty() || txtLogin.getText().isEmpty() || txtSenha.getText().isEmpty()) {
+                addUser.setPerfil(jcPerfil.getSelectedItem().toString().toLowerCase());
+                if ((txtNome.getText().isEmpty() || txtLogin.getText().isEmpty() || txtSenha.getText().isEmpty() || txtSenhaCof.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
+                } else if (!(txtSenha.getText().equals(txtSenhaCof.getText()))) {
+                    JOptionPane.showMessageDialog(null, "Senha não conferem");
                 } else {
                     try {
                         new UsuarioDao().insert(addUser);
                         JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
+                        clearCampos();
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário");
                     }
@@ -114,89 +117,181 @@ public class TelaCadastroUsuario extends JInternalFrame {
         btnAtualizar = new JButton(imgAtualizar);
         btnAtualizar.setToolTipText("Atualizar");
         btnAtualizar.setBounds(330, 300, 60, 60);
+        btnAtualizar.setEnabled(false);
         btnAtualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Usuario addUser = new Usuario();
+                if ((txtNome.getText().isEmpty() || txtLogin.getText().isEmpty() || txtSenha.getText().isEmpty() || txtSenhaCof.getText().isEmpty())) {
+                    JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
+                } else if (!(txtSenha.getText().equals(txtSenhaCof.getText()))) {
+                    JOptionPane.showMessageDialog(null, "Senha não conferem");
+                } else {
+                    try {
+                        addUser.setId(Integer.parseInt(txtId.getText()));
+                        addUser.setNome(txtNome.getText());
+                        addUser.setLogin(txtLogin.getText());
+                        addUser.setSenha(txtSenha.getText());
+                        addUser.setPerfil(jcPerfil.getSelectedItem().toString().toLowerCase());
+                        new UsuarioDao().update(addUser);
+                        JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
+                        clearCampos();
+                        desabilita();
 
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
+                    }
+                }
             }
-        });
+        }
+        );
 
         ImageIcon imgExcluir = new ImageIcon(getClass().getResource("/br/com/etec/imgs/delete.png"));
         btnExcluir = new JButton(imgExcluir);
-        btnExcluir.setToolTipText("Excluir");
-        btnExcluir.setBounds(400, 300, 60, 60);
-        btnExcluir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
+        btnExcluir.setToolTipText(
+                "Excluir");
+        btnExcluir.setBounds(
+                400, 300, 60, 60);
+        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                Usuario removeUser = new Usuario();
+                removeUser.setId(Integer.parseInt(txtId.getText()));
+                try {
+                    int confir = JOptionPane.showConfirmDialog(null, "Deseja excluir", "Atenção", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (confir == JOptionPane.YES_OPTION) {
+                        new UsuarioDao().delete(removeUser);
+                        JOptionPane.showMessageDialog(null, "Usuário deletado com sucesso!");
+                        clearCampos();
+                        desabilita();
+                    }
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário");
+                }
             }
-        });
+        }
+        );
 
         ImageIcon imgPesquisar = new ImageIcon(getClass().getResource("/br/com/etec/imgs/search.png"));
         btnPesquisar = new JButton(imgPesquisar);
-        btnPesquisar.setToolTipText("Pesquisar");
-        btnPesquisar.setBounds(470, 300, 60, 60);
-        btnPesquisar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
 
-                    int id = Integer.parseInt(JOptionPane.showInputDialog(""));
+        btnPesquisar.setToolTipText(
+                "Pesquisar");
+        btnPesquisar.setBounds(
+                470, 300, 60, 60);
+        btnPesquisar.setToolTipText("Lista de usuários cadastrados");
+        btnPesquisar.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                try {
+                    int id = 0;
+                    try {
+                        id = Integer.parseInt(JOptionPane.showInputDialog(""));
+                    } catch (NumberFormatException numberFormatException) {
+                        JOptionPane.showMessageDialog(null, "Apenas números");
+                    }
                     user = new UsuarioDao().findById(id);
+
                     txtId.setText(String.valueOf(user.getId()));
                     txtNome.setText(user.getNome());
                     txtLogin.setText(user.getLogin());
                     txtSenha.setText(user.getSenha());
                     jcPerfil.setSelectedItem(user.getPerfil());
-                  
+
+                    habilita();
+
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
                 }
             }
-        });
+        }
+        );
 
         ImageIcon imgLista = new ImageIcon(getClass().getResource("/br/com/etec/imgs/list.png"));
         btnLista = new JButton(imgLista);
-        btnLista.setBounds(100, 350, 60, 60);
-        btnLista.addActionListener(new ActionListener() {
+
+        btnLista.setBounds(
+                100, 350, 60, 60);
+        btnLista.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 new TelaTableUsuario().execute("Lista");
             }
-        });
+        }
+        );
 
         //ADD
         container.add(lblCamposObri);
 
         container.add(lblId);
+
         container.add(txtId);
 
         container.add(lblNome);
+
         container.add(txtNome);
 
         container.add(lblLogin);
+
         container.add(txtLogin);
 
         container.add(lblPerfil);
+
         container.add(jcPerfil);
 
         container.add(lblSenha);
+
         container.add(txtSenha);
 
         container.add(lblSenhaConf);
+
         container.add(txtSenhaCof);
 
         container.add(btnAdicionar);
+
         container.add(btnAtualizar);
+
         container.add(btnExcluir);
+
         container.add(btnPesquisar);
 
         container.add(btnLista);
 
-        setClosable(true);
-        setIconifiable(true);
-        setLocation(100, 50);
+        setClosable(
+                true);
+        setIconifiable(
+                true);
+        setLocation(
+                100, 50);
 
+    }
+
+    public void clearCampos() {
+        txtId.setText("");
+        txtNome.setText("");
+        txtLogin.setText("");
+        txtSenha.setText("");
+        txtSenhaCof.setText("");
+    }
+
+    // Habilita os botões de Excluir e atualizar
+    public void habilita() {
+        btnAtualizar.setEnabled(true);
+        btnExcluir.setEnabled(true);
+    }
+
+    // Desabilita os botões de Excluir e atualizar
+    public void desabilita() {
+        btnAtualizar.setEnabled(false);
+        btnExcluir.setEnabled(false);
     }
 
     // Atributos da Classe

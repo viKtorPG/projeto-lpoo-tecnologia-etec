@@ -47,13 +47,13 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
     public void update(Usuario entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "update db_usuario set nome=?, login=?, senha=?, perfil=? where id_ser=?";
+            String sql = "update db_usuario set nome=?, login=?, senha=?, perfil=? where id_user=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setString(1, entidade.getNome());
             statement.setString(2, entidade.getLogin());
             statement.setString(3, entidade.getSenha());
             statement.setString(4, entidade.getPerfil());
-            statement.setInt(6, entidade.getId());
+            statement.setInt(5, entidade.getId());
 
             statement.execute();
         } finally {
@@ -116,11 +116,6 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
                 JOptionPane.showMessageDialog(null, "gggggggggg");
                 return null;
             }else{
-                 /*TelaCadastroUsuario.txtId.setText(resultSet.getString(1));
-                TelaCadastroUsuario.txtNome.setText(resultSet.getString(2));
-                TelaCadastroUsuario.txtLogin.setText(resultSet.getString(3));
-                TelaCadastroUsuario.txtSenha.setText(resultSet.getString(4));
-                TelaCadastroUsuario.jcPerfil.setSelectedItem(resultSet.getString(5));*/
                 Usuario usuario = new Usuario();
                 usuario.setId(resultSet.getInt(1));
                 usuario.setNome(resultSet.getString(2));
