@@ -30,7 +30,7 @@ public class Conexao{
         } catch (ClassNotFoundException | SQLException e) {
             // Erro
             
-            JOptionPane.showMessageDialog(null,"Erro" + e.getMessage());
+            //JOptionPane.showMessageDialog(null,"Erro" + e.getMessage());
             
             return null;
         }
