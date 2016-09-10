@@ -83,12 +83,14 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
     public List<Usuario> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try{
             connection = DbUtils.getConnection();
-            ResultSet resultSet = DbUtils.getResultSet(connection, "select * db_usuario");
+            ResultSet resultSet = DbUtils.getResultSet(connection, "select * from db_usuario");
             List<Usuario> usuarios = new ArrayList<>();
             while(resultSet.next()){
                 Usuario usuario = new Usuario();
                 usuario.setId(resultSet.getInt(1));
                 usuario.setNome(resultSet.getString(2));
+                usuario.setLogin(resultSet.getString(3));
+                usuario.setPerfil(resultSet.getString(5));
                 usuarios.add(usuario);
             }
             return usuarios;

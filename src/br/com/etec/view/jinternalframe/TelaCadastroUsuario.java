@@ -7,6 +7,7 @@ package br.com.etec.view.jinternalframe;
 
 import br.com.etec.dal.UsuarioDao;
 import br.com.etec.model.Usuario;
+import br.com.etec.view.jframe.TelaTableUsuario;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.HeadlessException;
@@ -141,16 +142,26 @@ public class TelaCadastroUsuario extends JInternalFrame {
                 try {
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog(""));
-                    Usuario user = new UsuarioDao().findById(id);
+                    user = new UsuarioDao().findById(id);
                     txtId.setText(String.valueOf(user.getId()));
                     txtNome.setText(user.getNome());
                     txtLogin.setText(user.getLogin());
                     txtSenha.setText(user.getSenha());
                     jcPerfil.setSelectedItem(user.getPerfil());
-
+                  
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
                 }
+            }
+        });
+
+        ImageIcon imgLista = new ImageIcon(getClass().getResource("/br/com/etec/imgs/list.png"));
+        btnLista = new JButton(imgLista);
+        btnLista.setBounds(100, 350, 60, 60);
+        btnLista.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new TelaTableUsuario().execute("Lista");
             }
         });
 
@@ -180,6 +191,8 @@ public class TelaCadastroUsuario extends JInternalFrame {
         container.add(btnExcluir);
         container.add(btnPesquisar);
 
+        container.add(btnLista);
+
         setClosable(true);
         setIconifiable(true);
         setLocation(100, 50);
@@ -205,4 +218,5 @@ public class TelaCadastroUsuario extends JInternalFrame {
     private JButton btnPesquisar;
     private JComboBox<String> jcPerfil;
     private JButton btnLista;
+    private Usuario user;
 }
