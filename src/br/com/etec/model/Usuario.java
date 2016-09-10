@@ -1,11 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Classe auxiliar para comunicação das classe Cadastro Usuaário e UsuarioDao.
  */
 package br.com.etec.model;
 
-import java.sql.ResultSet;
 
 /**
  *
@@ -18,7 +15,6 @@ public class Usuario {
     private String login;
     private String senha;
     private String perfil;
-    private ResultSet resultSet;
 
     public Usuario(){
         
@@ -70,15 +66,5 @@ public class Usuario {
 
     public void setPerfil(String perfil) {
         this.perfil = perfil;
-    }
-
-    
-
-    public ResultSet getResultSet() {
-        return resultSet;
-    }
-
-    public void setResultSet(ResultSet resultSet) {
-        this.resultSet = resultSet;
     }
 }

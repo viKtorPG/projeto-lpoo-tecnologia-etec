@@ -12,7 +12,6 @@ import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -139,12 +138,16 @@ public class TelaCadastroUsuario extends JInternalFrame {
         btnPesquisar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Usuario usuario = new Usuario();
                 try {
-                    
-                    usuario.setId(Integer.parseInt(JOptionPane.showInputDialog("")));
-                    new UsuarioDao().consultar(usuario);
-                    
+
+                    int id = Integer.parseInt(JOptionPane.showInputDialog(""));
+                    Usuario user = new UsuarioDao().findById(id);
+                    txtId.setText(String.valueOf(user.getId()));
+                    txtNome.setText(user.getNome());
+                    txtLogin.setText(user.getLogin());
+                    txtSenha.setText(user.getSenha());
+                    jcPerfil.setSelectedItem(user.getPerfil());
+
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
                 }
@@ -191,15 +194,15 @@ public class TelaCadastroUsuario extends JInternalFrame {
     private JLabel lblPerfil;
     private JLabel lblSenha;
     private JLabel lblSenhaConf;
-    public static JTextField txtId;
-    public static JTextField txtNome;
-    public static JTextField txtLogin;
-    public static JTextField txtSenha;
+    private JTextField txtId;
+    private JTextField txtNome;
+    private JTextField txtLogin;
+    private JTextField txtSenha;
     private JTextField txtSenhaCof;
     private JButton btnAdicionar;
     private JButton btnAtualizar;
     private JButton btnExcluir;
     private JButton btnPesquisar;
-    public static JComboBox<String> jcPerfil;
+    private JComboBox<String> jcPerfil;
     private JButton btnLista;
 }

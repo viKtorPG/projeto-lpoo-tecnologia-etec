@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -77,24 +79,54 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
         }
     }
 
-    public ResultSet consultar(Usuario entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+    @Override
+    public List<Usuario> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        try{
+            connection = DbUtils.getConnection();
+            ResultSet resultSet = DbUtils.getResultSet(connection, "select * db_usuario");
+            List<Usuario> usuarios = new ArrayList<>();
+            while(resultSet.next()){
+                Usuario usuario = new Usuario();
+                usuario.setId(resultSet.getInt(1));
+                usuario.setNome(resultSet.getString(2));
+                usuarios.add(usuario);
+            }
+            return usuarios;
+        }finally{
+            if(connection != null){
+                connection.close();
+            }
+        }
+    }
+
+    @Override
+    public Usuario findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
             String sql = "select * from db_usuario where id_user=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, entidade.getId());
+            statement.setInt(1, id);
 
             resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
                 JOptionPane.showMessageDialog(null, "gggggggggg");
+                return null;
             }else{
-                 TelaCadastroUsuario.txtId.setText(resultSet.getString(1));
+                 /*TelaCadastroUsuario.txtId.setText(resultSet.getString(1));
                 TelaCadastroUsuario.txtNome.setText(resultSet.getString(2));
                 TelaCadastroUsuario.txtLogin.setText(resultSet.getString(3));
                 TelaCadastroUsuario.txtSenha.setText(resultSet.getString(4));
-                TelaCadastroUsuario.jcPerfil.setSelectedItem(resultSet.getString(5));
+                TelaCadastroUsuario.jcPerfil.setSelectedItem(resultSet.getString(5));*/
+                Usuario usuario = new Usuario();
+                usuario.setId(resultSet.getInt(1));
+                usuario.setNome(resultSet.getString(2));
+                usuario.setLogin(resultSet.getString(3));
+                usuario.setSenha(resultSet.getString(4));
+                usuario.setPerfil(resultSet.getString(5));
+                
+                return usuario;
             }
 
         } finally {
@@ -102,8 +134,6 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
                 connection.close();
             }
         }
-
-        return resultSet;
     }
 
 }
