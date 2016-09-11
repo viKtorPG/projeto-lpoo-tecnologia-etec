@@ -183,7 +183,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
                 "Pesquisar");
         btnPesquisar.setBounds(
                 470, 300, 60, 60);
-        btnPesquisar.setToolTipText("Lista de usuários cadastrados");
+        btnPesquisar.setToolTipText("Pesquisar");
         btnPesquisar.addActionListener(
                 new ActionListener() {
             @Override
@@ -218,6 +218,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
 
         btnLista.setBounds(
                 100, 350, 60, 60);
+        btnLista.setToolTipText("Lista de usuários cadastrados");
         btnLista.addActionListener(
                 new ActionListener() {
             @Override
