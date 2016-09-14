@@ -61,6 +61,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         txtSecao = new JTextField(10);
         txtSecao.setBounds(545, 150, 80, 25);
+        txtSecao.setEditable(false);
 
         // Nome
         lblNome = new JLabel("*Nome");

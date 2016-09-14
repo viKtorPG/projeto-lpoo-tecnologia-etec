@@ -108,9 +108,9 @@ public class TelaLogin {
 
                 Login fazerLogin = new Login();
                 fazerLogin.setLogin(txtUsuario.getText());
-                fazerLogin.setSenha(txtSenha.getText());
-
-                if (txtSenha.getText().isEmpty() || txtUsuario.getText().isEmpty()) {
+                fazerLogin.setSenha(new String(txtSenha.getPassword()));
+                System.out.print(new String(txtSenha.getPassword()));
+                if (new String(txtSenha.getPassword()).isEmpty() || txtUsuario.getText().isEmpty()) {
 
                 } else {
                     try {

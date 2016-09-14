@@ -8,6 +8,7 @@ package br.com.etec.dal;
 import br.com.etec.model.Login;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.view.jframe.TelaDesktop;
+import br.com.etec.view.jframe.TelaLogin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,13 +36,16 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
             ResultSet resultSet = statement.executeQuery();
   
             if (resultSet.next()) {
-             
-                String perfil = resultSet.getString(5);
-                TelaDesktop.exibir("Tela");
+                if (resultSet.getString("login").equals(entidade.getSenha()) && resultSet.getString("senha").equals(entidade.getSenha())) {
+                    String perfil = resultSet.getString(5);
+                    TelaDesktop.exibir("Tela");
 
-                if (perfil.equals("admin")) {
-                    TelaDesktop.jmCadastado.setVisible(true);
-                    TelaDesktop.jmRelatorio.setVisible(true);
+                    if (perfil.equals("admin")) {
+                        TelaDesktop.jmCadastado.setVisible(true);
+                        TelaDesktop.jmRelatorio.setVisible(true);
+                    }
+                } else {
+                    new TelaLogin().execute("");
                 }
             }
         } finally {
