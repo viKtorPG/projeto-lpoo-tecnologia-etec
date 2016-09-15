@@ -6,6 +6,7 @@ package br.com.etec.view.jframe;
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioCandidato;
+import br.com.etec.view.jinternalframe.TelaGerarRelatorioPartido;
 import br.com.etec.view.jinternalframe.TelaImprimirSegundaVia;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -95,11 +96,13 @@ public class TelaDesktop {
         jmRelatorio = new JMenu("Relatório");
         jmRelatorio.setVisible(false);
 
-        JMenuItem jmRelatorioPartido = new JMenuItem("Eleitor");
+        JMenuItem jmRelatorioPartido = new JMenuItem("Partido");
         jmRelatorioPartido.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                    TelaGerarRelatorioPartido partido = new TelaGerarRelatorioPartido();
+                    partido.setVisible(true);
+                    desktopPane.add(partido);
             }
         });
         jmRelatorio.add(jmRelatorioPartido);
