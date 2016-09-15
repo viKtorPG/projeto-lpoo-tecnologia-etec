@@ -8,6 +8,8 @@ import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioCandidato;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioPartido;
 import br.com.etec.view.jinternalframe.TelaImprimirSegundaVia;
+import br.com.etec.view.jinternalframe.TelaValidarVoto;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JDesktopPane;
@@ -126,6 +128,15 @@ public class TelaDesktop {
             }
         });
         jmRelatorio.add(jmRelatorioGeral);
+        
+        JMenuItem jmRelatorioUsuarios = new JMenuItem("Usuários");
+        jmRelatorioUsuarios.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        jmRelatorio.add(jmRelatorioUsuarios);
 
         //Item de Menu (Imprimir)
         JMenu jmImprimir = new JMenu("Imprimir");
@@ -142,13 +153,17 @@ public class TelaDesktop {
         jmImprimir.add(jmRelatorioSTitulo);
 
         //Item de Menu (Válidar voto)
-        JMenu jmValidarValor = new JMenu("Válidar Voto");
+        JMenu jmValidar = new JMenu("Válidar");
+        JMenuItem jmValidarValor = new JMenuItem("Voto");
         jmValidarValor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                TelaValidarVoto voto = new TelaValidarVoto();
+                voto.setVisible(true);
+                desktopPane.add(voto);
             }
         });
+        jmValidar.add(jmValidarValor);
 
         //Item de Menu (Opções)
         JMenu jmOpcoes = new JMenu("Opções");
@@ -189,7 +204,7 @@ public class TelaDesktop {
         jMenu.add(jmCadastado);
         jMenu.add(jmRelatorio);
         jMenu.add(jmImprimir);
-        jMenu.add(jmValidarValor);
+        jMenu.add(jmValidar);
         jMenu.add(jmOpcoes);
         jMenu.add(jmAjuda);
 
