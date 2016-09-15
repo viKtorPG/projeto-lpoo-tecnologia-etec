@@ -38,7 +38,7 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
             if (resultSet.next()) {
                 if (resultSet.getString(3).equals(entidade.getLogin()) && resultSet.getString(4).equals(entidade.getSenha())) {
                     String perfil = resultSet.getString(5);
-                    TelaDesktop.exibir("Tela");
+                    new TelaDesktop().execute();
 
                     if (perfil.equals("admin")) {
                         TelaDesktop.jmCadastado.setVisible(true);

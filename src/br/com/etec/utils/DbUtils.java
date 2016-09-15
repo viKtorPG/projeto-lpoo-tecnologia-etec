@@ -6,7 +6,6 @@
 package br.com.etec.utils;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 
 import java.sql.PreparedStatement;
@@ -22,7 +21,7 @@ public class DbUtils {
 
     public static Connection getConnection() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         Class.forName("com.mysql.jdbc.Driver").newInstance();
-        String stringConexao = "jdbc:mysql://localhost:3306/lpooProject?user=root&password=";
+        String stringConexao = "jdbc:mysql://br-cdbr-azure-south-b.cloudapp.net:3306/bancolpoo?user=b9cddf1e1453c4&password=ac527e6c";
         Connection connection = DriverManager.getConnection(stringConexao);
         /*try {
             connection = DriverManager.getConnection(stringConexao);

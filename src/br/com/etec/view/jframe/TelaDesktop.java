@@ -3,6 +3,7 @@
  */
 package br.com.etec.view.jframe;
 
+import br.com.etec.components.BackgroundedDesktopPane;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
@@ -10,14 +11,19 @@ import br.com.etec.view.jinternalframe.TelaGerarRelatorioCandidato;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioPartido;
 import br.com.etec.view.jinternalframe.TelaImprimirSegundaVia;
 import br.com.etec.view.jinternalframe.TelaValidarVoto;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.layout.Background;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -38,13 +44,13 @@ public class TelaDesktop {
     public static JMenu jmRelatorio;
 
     public TelaDesktop() {
-
+       
     }
 
-    public static void exibir(String title) {
+    public void execute() {
 
         // Criação da Tela
-        final JFrame jf = new JFrame(title);
+        final JFrame jf = new JFrame("Desktop");
         jf.setSize(1010, 700);
 
         // Panel que será responsavel por add todos os elementos
@@ -56,7 +62,7 @@ public class TelaDesktop {
         jMenu.setBounds(0, 0, 1010, 25);
 
         //Desktop
-        final JDesktopPane desktopPane = new JDesktopPane();
+        final JDesktopPane desktopPane = new BackgroundedDesktopPane();
         desktopPane.setBounds(5, 30, 995, 635);
 
         //Item de Menu (Cadastro)
@@ -143,14 +149,14 @@ public class TelaDesktop {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
-                
-                if(confirmar == JOptionPane.YES_NO_OPTION){
-                    new Thread(){
+
+                if (confirmar == JOptionPane.YES_NO_OPTION) {
+                    new Thread() {
                         @Override
                         public void run() {
-                            try{
+                            try {
                                 JasperPrint viewer = JasperFillManager.fillReport("ireport/relatorioUsuario.jasper", null, DbUtils.getConnection());
-                                
+
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException ex) {
                                 Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
@@ -242,9 +248,11 @@ public class TelaDesktop {
 
         //Add elementos ao Panel
         panel.add(jMenu);
+        panel.add(desktopPane, BorderLayout.CENTER);
         panel.add(desktopPane);
 
         // Add elementos ao JFrame
+        
         jf.add(panel);
         jf.setVisible(true);
         jf.setResizable(false);
