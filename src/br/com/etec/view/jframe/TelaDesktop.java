@@ -5,6 +5,7 @@ package br.com.etec.view.jframe;
 
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
+import br.com.etec.view.jinternalframe.TelaGerarRelatorioCandidato;
 import br.com.etec.view.jinternalframe.TelaImprimirSegundaVia;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -107,7 +108,9 @@ public class TelaDesktop {
         jmRelatorioCandidato.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                   TelaGerarRelatorioCandidato candidato = new TelaGerarRelatorioCandidato();
+                   candidato.setVisible(true);
+                   desktopPane.add(candidato);
             }
         });
         jmRelatorio.add(jmRelatorioCandidato);

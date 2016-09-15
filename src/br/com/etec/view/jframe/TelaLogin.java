@@ -30,18 +30,18 @@ public class TelaLogin {
 
     private JButton btnLogin;
     private ImageIcon icon;
+    private Connection connection;
 
     public TelaLogin() {
-        Connection connection;
         try {
             connection = DbUtils.getConnection();
             if (connection != null) {
                 icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_verde.png"));
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-             JOptionPane.showMessageDialog(null, "Sem conexão");
-             icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_vermelha.png"));
-        } 
+            JOptionPane.showMessageDialog(null, "Sem conexão");
+            icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_vermelha.png"));
+        }
     }
 
     public void execute() {
@@ -99,15 +99,19 @@ public class TelaLogin {
                 Login fazerLogin = new Login();
                 fazerLogin.setLogin(txtUsuario.getText());
                 fazerLogin.setSenha(new String(txtSenha.getPassword()));
-                if (new String(txtSenha.getPassword()).isEmpty() || txtUsuario.getText().isEmpty()) {
-
-                } else {
-                    try {
-                        new LoginDao().fazerLogin(fazerLogin);
-                        jf.dispose();
-                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
-                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
+                if (connection != null) {
+                    if (new String(txtSenha.getPassword()).isEmpty() || txtUsuario.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Campos login e senha obrigatórios");
+                    } else {
+                        try {
+                            new LoginDao().fazerLogin(fazerLogin);
+                            jf.dispose();
+                        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                            JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
+                        }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Sem conexão");
                 }
 
             }
