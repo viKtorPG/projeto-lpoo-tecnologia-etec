@@ -5,6 +5,7 @@ package br.com.etec.view.jframe;
 
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
+import br.com.etec.view.jinternalframe.TelaImprimirSegundaVia;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JDesktopPane;
@@ -127,7 +128,9 @@ public class TelaDesktop {
         jmRelatorioSTitulo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                TelaImprimirSegundaVia segundaVia = new TelaImprimirSegundaVia();
+                segundaVia.setVisible(true);
+                desktopPane.add(segundaVia);
             }
         });
         jmImprimir.add(jmRelatorioSTitulo);

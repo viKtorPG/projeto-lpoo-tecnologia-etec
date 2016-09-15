@@ -36,7 +36,7 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
             ResultSet resultSet = statement.executeQuery();
   
             if (resultSet.next()) {
-                if (resultSet.getString("login").equals(entidade.getSenha()) && resultSet.getString("senha").equals(entidade.getSenha())) {
+                if (resultSet.getString(3).equals(entidade.getLogin()) && resultSet.getString(4).equals(entidade.getSenha())) {
                     String perfil = resultSet.getString(5);
                     TelaDesktop.exibir("Tela");
 
@@ -45,6 +45,7 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
                         TelaDesktop.jmRelatorio.setVisible(true);
                     }
                 } else {
+                    JOptionPane.showMessageDialog(null, "Usuário não existe");
                     new TelaLogin().execute();
                 }
             }
