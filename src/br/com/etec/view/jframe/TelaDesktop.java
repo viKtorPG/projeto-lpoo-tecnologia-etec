@@ -3,6 +3,7 @@
  */
 package br.com.etec.view.jframe;
 
+import br.com.etec.utils.DbUtils;
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioCandidato;
@@ -12,12 +13,20 @@ import br.com.etec.view.jinternalframe.TelaValidarVoto;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -102,9 +111,9 @@ public class TelaDesktop {
         jmRelatorioPartido.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    TelaGerarRelatorioPartido partido = new TelaGerarRelatorioPartido();
-                    partido.setVisible(true);
-                    desktopPane.add(partido);
+                TelaGerarRelatorioPartido partido = new TelaGerarRelatorioPartido();
+                partido.setVisible(true);
+                desktopPane.add(partido);
             }
         });
         jmRelatorio.add(jmRelatorioPartido);
@@ -113,9 +122,9 @@ public class TelaDesktop {
         jmRelatorioCandidato.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                   TelaGerarRelatorioCandidato candidato = new TelaGerarRelatorioCandidato();
-                   candidato.setVisible(true);
-                   desktopPane.add(candidato);
+                TelaGerarRelatorioCandidato candidato = new TelaGerarRelatorioCandidato();
+                candidato.setVisible(true);
+                desktopPane.add(candidato);
             }
         });
         jmRelatorio.add(jmRelatorioCandidato);
@@ -128,12 +137,35 @@ public class TelaDesktop {
             }
         });
         jmRelatorio.add(jmRelatorioGeral);
-        
+
         JMenuItem jmRelatorioUsuarios = new JMenuItem("Usuários");
         jmRelatorioUsuarios.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                
+                if(confirmar == JOptionPane.YES_NO_OPTION){
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            try{
+                                JasperPrint viewer = JasperFillManager.fillReport("ireport/relatorioUsuario.jasper", null, DbUtils.getConnection());
+                                
+                                JasperViewer.viewReport(viewer, false);
+                            } catch (JRException ex) {
+                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (ClassNotFoundException ex) {
+                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InstantiationException ex) {
+                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (IllegalAccessException ex) {
+                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }.start();
+                }
             }
         });
         jmRelatorio.add(jmRelatorioUsuarios);
