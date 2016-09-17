@@ -193,20 +193,17 @@ public class TelaCadastroUsuario extends JInternalFrame {
                     int id = 0;
                     try {
                         id = Integer.parseInt(JOptionPane.showInputDialog(""));
+                        user = new UsuarioDao().findById(id);
+                        txtId.setText(String.valueOf(user.getId()));
+                        txtNome.setText(user.getNome());
+                        txtLogin.setText(user.getLogin());
+                        txtSenha.setText(user.getSenha());
+                        jcPerfil.setSelectedItem(user.getPerfil());
+                        habilita();
                     } catch (NumberFormatException numberFormatException) {
                         JOptionPane.showMessageDialog(null, "Apenas números");
                     }
-                    user = new UsuarioDao().findById(id);
-
-                    txtId.setText(String.valueOf(user.getId()));
-                    txtNome.setText(user.getNome());
-                    txtLogin.setText(user.getLogin());
-                    txtSenha.setText(user.getSenha());
-                    jcPerfil.setSelectedItem(user.getPerfil());
-
-                    habilita();
-
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException | NullPointerException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
                 }
             }

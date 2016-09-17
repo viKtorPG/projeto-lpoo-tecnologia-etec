@@ -3,12 +3,15 @@
  */
 package br.com.etec.view.jframe;
 
+import br.com.etec.splash.Splash;
+
 /**
  *
  * @author jose
  */
 public class TelaMain {
     public static void main(String args[]){
-        new TelaLogin().execute();
+        Splash splash = new Splash(1000);
+        splash.showDispose();
     }
 }

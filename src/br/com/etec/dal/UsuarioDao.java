@@ -113,7 +113,7 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
             resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
-                JOptionPane.showMessageDialog(null, "gggggggggg");
+                JOptionPane.showMessageDialog(null, "Usuário não encontrado!");
                 return null;
             }else{
                 Usuario usuario = new Usuario();
