@@ -5,7 +5,6 @@
  */
 package br.com.etec.model;
 
-import java.sql.ResultSet;
 
 /**
  *

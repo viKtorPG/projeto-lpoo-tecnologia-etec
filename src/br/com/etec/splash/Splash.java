@@ -19,7 +19,7 @@ public class Splash extends JWindow {
     private final long mTempo;
     private final int mWidth;
     private final int mHeight;
-    private ImageIcon icon;
+    private final ImageIcon icon;
 
     public Splash(long mTempo) {
         this.mTempo = mTempo;

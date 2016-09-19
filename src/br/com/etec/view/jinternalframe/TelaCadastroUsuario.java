@@ -69,7 +69,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
         lblPerfil = new JLabel("*Perfil");
         lblPerfil.setBounds(450, 140, 80, 25);
         jcPerfil = new JComboBox<>();
-        jcPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Admin", "User"}));
+        jcPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"admin", "user"}));
         jcPerfil.setBounds(500, 140, 200, 25);
 
         //Senha
@@ -134,7 +134,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
                         addUser.setSenha(txtSenha.getText());
                         addUser.setPerfil(jcPerfil.getSelectedItem().toString().toLowerCase());
                         new UsuarioDao().update(addUser);
-                        JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
+                        JOptionPane.showMessageDialog(null, "Usuário atualizado com sucesso!");
                         clearCampos();
                         desabilita();
 
@@ -199,6 +199,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
                         txtLogin.setText(user.getLogin());
                         txtSenha.setText(user.getSenha());
                         jcPerfil.setSelectedItem(user.getPerfil());
+                        System.err.println(user.getPerfil());
                         habilita();
                     } catch (NumberFormatException numberFormatException) {
                         JOptionPane.showMessageDialog(null, "Apenas números");

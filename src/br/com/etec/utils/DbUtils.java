@@ -21,7 +21,7 @@ public class DbUtils {
 
     public static Connection getConnection() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         Class.forName("com.mysql.jdbc.Driver").newInstance();
-        String stringConexao = "jdbc:mysql://br-cdbr-azure-south-b.cloudapp.net:3306/bancolpoo?user=b9cddf1e1453c4&password=ac527e6c";
+        String stringConexao = "jdbc:mysql://br-cdbr-azure-south-b.cloudapp.net:3306/eleicoes2016?user=bd7fe711d47a1d&password=1298f777";
         Connection connection = DriverManager.getConnection(stringConexao);
         /*try {
             connection = DriverManager.getConnection(stringConexao);
