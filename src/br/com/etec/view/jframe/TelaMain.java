@@ -11,7 +11,6 @@ import br.com.etec.splash.Splash;
  */
 public class TelaMain {
     public static void main(String args[]){
-        Splash splash = new Splash(500);
-        splash.showDispose();
+        new Splash(500).showDispose();
     }
 }

@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.etec.dal;
+package br.com.etec.dao;
 
-import br.com.etec.dao.IAbstractDao;
 import br.com.etec.model.Usuario;
 import br.com.etec.utils.DbUtils;
-import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +27,7 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
     public void insert(Usuario entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "insert into db_usuario(nome, login, senha, perfil) values(?,?,?,?)";
+            String sql = "insert into usuario(id, nome, login, senha, perfil) values(null,?,?,?,?)";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setString(1, entidade.getNome());
             statement.setString(2, entidade.getLogin());
@@ -48,7 +46,7 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
     public void update(Usuario entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "update db_usuario set nome=?, login=?, senha=?, perfil=? where id_user=?";
+            String sql = "update usuario set nome=?, login=?, senha=?, perfil=? where id=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setString(1, entidade.getNome());
             statement.setString(2, entidade.getLogin());
@@ -68,7 +66,7 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
     public void delete(Usuario entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "delete from db_usuario where id_user=?";
+            String sql = "delete from usuario where id=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, entidade.getId());
 
@@ -84,7 +82,7 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
     public List<Usuario> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try{
             connection = DbUtils.getConnection();
-            ResultSet resultSet = DbUtils.getResultSet(connection, "select * from db_usuario");
+            ResultSet resultSet = DbUtils.getResultSet(connection, "select * from usuario");
             List<Usuario> usuarios = new ArrayList<>();
             while(resultSet.next()){
                 Usuario usuario = new Usuario();
@@ -107,7 +105,7 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
-            String sql = "select * from db_usuario where id_user=?";
+            String sql = "select * from usuario where id=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, id);
 

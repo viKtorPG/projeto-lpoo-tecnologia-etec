@@ -5,25 +5,24 @@ package br.com.etec.view.jframe;
 
 import br.com.etec.components.BackgroundedDesktopPane;
 import br.com.etec.utils.DbUtils;
+import br.com.etec.view.jinternalframe.TelaCadastroCandidato;
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
+import br.com.etec.view.jinternalframe.TelaCadastroPartido;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
+import br.com.etec.view.jinternalframe.TelaCadastroVice;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioCandidato;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioPartido;
 import br.com.etec.view.jinternalframe.TelaImprimirSegundaVia;
 import br.com.etec.view.jinternalframe.TelaValidarVoto;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.layout.Background;
-import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -44,10 +43,10 @@ public class TelaDesktop {
     public static JMenu jmRelatorio;
 
     public TelaDesktop() {
-       
+
     }
 
-    public void execute() {
+    public static void execute() {
 
         // Criação da Tela
         final JFrame jf = new JFrame("Desktop");
@@ -84,7 +83,14 @@ public class TelaDesktop {
         jmCadastadoPartido.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                TelaCadastroPartido partido = null;
+                try {
+                    partido = new TelaCadastroPartido();
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                partido.setVisible(true);
+                desktopPane.add(partido);
             }
         });
         jmCadastado.add(jmCadastadoPartido);
@@ -93,61 +99,107 @@ public class TelaDesktop {
         jmCadastadoCandidato.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                TelaCadastroCandidato candidato = null;
+                try {
+                    candidato = new TelaCadastroCandidato();
+                    candidato.setVisible(true);
+                    desktopPane.add(candidato);
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             }
-        });
+        }
+        );
         jmCadastado.add(jmCadastadoCandidato);
 
-        JMenuItem jmCadastadoUsuario = new JMenuItem("Usuário");
-        jmCadastadoUsuario.addActionListener(new ActionListener() {
+        JMenuItem jmCadastadoVice = new JMenuItem("Vice");
+        jmCadastadoVice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                TelaCadastroVice vice = null;
+                try {
+                    vice = new TelaCadastroVice();
+                } catch (ParseException ex) {
+                    Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                vice.setVisible(true);
+                desktopPane.add(vice);
+            }
+        }
+        );
+        jmCadastado.add(jmCadastadoVice);
+
+        JMenuItem jmCadastadoUsuario = new JMenuItem("Usuário");
+
+        jmCadastadoUsuario.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
                 TelaCadastroUsuario usuario = new TelaCadastroUsuario();
                 usuario.setVisible(true);
                 desktopPane.add(usuario);
             }
-        });
+        }
+        );
         jmCadastado.add(jmCadastadoUsuario);
 
         //Item de Menu (Relatório)
         jmRelatorio = new JMenu("Relatório");
-        jmRelatorio.setVisible(false);
+
+        jmRelatorio.setVisible(
+                false);
 
         JMenuItem jmRelatorioPartido = new JMenuItem("Partido");
-        jmRelatorioPartido.addActionListener(new ActionListener() {
+
+        jmRelatorioPartido.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 TelaGerarRelatorioPartido partido = new TelaGerarRelatorioPartido();
                 partido.setVisible(true);
                 desktopPane.add(partido);
             }
-        });
+        }
+        );
         jmRelatorio.add(jmRelatorioPartido);
 
         JMenuItem jmRelatorioCandidato = new JMenuItem("Candidato");
-        jmRelatorioCandidato.addActionListener(new ActionListener() {
+
+        jmRelatorioCandidato.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 TelaGerarRelatorioCandidato candidato = new TelaGerarRelatorioCandidato();
                 candidato.setVisible(true);
                 desktopPane.add(candidato);
             }
-        });
+        }
+        );
         jmRelatorio.add(jmRelatorioCandidato);
 
         JMenuItem jmRelatorioGeral = new JMenuItem("Geral");
-        jmRelatorioGeral.addActionListener(new ActionListener() {
+
+        jmRelatorioGeral.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
 
             }
         });
         jmRelatorio.add(jmRelatorioGeral);
 
         JMenuItem jmRelatorioUsuarios = new JMenuItem("Usuários");
-        jmRelatorioUsuarios.addActionListener(new ActionListener() {
+
+        jmRelatorioUsuarios.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
 
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
@@ -173,66 +225,86 @@ public class TelaDesktop {
                     }.start();
                 }
             }
-        });
+        }
+        );
         jmRelatorio.add(jmRelatorioUsuarios);
 
         //Item de Menu (Imprimir)
         JMenu jmImprimir = new JMenu("Imprimir");
 
         JMenuItem jmRelatorioSTitulo = new JMenuItem("Título 2° Via");
-        jmRelatorioSTitulo.addActionListener(new ActionListener() {
+
+        jmRelatorioSTitulo.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 TelaImprimirSegundaVia segundaVia = new TelaImprimirSegundaVia();
                 segundaVia.setVisible(true);
                 desktopPane.add(segundaVia);
             }
-        });
+        }
+        );
         jmImprimir.add(jmRelatorioSTitulo);
 
         //Item de Menu (Válidar voto)
         JMenu jmValidar = new JMenu("Válidar");
         JMenuItem jmValidarValor = new JMenuItem("Voto");
-        jmValidarValor.addActionListener(new ActionListener() {
+
+        jmValidarValor.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 TelaValidarVoto voto = new TelaValidarVoto();
                 voto.setVisible(true);
                 desktopPane.add(voto);
             }
-        });
+        }
+        );
         jmValidar.add(jmValidarValor);
 
         //Item de Menu (Opções)
         JMenu jmOpcoes = new JMenu("Opções");
 
         JMenuItem jmOpcoesSairLogin = new JMenuItem("Sair para tela de login");
-        jmOpcoesSairLogin.addActionListener(new ActionListener() {
+
+        jmOpcoesSairLogin.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 TelaLogin login = new TelaLogin();
                 login.execute();
                 jf.dispose();
             }
-        });
+        }
+        );
         jmOpcoes.add(jmOpcoesSairLogin);
 
         JMenuItem jmOpcoesSair = new JMenuItem("Sair");
-        jmOpcoesSair.addActionListener(new ActionListener() {
+
+        jmOpcoesSair.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
                 System.exit(0);
             }
-        });
+        }
+        );
         jmOpcoes.add(jmOpcoesSair);
 
         //Item de Menu (Ajuda)
         JMenu jmAjuda = new JMenu("Ajuda");
 
         JMenuItem jmAjudaSobre = new JMenuItem("Sobre");
-        jmAjudaSobre.addActionListener(new ActionListener() {
+
+        jmAjudaSobre.addActionListener(
+                new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e
+            ) {
 
             }
         });
@@ -240,23 +312,33 @@ public class TelaDesktop {
 
         //Add elementos no menu
         jMenu.add(jmCadastado);
+
         jMenu.add(jmRelatorio);
+
         jMenu.add(jmImprimir);
+
         jMenu.add(jmValidar);
+
         jMenu.add(jmOpcoes);
+
         jMenu.add(jmAjuda);
 
         //Add elementos ao Panel
         panel.add(jMenu);
+
         panel.add(desktopPane, BorderLayout.CENTER);
+
         panel.add(desktopPane);
 
         // Add elementos ao JFrame
-        
         jf.add(panel);
-        jf.setVisible(true);
-        jf.setResizable(false);
-        jf.setLocationRelativeTo(null);
+
+        jf.setVisible(
+                true);
+        jf.setResizable(
+                false);
+        jf.setLocationRelativeTo(
+                null);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }

@@ -5,7 +5,7 @@
  */
 package br.com.etec.view.jinternalframe;
 
-import br.com.etec.dal.UsuarioDao;
+import br.com.etec.dao.UsuarioDao;
 import br.com.etec.model.Usuario;
 import br.com.etec.view.jframe.TelaTableUsuario;
 import java.awt.Color;

@@ -5,6 +5,7 @@
  */
 package br.com.etec.dal;
 
+import br.com.etec.dao.IAbstractDao;
 import br.com.etec.model.Eleitor;
 import br.com.etec.utils.DbUtils;
 import java.sql.Connection;

@@ -6,7 +6,7 @@
 package br.com.etec.view.jframe;
 
 import br.com.etec.components.UsuarioJTable;
-import br.com.etec.dal.UsuarioDao;
+import br.com.etec.dao.UsuarioDao;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
