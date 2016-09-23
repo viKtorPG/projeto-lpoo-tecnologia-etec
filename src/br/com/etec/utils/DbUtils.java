@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Classe de conexão 
  */
 package br.com.etec.utils;
 
@@ -21,7 +19,8 @@ public class DbUtils {
 
     public static Connection getConnection() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         Class.forName("com.mysql.jdbc.Driver").newInstance();
-        String stringConexao = "jdbc:mysql://br-cdbr-azure-south-b.cloudapp.net:3306/eleicoes2016?user=bd7fe711d47a1d&password=1298f777";
+        String stringConexao = "jdbc:mysql://192.168.0.105:3306/eleicoes2016?user=project&password=project@356555";
+        //String stringConexao = "jdbc:mysql://54.210.252.51:3306/jose?user=project&password=project@356555";
         Connection connection = DriverManager.getConnection(stringConexao);
         /*try {
             connection = DriverManager.getConnection(stringConexao);
