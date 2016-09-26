@@ -3,16 +3,21 @@
  */
 package br.com.etec.view.jinternalframe;
 
+import br.com.etec.utils.CidadeEstado;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -45,23 +50,25 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         txtCodEleitor = new JTextField(10);
         txtCodEleitor.setBounds(255, 150, 200, 25);
+        txtCodEleitor.setEditable(false);
 
         // Zona
         lblZona = new JLabel("Zona");
         lblZona.setBounds(485, 120, 80, 25);
         lblZona.setForeground(Color.black);
-
-        txtZona = new JTextField(10);
-        txtZona.setBounds(460, 150, 80, 25);
+        
+        jcZona = new JComboBox<>();
+        jcZona.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"301", "302", "303", "304", "305", "306", "307", "308", "309", "310"}));
+        jcZona.setBounds(460, 150, 80, 25);
 
         // Seção
         lblSecao = new JLabel("Seção");
         lblSecao.setBounds(565, 120, 80, 25);
         lblSecao.setForeground(Color.black);
-
-        txtSecao = new JTextField(10);
-        txtSecao.setBounds(545, 150, 80, 25);
-        txtSecao.setEditable(false);
+        
+        jcSecao = new JComboBox<>();
+        jcSecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"0160", "0161", "0162", "0163", "0164", "0165", "0166", "0167", "0168", "0169", "0170"}));
+        jcSecao.setBounds(545, 150, 80, 25);
 
         // Nome
         lblNome = new JLabel("*Nome");
@@ -71,6 +78,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         txtNome = new JTextField(10);
         txtNome.setBounds(255, 180, 200, 25);
 
+        /*
         // Data Emissão
         lblDataEmissao = new JLabel("Data de Emissão");
         lblDataEmissao.setBounds(490, 180, 150, 25);
@@ -78,26 +86,47 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         txtDataEmissao = new JTextField(10);
         txtDataEmissao.setBounds(460, 210, 165, 25);
+        */
 
         // Data Nascimento
         lblDataNascimento = new JLabel("Data de Nascimento");
         lblDataNascimento.setBounds(130, 210, 150, 25);
         lblDataNascimento.setForeground(Color.black);
+        
 
         jdNascimento = new JDateChooser();
         jdNascimento.setBounds(255, 210, 150, 25);
 
         // Cidade/Estado
-        lblCidadeMuni = new JLabel("*Cidade/Municipio");
+        lblCidadeMuni = new JLabel("*Cidade/Estado");
         lblCidadeMuni.setBounds(140, 240, 150, 25);
         lblCidadeMuni.setForeground(Color.black);
-
-        txtCidadeMuni = new JTextField(10);
-        txtCidadeMuni.setBounds(255, 240, 140, 25);
-
-        jcEstado = new JComboBox<>();
-        jcEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"SP", "RJ"}));
-        jcEstado.setBounds(400, 240, 55, 25);
+ 
+        try {
+            jcEstado = new JComboBox<>();
+            jcEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allEstado()));
+            jcEstado.setBounds(400, 240, 55, 25);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar estados");
+            System.err.println(ex.getMessage());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+            jcCidadeMuni = new JComboBox<>();
+            jcEstado.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        jcCidadeMuni.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allCidade(jcEstado.getSelectedIndex() + 1)));
+                    } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                        Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            jcCidadeMuni.setBounds(255, 240, 140, 25);
 
         // Buttons
         ImageIcon imgAdicionar = new ImageIcon(getClass().getResource("/br/com/etec/imgs/add.png"));
@@ -161,11 +190,11 @@ public class TelaCadastroEleitor extends JInternalFrame {
         container.add(txtCodEleitor);
 
         container.add(lblZona);
-        container.add(txtZona);
+        container.add(jcZona);
 
         container.add(lblSecao);
-        container.add(txtSecao);
-
+        container.add(jcSecao);
+        
         container.add(lblNome);
         container.add(txtNome);
 
@@ -173,11 +202,11 @@ public class TelaCadastroEleitor extends JInternalFrame {
         container.add(jdNascimento);
 
         container.add(lblCidadeMuni);
-        container.add(txtCidadeMuni);
+        container.add(jcCidadeMuni);
         container.add(jcEstado);
 
-        container.add(lblDataEmissao);
-        container.add(txtDataEmissao);
+        /*container.add(lblDataEmissao);
+        container.add(txtDataEmissao);*/
 
         container.add(btnAdicionar);
         container.add(btnAtualizar);
@@ -196,14 +225,14 @@ public class TelaCadastroEleitor extends JInternalFrame {
     private JLabel lblCidadeMuni;
     private JLabel lblZona;
     private JLabel lblSecao;
-    private JLabel lblDataEmissao;
+    //private JLabel lblDataEmissao;
     private JTextField txtCodEleitor;
     private JTextField txtNome;
     private JDateChooser jdNascimento;
-    private JTextField txtCidadeMuni;
-    private JTextField txtZona;
-    private JTextField txtSecao;
-    private JTextField txtDataEmissao;
+    private JComboBox<String> jcCidadeMuni;
+    private JComboBox<String> jcZona;
+    private JComboBox<String> jcSecao;
+    //private JTextField txtDataEmissao;
     private JComboBox<String> jcEstado;
     private JButton btnAdicionar;
     private JButton btnAtualizar;

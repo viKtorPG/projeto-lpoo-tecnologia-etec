@@ -1,10 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Classe de CRUD responsavel pelo login.
  */
 package br.com.etec.dao;
 
+import br.com.etec.interfaces.dao.IAbstractDaoLogin;
 import br.com.etec.model.Login;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.view.jframe.TelaDesktop;
@@ -13,17 +12,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jose
  */
 public class LoginDao implements IAbstractDaoLogin<Login> {
+
     @Override
     public void fazerLogin(Login entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 
         Connection connection = null;
-        String sql = "select * from db_usuario where login=? and senha=?;";
+        String sql = "select * from usuario where login=? and senha=?;";
 
         try {
             connection = DbUtils.getConnection();
@@ -31,11 +32,11 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
 
             statement.setString(1, entidade.getLogin());
             statement.setString(2, entidade.getSenha());
-            
+
             ResultSet resultSet = statement.executeQuery();
-  
+
             if (resultSet.next()) {
-                if (resultSet.getString("login").equals(entidade.getSenha()) && resultSet.getString("senha").equals(entidade.getSenha())) {
+                if (resultSet.getString(3).equals(entidade.getLogin()) && resultSet.getString(4).equals(entidade.getSenha())) {
                     String perfil = resultSet.getString(5);
                     TelaDesktop.execute();
 
@@ -43,9 +44,10 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
                         TelaDesktop.jmCadastado.setVisible(true);
                         TelaDesktop.jmRelatorio.setVisible(true);
                     }
-                } else {
-                    new TelaLogin().execute();
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário não existe");
+                new TelaLogin().execute();
             }
         } finally {
             if (connection != null) {

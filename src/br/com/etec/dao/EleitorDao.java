@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.etec.dal;
+package br.com.etec.dao;
 
-import br.com.etec.dao.IAbstractDao;
+import br.com.etec.interfaces.dao.IAbstractDao;
+import br.com.etec.interfaces.dao.IAbstractDaoCidadeEstado;
 import br.com.etec.model.Eleitor;
 import br.com.etec.utils.DbUtils;
 import java.sql.Connection;
@@ -20,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author jose
  */
-public class EleitorDao implements IAbstractDao<Eleitor> {
+public class EleitorDao implements IAbstractDao<Eleitor>, IAbstractDaoCidadeEstado<Eleitor> {
 
     private Connection connection = null;
 
@@ -56,7 +57,7 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
         
         try{
             connection = DbUtils.getConnection();
-            String sql = "select * from eleitor where id = ?";
+            String sql = "select * from eleitor where id_eleitor = ?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             
             statement.setInt(1, id);
@@ -101,4 +102,16 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
 
     }
 
+    @Override
+    public List<Eleitor> allCidade() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Eleitor> allEstado() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    
 }

@@ -3,7 +3,7 @@
  */
 package br.com.etec.view.jframe;
 
-import br.com.etec.dal.LoginDao;
+import br.com.etec.dao.LoginDao;
 import br.com.etec.model.Login;
 import br.com.etec.utils.DbUtils;
 import java.awt.Color;

@@ -8,7 +8,7 @@ package br.com.etec.view.jinternalframe;
 import br.com.etec.dao.CandidatoDao;
 import br.com.etec.model.Candidato;
 import br.com.etec.utils.ManipularImagem;
-import br.com.etec.utils.Partidos_Numeros;
+import br.com.etec.utils.PartidosNumeros;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.HeadlessException;
@@ -77,12 +77,12 @@ public class TelaCadastroCandidato extends JInternalFrame {
         lblPartido.setForeground(Color.black);
 
         jcPartido = new JComboBox<>();
-        jcPartido.setModel(new javax.swing.DefaultComboBoxModel<>(Partidos_Numeros.partidos()));
+        jcPartido.setModel(new javax.swing.DefaultComboBoxModel<>(PartidosNumeros.partidos()));
         jcPartido.setBounds(255, 210, 285, 25);
         jcPartido.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                lblValorNumero.setText(Partidos_Numeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
+                lblValorNumero.setText(PartidosNumeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
             }
         });
         
@@ -95,7 +95,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
         mask.setMask("###");
         mask.setPlaceholderCharacter('_');
         
-        lblValorNumero = new JLabel(Partidos_Numeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
+        lblValorNumero = new JLabel(PartidosNumeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
         lblValorNumero.setBounds(515, 180, 80, 25);
         lblValorNumero.setForeground(Color.black);
 

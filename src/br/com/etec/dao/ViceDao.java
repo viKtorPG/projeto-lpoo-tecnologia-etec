@@ -5,6 +5,7 @@
  */
 package br.com.etec.dao;
 
+import br.com.etec.interfaces.dao.IAbstractDao;
 import br.com.etec.model.Vice;
 import br.com.etec.utils.DbUtils;
 import java.sql.Blob;

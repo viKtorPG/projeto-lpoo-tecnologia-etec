@@ -3,24 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.etec.dao;
+package br.com.etec.interfaces.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
- * @author Victor
- * @param <T>
+ * @author jose
  */
-public interface IAbstractDaoCandidato<T> {
+public interface IAbstractDao<T> {
+
+    List<T> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
 
     T findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
-     
-    void updateVotos(T entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException;
-    
-    void update(T entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException;
-    
-    void delete(T entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
 
     void insert(T entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
+
+    void update(T entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException;
+
+    void delete(T entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
+
 }

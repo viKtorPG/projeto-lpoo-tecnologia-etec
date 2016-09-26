@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Victor
  */
-public class Partidos_Numeros {
+public class PartidosNumeros {
 
     private static Connection connection;
      public static String[] partidos() {
