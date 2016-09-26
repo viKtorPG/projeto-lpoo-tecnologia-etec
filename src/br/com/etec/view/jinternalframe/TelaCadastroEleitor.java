@@ -14,10 +14,6 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -50,7 +46,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         JLabel lblCamposObri = new JLabel("(*)Campos Obrigatórios");
         lblCamposObri.setBounds(600, 20, 200, 20);
         lblCamposObri.setForeground(Color.red);
-
+        
         // Cod Eleitor
         lblCodEleitor = new JLabel("Código do Eleitor");
         lblCodEleitor.setBounds(150, 150, 200, 25);
@@ -75,7 +71,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         lblSecao.setForeground(Color.black);
 
         jcSecao = new JComboBox<>();
-        jcSecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"0160", "0161", "0162", "0163", "0164", "0165", "0166", "0167", "0168", "0169", "0170"}));
+        jcSecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"160", "161", "162", "163", "164", "165", "166", "167", "168", "169", "170"}));
         jcSecao.setBounds(545, 150, 80, 25);
 
         // Nome
@@ -95,6 +91,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         txtDataEmissao = new JTextField(10);
         txtDataEmissao.setBounds(460, 210, 165, 25);
          */
+        
         // Data Nascimento
         lblDataNascimento = new JLabel("Data de Nascimento");
         lblDataNascimento.setBounds(130, 210, 150, 25);
@@ -102,6 +99,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         jdNascimento = new JDateChooser();
         jdNascimento.setBounds(255, 210, 150, 25);
+        jdNascimento.setDateFormatString("dd/MM/yy");
 
         // Cidade/Estado
         lblCidadeMuni = new JLabel("*Cidade/Estado");
@@ -197,9 +195,29 @@ public class TelaCadastroEleitor extends JInternalFrame {
         btnPesquisar.addActionListener(
                 new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e
-            ) {
-
+            public void actionPerformed(ActionEvent e){
+                try {
+                    int id = 0;
+                    try {
+                        id = Integer.parseInt(JOptionPane.showInputDialog(""));
+                        Eleitor eleitor = new EleitorDao().findById(id);
+                        txtCodEleitor.setText(String.valueOf(eleitor.getIdCod()));
+                        txtNome.setText(eleitor.getNome());
+                        //jdNascimento.setDateFormatString("yyyy-MM-dd");
+                        //jdNascimento.getDateEditor().setDateFormatString(eleitor.getDataNascimento());
+                        jdNascimento.setDate(Data.convertDate(eleitor.getDataNascimento()));
+                        jcZona.setSelectedItem(eleitor.getZona());
+                        jcSecao.setSelectedItem(eleitor.getSecao());
+                        jcEstado.setSelectedItem(eleitor.getNomeUF());
+                        jcCidadeMuni.setSelectedItem(eleitor.getNomeCidade());
+                        System.err.println(eleitor.getNomeCidade());
+                        
+                    } catch (NumberFormatException numberFormatException) {
+                        JOptionPane.showMessageDialog(null, "Apenas números");
+                    }
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException | NullPointerException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
+                }
             }
         }
         );
@@ -258,4 +276,6 @@ public class TelaCadastroEleitor extends JInternalFrame {
     private JButton btnAtualizar;
     private JButton btnExcluir;
     private JButton btnPesquisar;
+    //private JFormattedTextField txtDataNasciment;
+    //private MaskFormatter formatTxtNumeroEleitor;
 }

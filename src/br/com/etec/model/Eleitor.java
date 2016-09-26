@@ -5,7 +5,6 @@
  */
 package br.com.etec.model;
 
-import javax.swing.JTextField;
 
 /**
  *
@@ -16,25 +15,33 @@ public class Eleitor {
     private int idCod;
     private String nome;
     private String dataNascimento;
-    private int idCidade;
-    private String estado;
+    private String dataEmissao;
     private String zona;
     private String secao;
-    private String dataEmissao;
+    private int idCidade;
+    private String nomeCidade;
+    private String nomeUF;
+    
 
     public Eleitor() {
     }
 
-    public Eleitor(int idCod, String nome, String dataNascimento, int idCidade, String estado, String zona, String secao, String dataEmissao) {
-        this.idCod = idCod;
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.idCidade = idCidade;
-        this.estado = estado;
-        this.zona = zona;
-        this.secao = secao;
-        this.dataEmissao = dataEmissao;
+    public String getNomeCidade() {
+        return nomeCidade;
     }
+
+    public void setNomeCidade(String nomeCidade) {
+        this.nomeCidade = nomeCidade;
+    }
+
+    public String getNomeUF() {
+        return nomeUF;
+    }
+
+    public void setNomeUF(String nomeUF) {
+        this.nomeUF = nomeUF;
+    }
+
 
     public int getIdCidade() {
         return idCidade;
@@ -68,14 +75,6 @@ public class Eleitor {
 
     public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public String getZona() {

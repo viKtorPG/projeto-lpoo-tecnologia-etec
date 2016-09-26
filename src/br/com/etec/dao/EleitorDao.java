@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  *
  * @author jose
  */
-public class EleitorDao implements IAbstractDao<Eleitor>{
+public class EleitorDao implements IAbstractDao<Eleitor> {
 
     private Connection connection = null;
 
@@ -39,11 +39,11 @@ public class EleitorDao implements IAbstractDao<Eleitor>{
                 eleitor.setDataNascimento(resultSet.getString(5));
                 eleitor.setDataEmissao(resultSet.getString(6));
                 eleitor.setIdCidade(resultSet.getInt(7));
-                eleitor.setEstado(resultSet.getString(8));
+
             }
             return list;
-        }finally{
-            if(connection != null){
+        } finally {
+            if (connection != null) {
                 connection.close();
             }
         }
@@ -53,34 +53,39 @@ public class EleitorDao implements IAbstractDao<Eleitor>{
     @Override
     public Eleitor findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         ResultSet resultSet;
-        
-        try{
+
+        try {
             connection = DbUtils.getConnection();
-            String sql = "select * from eleitor where id_eleitor = ?";
+            String sql = "select eleitor.id_eleitor, eleitor.nome, DATE_FORMAT(eleitor.data_nascimento, '%d/%m/%y'), DATE_FORMAT(eleitor.data_emissao, '%d/%m/%Y'), eleitor.zona, eleitor.secao, cidade.nome, estado.uf  \n"
+                    + "from eleitor left join cidade \n"
+                    + "on eleitor.id_cidade = cidade.id_cidade \n"
+                    + "left join estado \n"
+                    + "on cidade.id_estado = estado.id_estado \n"
+                    + "where id_eleitor = ?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            
+
             statement.setInt(1, id);
-            
+
             resultSet = statement.executeQuery();
-            
-            if(!resultSet.next()){
+
+            if (!resultSet.next()) {
                 JOptionPane.showMessageDialog(null, "Eleitor não encontrado!");
                 return null;
-            }else{
+            } else {
                 Eleitor eleitor = new Eleitor();
                 eleitor.setIdCod(resultSet.getInt(1));
                 eleitor.setNome(resultSet.getString(2));
-                eleitor.setZona(resultSet.getString(3));
-                eleitor.setSecao(resultSet.getString(4));
-                eleitor.setDataNascimento(resultSet.getString(5));
-                eleitor.setDataEmissao(resultSet.getString(6));
-                eleitor.setIdCidade(resultSet.getInt(7));
-                eleitor.setEstado(resultSet.getString(8));
-                
+                eleitor.setDataNascimento(resultSet.getString(3));
+                eleitor.setDataEmissao(resultSet.getString(4));
+                eleitor.setZona(resultSet.getString(5));
+                eleitor.setSecao(resultSet.getString(6));
+                eleitor.setNomeCidade(resultSet.getString(7));
+                eleitor.setNomeUF(resultSet.getString(8));
+
                 return eleitor;
             }
-        }finally{
-            if(connection != null){
+        } finally {
+            if (connection != null) {
                 connection.close();
             }
         }
@@ -90,16 +95,16 @@ public class EleitorDao implements IAbstractDao<Eleitor>{
     public void insert(Eleitor entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try {
             connection = DbUtils.getConnection();
-            
+
             String sql = "insert into eleitor(nome, data_nascimento, zona, secao, id_cidade) values(?, ?, ?, ?, ?)";
-            
+
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setString(1, entidade.getNome());
             statement.setString(2, entidade.getDataNascimento());
             statement.setString(3, entidade.getZona());
             statement.setString(4, entidade.getSecao());
             statement.setInt(5, entidade.getIdCidade());
-            
+
             statement.execute();
         } finally {
             if (connection != null) {

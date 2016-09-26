@@ -1,6 +1,5 @@
 package br.com.etec.utils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,8 +17,11 @@ public class Data {
 
     public static String convertString(String date) {
         try {
-            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            return new SimpleDateFormat("dd/MM/yyyy").format(data);
+            
+            String bancoRetorno = date.replaceAll(".", "-");
+            
+            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(bancoRetorno);
+            return new SimpleDateFormat("dd/MM/yyyy").format(bancoRetorno);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -29,6 +31,7 @@ public class Data {
 
     public static Date convertDate(String date) {
         try {
+            
             Date data = new SimpleDateFormat("dd/MM/yyyy").parse(date);
             return data;
         } catch (ParseException e) {
