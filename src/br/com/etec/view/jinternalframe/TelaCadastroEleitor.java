@@ -3,13 +3,21 @@
  */
 package br.com.etec.view.jinternalframe;
 
+import br.com.etec.dao.EleitorDao;
+import br.com.etec.model.Eleitor;
 import br.com.etec.utils.CidadeEstado;
+import br.com.etec.utils.Data;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -42,7 +50,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         JLabel lblCamposObri = new JLabel("(*)Campos Obrigatórios");
         lblCamposObri.setBounds(600, 20, 200, 20);
         lblCamposObri.setForeground(Color.red);
-        
+
         // Cod Eleitor
         lblCodEleitor = new JLabel("Código do Eleitor");
         lblCodEleitor.setBounds(150, 150, 200, 25);
@@ -56,7 +64,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         lblZona = new JLabel("Zona");
         lblZona.setBounds(485, 120, 80, 25);
         lblZona.setForeground(Color.black);
-        
+
         jcZona = new JComboBox<>();
         jcZona.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"301", "302", "303", "304", "305", "306", "307", "308", "309", "310"}));
         jcZona.setBounds(460, 150, 80, 25);
@@ -65,7 +73,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         lblSecao = new JLabel("Seção");
         lblSecao.setBounds(565, 120, 80, 25);
         lblSecao.setForeground(Color.black);
-        
+
         jcSecao = new JComboBox<>();
         jcSecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"0160", "0161", "0162", "0163", "0164", "0165", "0166", "0167", "0168", "0169", "0170"}));
         jcSecao.setBounds(545, 150, 80, 25);
@@ -86,13 +94,11 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         txtDataEmissao = new JTextField(10);
         txtDataEmissao.setBounds(460, 210, 165, 25);
-        */
-
+         */
         // Data Nascimento
         lblDataNascimento = new JLabel("Data de Nascimento");
         lblDataNascimento.setBounds(130, 210, 150, 25);
         lblDataNascimento.setForeground(Color.black);
-        
 
         jdNascimento = new JDateChooser();
         jdNascimento.setBounds(255, 210, 150, 25);
@@ -101,7 +107,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         lblCidadeMuni = new JLabel("*Cidade/Estado");
         lblCidadeMuni.setBounds(140, 240, 150, 25);
         lblCidadeMuni.setForeground(Color.black);
- 
+
         try {
             jcEstado = new JComboBox<>();
             jcEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allEstado()));
@@ -112,21 +118,19 @@ public class TelaCadastroEleitor extends JInternalFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-            jcCidadeMuni = new JComboBox<>();
-            jcEstado.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        jcCidadeMuni.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allCidade(jcEstado.getSelectedIndex() + 1)));
-                    } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                        Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
+        jcCidadeMuni = new JComboBox<>();
+        jcEstado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    jcCidadeMuni.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allCidade(jcEstado.getSelectedIndex() + 1)));
+                } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                    Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            });
-            jcCidadeMuni.setBounds(255, 240, 140, 25);
+            }
+        });
+        jcCidadeMuni.setBounds(255, 240, 140, 25);
 
         // Buttons
         ImageIcon imgAdicionar = new ImageIcon(getClass().getResource("/br/com/etec/imgs/add.png"));
@@ -136,7 +140,24 @@ public class TelaCadastroEleitor extends JInternalFrame {
         btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Eleitor addEleitor = new Eleitor();
 
+                addEleitor.setNome(txtNome.getText());
+                //Date date = jdNascimento.getDate();
+                addEleitor.setDataNascimento(Data.convertSql(jdNascimento.getDate()));
+                addEleitor.setZona(jcZona.getSelectedItem().toString());
+                addEleitor.setSecao(jcSecao.getSelectedItem().toString());
+                try {
+                    addEleitor.setIdCidade(new CidadeEstado().retornaIdCidade(jcCidadeMuni.getSelectedItem().toString(), new CidadeEstado().retornaIdEstado((String) jcEstado.getSelectedItem())));
+                } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                    Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                try {
+                    new EleitorDao().insert(addEleitor);
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário " + ex.getMessage());
+                }
             }
         });
 
@@ -185,7 +206,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         //Add
         container.add(lblCamposObri);
-        
+
         container.add(lblCodEleitor);
         container.add(txtCodEleitor);
 
@@ -194,7 +215,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         container.add(lblSecao);
         container.add(jcSecao);
-        
+
         container.add(lblNome);
         container.add(txtNome);
 
@@ -207,7 +228,6 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         /*container.add(lblDataEmissao);
         container.add(txtDataEmissao);*/
-
         container.add(btnAdicionar);
         container.add(btnAtualizar);
         container.add(btnExcluir);

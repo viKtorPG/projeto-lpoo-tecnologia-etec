@@ -6,7 +6,6 @@
 package br.com.etec.dao;
 
 import br.com.etec.interfaces.dao.IAbstractDao;
-import br.com.etec.interfaces.dao.IAbstractDaoCidadeEstado;
 import br.com.etec.model.Eleitor;
 import br.com.etec.utils.DbUtils;
 import java.sql.Connection;
@@ -21,7 +20,7 @@ import javax.swing.JOptionPane;
  *
  * @author jose
  */
-public class EleitorDao implements IAbstractDao<Eleitor>, IAbstractDaoCidadeEstado<Eleitor> {
+public class EleitorDao implements IAbstractDao<Eleitor>{
 
     private Connection connection = null;
 
@@ -39,7 +38,7 @@ public class EleitorDao implements IAbstractDao<Eleitor>, IAbstractDaoCidadeEsta
                 eleitor.setSecao(resultSet.getString(4));
                 eleitor.setDataNascimento(resultSet.getString(5));
                 eleitor.setDataEmissao(resultSet.getString(6));
-                eleitor.setCidade(resultSet.getString(7));
+                eleitor.setIdCidade(resultSet.getInt(7));
                 eleitor.setEstado(resultSet.getString(8));
             }
             return list;
@@ -75,7 +74,7 @@ public class EleitorDao implements IAbstractDao<Eleitor>, IAbstractDaoCidadeEsta
                 eleitor.setSecao(resultSet.getString(4));
                 eleitor.setDataNascimento(resultSet.getString(5));
                 eleitor.setDataEmissao(resultSet.getString(6));
-                eleitor.setCidade(resultSet.getString(7));
+                eleitor.setIdCidade(resultSet.getInt(7));
                 eleitor.setEstado(resultSet.getString(8));
                 
                 return eleitor;
@@ -89,7 +88,24 @@ public class EleitorDao implements IAbstractDao<Eleitor>, IAbstractDaoCidadeEsta
 
     @Override
     public void insert(Eleitor entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-
+        try {
+            connection = DbUtils.getConnection();
+            
+            String sql = "insert into eleitor(nome, data_nascimento, zona, secao, id_cidade) values(?, ?, ?, ?, ?)";
+            
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setString(1, entidade.getNome());
+            statement.setString(2, entidade.getDataNascimento());
+            statement.setString(3, entidade.getZona());
+            statement.setString(4, entidade.getSecao());
+            statement.setInt(5, entidade.getIdCidade());
+            
+            statement.execute();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
     }
 
     @Override
@@ -101,17 +117,4 @@ public class EleitorDao implements IAbstractDao<Eleitor>, IAbstractDaoCidadeEsta
     public void delete(Eleitor entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 
     }
-
-    @Override
-    public List<Eleitor> allCidade() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Eleitor> allEstado() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    
-    
 }

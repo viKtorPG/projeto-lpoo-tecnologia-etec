@@ -81,4 +81,61 @@ public class CidadeEstado {
         
         return listCidades;
     }
+    
+    public int retornaIdCidade(String cidade, int estado) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        
+        int idCidade = 0;
+        
+        String sql = "select cidade.id_cidade from cidade where cidade.nome = ? and cidade.id_estado = ?";
+
+        ResultSet resultSet = null;
+        
+        try{
+            connection = DbUtils.getConnection();
+            
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setString(1, cidade);
+            statement.setInt(2, estado);
+            
+            resultSet = statement.executeQuery();
+            
+            while(resultSet.next()){
+                idCidade = resultSet.getInt(1);
+            }
+
+        }finally{
+            if(connection != null){
+                connection.close();
+            }
+        }
+        return idCidade;
+    }
+    
+    public int retornaIdEstado(String estado) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        
+        int idCidade = 0;
+        
+        String sql = "select estado.id_estado from estado where estado.uf = ?";
+
+        ResultSet resultSet = null;
+        
+        try{
+            connection = DbUtils.getConnection();
+            
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setString(1, estado);
+            
+            resultSet = statement.executeQuery();
+            
+            while(resultSet.next()){
+                idCidade = resultSet.getInt(1);
+            }
+
+        }finally{
+            if(connection != null){
+                connection.close();
+            }
+        }
+        return idCidade;
+    }
 }
