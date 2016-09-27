@@ -9,19 +9,16 @@ public class Data {
     public static String convertSql(Date date) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        
+
         String result = dateFormat.format(date);
-        
+
         return result;
     }
 
     public static String convertString(String date) {
         try {
-            
-            String bancoRetorno = date.replaceAll(".", "-");
-            
-            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(bancoRetorno);
-            return new SimpleDateFormat("dd/MM/yyyy").format(bancoRetorno);
+            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            return new SimpleDateFormat("dd/MM/yyyy").format(data);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -31,7 +28,7 @@ public class Data {
 
     public static Date convertDate(String date) {
         try {
-            
+
             Date data = new SimpleDateFormat("dd/MM/yyyy").parse(date);
             return data;
         } catch (ParseException e) {

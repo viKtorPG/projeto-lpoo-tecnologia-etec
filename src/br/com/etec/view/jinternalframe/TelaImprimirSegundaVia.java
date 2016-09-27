@@ -149,8 +149,9 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
     private JLabel lblSecao;
     private JLabel lblSecaoRetorno;
     private JFormattedTextField txtNumeroEleitor;
+    private MaskFormatter formatTxtNumeroEleitor;
     private JButton btnImprimir;
     private JButton btnPesquisar;
     private ImageIcon imgPesquisar;
-    private MaskFormatter formatTxtNumeroEleitor;
+    
 }
