@@ -8,6 +8,7 @@ import br.com.etec.model.Eleitor;
 import br.com.etec.utils.CidadeEstado;
 import br.com.etec.utils.Data;
 import br.com.etec.utils.DbUtils;
+import br.com.etec.utils.ValidaData;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Container;
@@ -21,6 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -88,9 +91,9 @@ public class TelaCadastroEleitor extends JInternalFrame {
         JLabel lblCamposObri = new JLabel("(*)Campos Obrigatórios");
         lblCamposObri.setBounds(600, 15, 200, 20);
         lblCamposObri.setForeground(Color.red);
-        
-         //Formatando o campo NumeroEleitor
-        try{
+
+        //Formatando o campo NumeroEleitor
+        try {
             formatTxtNumeroEleitor = new MaskFormatter("### ### ### ###");
         } catch (ParseException ex) {
             Logger.getLogger(TelaImprimirSegundaVia.class.getName()).log(Level.SEVERE, null, ex);
@@ -184,7 +187,8 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         jdNascimento = new JDateChooser();
         jdNascimento.setBounds(255, 210, 150, 25);
-        jdNascimento.setDateFormatString("dd/MM/yy");
+        jdNascimento.setDate(new Date());
+        jdNascimento.setDateFormatString("dd/MM/yyyy");
 
         // Cidade/Estado
         lblCidadeMuni = new JLabel("*Cidade/Estado");
@@ -225,15 +229,25 @@ public class TelaCadastroEleitor extends JInternalFrame {
             public void actionPerformed(ActionEvent e) {
                 Eleitor addEleitor = new Eleitor();
 
-                addEleitor.setNome(txtNome.getText());
-                addEleitor.setDataNascimento(Data.convertSql(jdNascimento.getDate()));
-                addEleitor.setZona(jcZona.getSelectedItem().toString());
-                addEleitor.setSecao(jcSecao.getSelectedItem().toString());
                 try {
-                    addEleitor.setIdCidade(new CidadeEstado().retornaIdCidade(jcCidadeMuni.getSelectedItem().toString(), new CidadeEstado().retornaIdEstado((String) jcEstado.getSelectedItem())));
-                    new EleitorDao().insert(addEleitor);
+                    addEleitor.setNome(txtNome.getText());
+                    addEleitor.setDataNascimento(Data.convertSql(jdNascimento.getDate()));
+                    addEleitor.setZona(jcZona.getSelectedItem().toString());
+                    addEleitor.setSecao(jcSecao.getSelectedItem().toString());
+
+                    if (txtNome.getText().isEmpty() || jcCidadeMuni.getSelectedIndex() < 0) {
+                        JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
+                    } else if (!(ValidaData.validarData(Data.convertString(jdNascimento.getDate())))) {
+                        JOptionPane.showMessageDialog(null, "Data inválida");
+                    } else {
+                        addEleitor.setIdCidade(new CidadeEstado().retornaIdCidade(jcCidadeMuni.getSelectedItem().toString(), new CidadeEstado().retornaIdEstado((String) jcEstado.getSelectedItem())));
+                        new EleitorDao().insert(addEleitor);
+                        JOptionPane.showMessageDialog(null, "Eleitor cadastradado com sucesso!");
+                    }
                 } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
+                } catch (NullPointerException npe) {
+                    JOptionPane.showMessageDialog(null, "Data inválida");
                 }
             }
         });
@@ -390,6 +404,6 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
     private JFormattedTextField txtCodEleitor;
     private MaskFormatter formatTxtNumeroEleitor;
-    
+
     private Connection connection;
 }

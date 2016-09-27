@@ -15,15 +15,13 @@ public class Data {
         return result;
     }
 
-    public static String convertString(String date) {
-        try {
-            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            return new SimpleDateFormat("dd/MM/yyyy").format(data);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public static String convertString(Date date) {
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        return null;
+        String result = dateFormat.format(date);
+
+        return result;
     }
 
     public static Date convertDate(String date) {
