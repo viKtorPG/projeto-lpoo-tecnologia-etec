@@ -9,6 +9,7 @@ import br.com.etec.utils.CidadeEstado;
 import br.com.etec.utils.Data;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.utils.ValidaData;
+import br.com.etec.view.jframe.TelaDesktop;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Container;
@@ -22,8 +23,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -38,6 +40,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -244,6 +250,44 @@ public class TelaCadastroEleitor extends JInternalFrame {
                         addEleitor.setIdCidade(new CidadeEstado().retornaIdCidade(jcCidadeMuni.getSelectedItem().toString(), new CidadeEstado().retornaIdEstado((String) jcEstado.getSelectedItem())));
                         new EleitorDao().insert(addEleitor);
                         JOptionPane.showMessageDialog(null, "Eleitor cadastradado com sucesso!");
+
+                        connection = DbUtils.getConnection();
+                        
+                        ResultSet resultSet = null;
+                        PreparedStatement ps = DbUtils.getPreparedStatement(connection, "SELECT id_eleitor FROM eleitor ORDER BY data_emissao DESC limit 1");
+                        resultSet = ps.executeQuery();
+                        Long result = null;
+                        while(resultSet.next()){
+                            result = resultSet.getLong(1);
+                        }
+                        
+                        //System.err.println(resultSet.getInt(1));
+                        
+                        int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão do titulo", "Atenção", JOptionPane.YES_NO_OPTION);
+
+                       /* int rowLine = tblEleitor.getSelectedRow();
+                        Long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());*/
+
+                        final Map<String, Object> paramEleitor = new HashMap<>();
+                        paramEleitor.put("idEleitor", result);
+
+                        if (confirmar == JOptionPane.YES_NO_OPTION) {
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    try {
+
+                                        Connection connection = DbUtils.getConnection();
+                                        JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTituloEleitor.jasper", paramEleitor, connection);
+
+                                        JasperViewer.viewReport(viewer, false);
+                                    } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+                                        Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }.start();
+                        }
+
                         pesqEleitor();
                         limpaCampos();
                     }
@@ -319,7 +363,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário");
                 }
-                
+
             }
         }
         );
@@ -357,7 +401,6 @@ public class TelaCadastroEleitor extends JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setLocation(100, 50);
-        
 
     }
 
@@ -422,9 +465,9 @@ public class TelaCadastroEleitor extends JInternalFrame {
             tblEleitor.setVisible(false);
         }
     }
-    
+
     /* Limpa campos */
-    public void limpaCampos(){
+    public void limpaCampos() {
         txtCodEleitor.setText("");
         txtNome.setText("");
         jcEstado.setSelectedIndex(0);
@@ -432,8 +475,8 @@ public class TelaCadastroEleitor extends JInternalFrame {
         jcSecao.setSelectedIndex(0);
         jcZona.setSelectedIndex(0);
     }
-    
-     // Habilita os botões de Excluir e atualizar
+
+    // Habilita os botões de Excluir e atualizar
     public void habilita() {
         btnAtualizar.setEnabled(true);
         btnExcluir.setEnabled(true);

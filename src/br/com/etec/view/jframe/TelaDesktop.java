@@ -17,6 +17,7 @@ import br.com.etec.view.jinternalframe.TelaValidarVoto;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.logging.Level;
@@ -202,23 +203,18 @@ public class TelaDesktop {
             ) {
                 int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
 
+                
+                
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override
                         public void run() {
                             try {
-                                JasperPrint viewer = JasperFillManager.fillReport("ireport/relatorioUsuario.jasper", null, DbUtils.getConnection());
+                                Connection connection = DbUtils.getConnection();
+                                JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectUser.jasper", null, connection);
 
                                 JasperViewer.viewReport(viewer, false);
-                            } catch (JRException ex) {
-                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (ClassNotFoundException ex) {
-                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (InstantiationException ex) {
-                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IllegalAccessException ex) {
-                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (SQLException ex) {
+                            } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                 Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
