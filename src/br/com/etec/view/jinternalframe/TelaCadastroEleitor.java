@@ -141,6 +141,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblEleitorMouseClicked(evt);
+                habilita();
             }
         });
         jScrollPane.setViewportView(tblEleitor);
@@ -243,6 +244,8 @@ public class TelaCadastroEleitor extends JInternalFrame {
                         addEleitor.setIdCidade(new CidadeEstado().retornaIdCidade(jcCidadeMuni.getSelectedItem().toString(), new CidadeEstado().retornaIdEstado((String) jcEstado.getSelectedItem())));
                         new EleitorDao().insert(addEleitor);
                         JOptionPane.showMessageDialog(null, "Eleitor cadastradado com sucesso!");
+                        pesqEleitor();
+                        limpaCampos();
                     }
                 } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
@@ -261,7 +264,32 @@ public class TelaCadastroEleitor extends JInternalFrame {
         btnAtualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Eleitor updateEleitor = new Eleitor();
 
+                try {
+                    updateEleitor.setNome(txtNome.getText());
+                    updateEleitor.setDataNascimento(Data.convertSql(jdNascimento.getDate()));
+                    updateEleitor.setZona(jcZona.getSelectedItem().toString());
+                    updateEleitor.setSecao(jcSecao.getSelectedItem().toString());
+                    updateEleitor.setIdCidade(new CidadeEstado().retornaIdCidade(jcCidadeMuni.getSelectedItem().toString(), new CidadeEstado().retornaIdEstado((String) jcEstado.getSelectedItem())));
+                    updateEleitor.setIdCod(Long.parseLong(txtCodEleitor.getText().replace(" ", "")));
+
+                    if (txtNome.getText().isEmpty() || jcCidadeMuni.getSelectedIndex() < 0) {
+                        JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
+                    } else if (!(ValidaData.validarData(Data.convertString(jdNascimento.getDate())))) {
+                        JOptionPane.showMessageDialog(null, "Data inválida");
+                    } else {
+                        //updateEleitor.setIdCidade(new CidadeEstado().retornaIdCidade(jcCidadeMuni.getSelectedItem().toString(), new CidadeEstado().retornaIdEstado((String) jcEstado.getSelectedItem())));
+                        new EleitorDao().update(updateEleitor);
+                        JOptionPane.showMessageDialog(null, "Eleitor atualizado com sucesso!");
+                        pesqEleitor();
+                        limpaCampos();
+                        desabilita();
+                    }
+
+                } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                    Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         );
@@ -277,7 +305,21 @@ public class TelaCadastroEleitor extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-
+                Eleitor removeEleitor = new Eleitor();
+                removeEleitor.setIdCod(Long.parseLong(txtCodEleitor.getText().replace(" ", "")));
+                try {
+                    int confir = JOptionPane.showConfirmDialog(null, "Deseja excluir", "Atenção", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (confir == JOptionPane.YES_OPTION) {
+                        new EleitorDao().delete(removeEleitor);
+                        JOptionPane.showMessageDialog(null, "Usuário deletado com sucesso!");
+                        pesqEleitor();
+                        limpaCampos();
+                        desabilita();
+                    }
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário");
+                }
+                
             }
         }
         );
@@ -315,6 +357,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setLocation(100, 50);
+        
 
     }
 
@@ -325,6 +368,8 @@ public class TelaCadastroEleitor extends JInternalFrame {
         txtCodEleitor.setText(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
         txtNome.setText(tblEleitor.getModel().getValueAt(rowLine, 1).toString());
         jdNascimento.setDate(Data.convertDate(tblEleitor.getModel().getValueAt(rowLine, 2).toString()));
+        System.err.println("Erro: " + tblEleitor.getModel().getValueAt(rowLine, 2).toString());
+        System.err.println("Erro: " + Data.convertDate(tblEleitor.getModel().getValueAt(rowLine, 2).toString()));
         jcZona.setSelectedItem(tblEleitor.getModel().getValueAt(rowLine, 4).toString());
         jcSecao.setSelectedItem(tblEleitor.getModel().getValueAt(rowLine, 5).toString());
         jcEstado.setSelectedItem(tblEleitor.getModel().getValueAt(rowLine, 7).toString());
@@ -339,7 +384,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
             connection = DbUtils.getConnection();
 
             String sql = "select eleitor.id_eleitor as ID, eleitor.nome as Nome,"
-                    + " DATE_FORMAT(eleitor.data_nascimento, '%d/%m/%y') as Nascimento,"
+                    + " DATE_FORMAT(eleitor.data_nascimento, '%d/%m/%Y') as Nascimento,"
                     + " DATE_FORMAT(eleitor.data_emissao, '%d/%m/%Y') as Emissao,"
                     + " eleitor.zona as Zona, eleitor.secao as Secao, cidade.nome as Cidade, estado.uf as UF \n"
                     + "from eleitor left join cidade \n"
@@ -376,6 +421,28 @@ public class TelaCadastroEleitor extends JInternalFrame {
         if (txtNomePes.getText().isEmpty()) {
             tblEleitor.setVisible(false);
         }
+    }
+    
+    /* Limpa campos */
+    public void limpaCampos(){
+        txtCodEleitor.setText("");
+        txtNome.setText("");
+        jcEstado.setSelectedIndex(0);
+        jcCidadeMuni.setSelectedIndex(0);
+        jcSecao.setSelectedIndex(0);
+        jcZona.setSelectedIndex(0);
+    }
+    
+     // Habilita os botões de Excluir e atualizar
+    public void habilita() {
+        btnAtualizar.setEnabled(true);
+        btnExcluir.setEnabled(true);
+    }
+
+    // Desabilita os botões de Excluir e atualizar
+    public void desabilita() {
+        btnAtualizar.setEnabled(false);
+        btnExcluir.setEnabled(false);
     }
 
     private JLabel lblCodEleitor;

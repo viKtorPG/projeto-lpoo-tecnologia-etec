@@ -115,11 +115,40 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
 
     @Override
     public void update(Eleitor entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        try {
+            connection = DbUtils.getConnection();
 
+            String sql = "update eleitor set nome=?, data_nascimento=?, zona=?, secao=?, id_cidade=? where id_eleitor=?";
+
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setString(1, entidade.getNome());
+            statement.setString(2, entidade.getDataNascimento());
+            statement.setString(3, entidade.getZona());
+            statement.setString(4, entidade.getSecao());
+            statement.setInt(5, entidade.getIdCidade());
+            statement.setLong(6, entidade.getIdCod());
+
+            statement.execute();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
     }
 
     @Override
     public void delete(Eleitor entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        try {
+            connection = DbUtils.getConnection();
+            String sql = "delete from eleitor where id_eleitor=?";
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setLong(1, entidade.getIdCod());
 
+            statement.execute();
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ package br.com.etec.model;
  */
 public class Eleitor {
 
-    private int idCod;
+    private long idCod;
     private String nome;
     private String dataNascimento;
     private String dataEmissao;
@@ -53,11 +53,11 @@ public class Eleitor {
 
   
     
-    public int getIdCod() {
+    public long getIdCod() {
         return idCod;
     }
 
-    public void setIdCod(int idCod) {
+    public void setIdCod(long idCod) {
         this.idCod = idCod;
     }
 
