@@ -251,25 +251,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
                         new EleitorDao().insert(addEleitor);
                         JOptionPane.showMessageDialog(null, "Eleitor cadastradado com sucesso!");
 
-                        connection = DbUtils.getConnection();
-                        
-                        ResultSet resultSet = null;
-                        PreparedStatement ps = DbUtils.getPreparedStatement(connection, "SELECT id_eleitor FROM eleitor ORDER BY data_emissao DESC limit 1");
-                        resultSet = ps.executeQuery();
-                        Long result = null;
-                        while(resultSet.next()){
-                            result = resultSet.getLong(1);
-                        }
-                        
-                        //System.err.println(resultSet.getInt(1));
-                        
                         int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão do titulo", "Atenção", JOptionPane.YES_NO_OPTION);
-
-                       /* int rowLine = tblEleitor.getSelectedRow();
-                        Long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());*/
-
-                        final Map<String, Object> paramEleitor = new HashMap<>();
-                        paramEleitor.put("idEleitor", result);
 
                         if (confirmar == JOptionPane.YES_NO_OPTION) {
                             new Thread() {
@@ -278,11 +260,13 @@ public class TelaCadastroEleitor extends JInternalFrame {
                                     try {
 
                                         Connection connection = DbUtils.getConnection();
-                                        JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTituloEleitor.jasper", paramEleitor, connection);
+                                        JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTitulo.jasper", resultParamsEleitor(), connection);
 
                                         JasperViewer.viewReport(viewer, false);
-                                    } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+                                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                         Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                    } catch (JRException ex) {
+                                        Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
                                     }
                                 }
                             }.start();
@@ -347,8 +331,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         btnExcluir.addActionListener(
                 new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e
-            ) {
+            public void actionPerformed(ActionEvent e){
                 Eleitor removeEleitor = new Eleitor();
                 removeEleitor.setIdCod(Long.parseLong(txtCodEleitor.getText().replace(" ", "")));
                 try {
@@ -449,6 +432,40 @@ public class TelaCadastroEleitor extends JInternalFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
         }
+    }
+
+    /* */
+    private Map<String, Object> resultParamsEleitor() {
+
+        ResultSet resultSet = null;
+        Long result = null;
+
+        //Faz a conexão com o BD e retorna o ultimo registro cadastrado na tabela eleitor
+        try {
+            connection = DbUtils.getConnection();
+            PreparedStatement ps = DbUtils.getPreparedStatement(connection, "SELECT id_eleitor FROM eleitor ORDER BY data_emissao DESC limit 1");
+            resultSet = ps.executeQuery();
+
+            //Se resultSet retorna algum registro
+            while (resultSet.next()) {
+                result = resultSet.getLong(1);
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+
+        }
+
+        //Carregandos os atributos que o ireport precisa para o seu funcionamento
+        ImageIcon imgTitulo = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTitulo.jpg"));
+        ImageIcon imgTituloVerso = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTituloVerso.jpg"));
+        final Map<String, Object> paramEleitor = new HashMap<>();
+        paramEleitor.put("paramsID", result);
+        paramEleitor.put("paramsImgTitulo", imgTitulo.getImage());
+        paramEleitor.put("paramsImgTituloVerso", imgTituloVerso.getImage());
+
+        //Como o retorno e um map, não podemos retorna o mesmo, por isso criamos uma copia e passamos como retorno do método.
+        Map<String, Object> params = paramEleitor;
+
+        return params;
     }
 
     /* Método que seleciona uma determinada 

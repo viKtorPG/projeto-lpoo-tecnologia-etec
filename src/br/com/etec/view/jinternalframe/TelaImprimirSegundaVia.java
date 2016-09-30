@@ -42,12 +42,12 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author jose
  */
 public class TelaImprimirSegundaVia extends JInternalFrame {
-    
+
     public TelaImprimirSegundaVia() {
         iniciandoCompomentes();
-        
+
     }
-    
+
     private void iniciandoCompomentes() {
         setTitle("Imprimir 2º via do Eleitor");
         setSize(800, 500);
@@ -55,27 +55,27 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
             @Override
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
-            
+
             @Override
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
             }
-            
+
             @Override
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
             }
-            
+
             @Override
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
-            
+
             @Override
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
             }
-            
+
             @Override
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
-            
+
             @Override
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameOpened(evt);
@@ -107,13 +107,13 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
             @Override
             public void keyTyped(KeyEvent e) {
             }
-            
+
             @Override
             public void keyPressed(KeyEvent e) {
                 pesqEleitor();
                 tblEleitor.setVisible(true);
             }
-            
+
             @Override
             public void keyReleased(KeyEvent e) {
                 tblEleitor.setVisible(true);
@@ -164,24 +164,28 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
         btnImprimir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
-                
+
                 int rowLine = tblEleitor.getSelectedRow();
                 Long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
-                
+
+                ImageIcon imgTitulo = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTitulo.jpg"));
+                ImageIcon imgTituloVerso = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTituloVerso.jpg"));
                 final Map<String, Object> paramEleitor = new HashMap<>();
-                paramEleitor.put("idEleitor", idEleitor);
-                
+                paramEleitor.put("paramsID", idEleitor);
+                paramEleitor.put("paramsImgTitulo", imgTitulo.getImage());
+                paramEleitor.put("paramsImgTituloVerso", imgTituloVerso.getImage());
+
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override
                         public void run() {
                             try {
-                                
+
                                 Connection connection = DbUtils.getConnection();
-                                JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTituloEleitor.jasper", paramEleitor, connection);
-                                
+                                JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTitulo.jasper", paramEleitor, connection);
+
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                 Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
@@ -267,7 +271,7 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
-            
+
             String sql = "select eleitor.id_eleitor as ID, eleitor.nome as Nome,"
                     + " DATE_FORMAT(eleitor.data_nascimento, '%d/%m/%Y') as Nascimento,"
                     + " DATE_FORMAT(eleitor.data_emissao, '%d/%m/%Y') as Emissao,"
@@ -278,13 +282,13 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
                     + "on cidade.id_estado = estado.id_estado \n"
                     + "where eleitor.nome like ?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            
+
             statement.setString(1, txtNumeroEleitor.getText() + "%");
-            
+
             resultSet = statement.executeQuery();
-            
+
             tblEleitor.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(resultSet));
-            
+
             if (connection != null) {
                 connection.close();
             }
@@ -321,5 +325,5 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
     private JTable tblEleitor;
     private JScrollPane jScrollPane;
     private Connection connection;
-    
+
 }
