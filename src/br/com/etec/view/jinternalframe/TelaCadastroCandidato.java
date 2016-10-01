@@ -95,9 +95,9 @@ public class TelaCadastroCandidato extends JInternalFrame {
         mask.setMask("###");
         mask.setPlaceholderCharacter('_');
         
-        lblValorNumero = new JLabel(PartidosNumeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
-        lblValorNumero.setBounds(515, 180, 80, 25);
-        lblValorNumero.setForeground(Color.black);
+//        lblValorNumero = new JLabel(PartidosNumeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
+//        lblValorNumero.setBounds(515, 180, 80, 25);
+        //lblValorNumero.setForeground(Color.black);
 
         txtNumero = new JFormattedTextField(mask);
         txtNumero.setBounds(530, 180, 30, 25);

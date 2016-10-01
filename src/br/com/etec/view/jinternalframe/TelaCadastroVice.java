@@ -89,9 +89,9 @@ public class TelaCadastroVice extends JInternalFrame {
         lblNumero.setBounds(550, 180, 80, 25);
         lblNumero.setForeground(Color.black);
 
-        lblValorNumero = new JLabel(PartidosNumeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
-        lblValorNumero.setBounds(605, 180, 80, 25);
-        lblValorNumero.setForeground(Color.black);
+//        lblValorNumero = new JLabel(PartidosNumeros.numero(jcPartido.getSelectedItem().toString().substring(jcPartido.getSelectedItem().toString().indexOf("-") + 2)));
+       // lblValorNumero.setBounds(605, 180, 80, 25);
+      //  lblValorNumero.setForeground(Color.black);
 
         //Imagem
         lblFoto = new JLabel(" Foto");
@@ -314,7 +314,7 @@ public class TelaCadastroVice extends JInternalFrame {
 
         container.add(txtId);
 
-        container.add(lblValorNumero);
+        //container.add(lblValorNumero);
 
         container.add(btnAdicionar);
 

@@ -33,7 +33,7 @@ public class PartidoDao implements IAbstractDao<Partido> {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
-            String sql = "select * from partido where numero=?";
+            String sql = "select * from partido where id_partido=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, id);
 
@@ -43,15 +43,12 @@ public class PartidoDao implements IAbstractDao<Partido> {
                 JOptionPane.showMessageDialog(null, "Não há partido com esse número");
                 return null;
             } else {
-
                 Partido partido = new Partido();
-                partido.setId(resultSet.getInt(1));
+                partido.setIdNumero(resultSet.getInt(1));
                 partido.setNome(resultSet.getString(2));
-                partido.setNumero(resultSet.getInt(5));
                 partido.setSigla(resultSet.getString(3));
                 partido.setLogo(resultSet.getBytes(4));
-                partido.setSlogan(resultSet.getString(6));
-                partido.setData(resultSet.getString(7));
+                partido.setSlogan(resultSet.getString(5));
                 return partido;
             }
 
@@ -66,14 +63,16 @@ public class PartidoDao implements IAbstractDao<Partido> {
     public void insert(Partido entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "insert into partido (id,nome, sigla, logo, numero, slogan, data_criacao) values(null,?,?,?,?,?,?)";
+            String sql = "insert into partido (id_partido, nome, sigla, logo, sloga) values (?, ?, ?, ?, ?)";
+
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setString(1, entidade.getNome());
-            statement.setString(2, entidade.getSigla());
-            statement.setBytes(3, entidade.getLogo());
-            statement.setInt(4, entidade.getNumero());
+            statement.setInt(1, entidade.getIdNumero());
+            System.err.println("Erro: " + entidade.getIdNumero());
+            statement.setString(2, entidade.getNome());
+            statement.setString(3, entidade.getSigla());
+            statement.setBytes(4, entidade.getLogo());
             statement.setString(5, entidade.getSlogan());
-            statement.setString(6, entidade.getData());
+
             statement.execute();
         } finally {
             if (connection != null) {
@@ -86,26 +85,22 @@ public class PartidoDao implements IAbstractDao<Partido> {
     public void update(Partido entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "update partido set nome=?, sigla=?, logo=?, numero=?, slogan=?, data_criacao=? where id=?";
-            String sql2 = "update partido set nome=?, sigla=?, numero=?, slogan=?, data_criacao=? where id=?";
             PreparedStatement statement = null;
             if (entidade.getLogo() != null) {
+                String sql = "update partido set nome=?, sigla=?, logo=?, sloga=? where id_partido=?";
                 statement = DbUtils.getPreparedStatement(connection, sql);
                 statement.setString(1, entidade.getNome());
                 statement.setString(2, entidade.getSigla());
                 statement.setBytes(3, entidade.getLogo());
-                statement.setInt(4, entidade.getNumero());
-                statement.setString(5, entidade.getSlogan());
-                statement.setString(6, entidade.getData());
-                statement.setInt(7, entidade.getId());
+                statement.setString(4, entidade.getSlogan());
+                statement.setInt(5, entidade.getIdNumero());
             } else {
-                statement = DbUtils.getPreparedStatement(connection, sql2);
+                String sql = "update partido set nome=?, sigla=?, sloga=? where id_partido=?";
+                statement = DbUtils.getPreparedStatement(connection, sql);
                 statement.setString(1, entidade.getNome());
                 statement.setString(2, entidade.getSigla());
-                statement.setInt(3, entidade.getNumero());
-                statement.setString(4, entidade.getSlogan());
-                statement.setString(5, entidade.getData());
-                statement.setInt(6, entidade.getId());
+                statement.setString(3, entidade.getSlogan());
+                statement.setInt(4, entidade.getIdNumero());
             }
 
             statement.execute();
@@ -120,9 +115,9 @@ public class PartidoDao implements IAbstractDao<Partido> {
     public void delete(Partido entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "delete from partido where numero=?";
+            String sql = "delete from partido where id_partido=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, entidade.getNumero());
+            statement.setInt(1, entidade.getIdNumero());
 
             statement.execute();
         } finally {

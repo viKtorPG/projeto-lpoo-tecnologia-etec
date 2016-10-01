@@ -11,63 +11,47 @@ package br.com.etec.model;
  */
 public class Partido {
 
-    private int id, numero;
-    private String nome, sigla, data_criacao, slogan;
+    private int idNumero;
+    private String nome, sigla, slogan;
     private byte[] logo;    
 
-    public String getData() {
-        return data_criacao;
+    public int getIdNumero() {
+        return idNumero;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public byte[] getLogo() {
-        return logo;
+    public void setIdNumero(int idNumero) {
+        this.idNumero = idNumero;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public int getNumero() {
-        return numero;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getSigla() {
         return sigla;
     }
 
-    public void setData(String data_criacao) {
-        this.data_criacao = data_criacao;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setLogo(byte[] logo) {
-        this.logo = logo;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
     public void setSigla(String sigla) {
         this.sigla = sigla;
+    }
+
+    public String getSlogan() {
+        return slogan;
     }
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
     }
 
-    public String getSlogan() {
-        return slogan;
-    }      
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
 }
