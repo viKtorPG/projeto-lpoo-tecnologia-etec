@@ -6,7 +6,9 @@
 package br.com.etec.view.jinternalframe;
 
 import br.com.etec.dao.PrefeitoDao;
+import br.com.etec.dao.VicePrefeitoDao;
 import br.com.etec.model.Prefeito;
+import br.com.etec.model.VicePrefeito;
 import br.com.etec.utils.Data;
 import br.com.etec.utils.ManipularImagem;
 import br.com.etec.utils.PartidosNumeros;
@@ -73,7 +75,8 @@ public class TelaCadastroCandidato extends JInternalFrame {
 
         txtIdPrefeito = new JTextField(10);
         txtIdPrefeito.setBounds(80, 40, 175, 25);
-        
+        txtIdPrefeito.setEditable(false);
+
         // Nome do Prefeito
         lblNomePrefeito = new JLabel("*Nome");
         lblNomePrefeito.setBounds(10, 70, 50, 25);
@@ -141,11 +144,10 @@ public class TelaCadastroCandidato extends JInternalFrame {
         /*txtNumeroPrefeito = new JFormattedTextField(mask);
         txtNumeroPrefeito.setBounds(115, 190, 65, 25);
         txtNumeroPrefeito.setVisible(true);*/
-
         //ADD ELEMENTOS PREFEITO
         panelPrefeito.add(lblIdPrefeito);
         panelPrefeito.add(txtIdPrefeito);
-        
+
         //panelPrefeito.add(txtNumeroPrefeito);
         panelPrefeito.add(lblNumeroPrefeito);
 
@@ -179,7 +181,8 @@ public class TelaCadastroCandidato extends JInternalFrame {
 
         txtIdViceP = new JTextField(10);
         txtIdViceP.setBounds(80, 40, 175, 25);
-        
+        txtIdViceP.setEditable(false);
+
         // Nome do Vice_Prefeito
         lblNomeViceP = new JLabel("*Nome");
         lblNomeViceP.setBounds(10, 70, 50, 25);
@@ -226,7 +229,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 System.err.println(jcPartidoPrefeito.getSelectedItem().toString().substring(jcPartidoPrefeito.getSelectedItem().toString().indexOf("-") + 2));
-                lblNumeroVicePartido.setText(PartidosNumeros.numero(jcPartidoVicePartido.getSelectedItem().toString().substring(jcPartidoVicePartido.getSelectedItem().toString().indexOf("-") + 2)));
+                txtNumeroVicePartido.setText(PartidosNumeros.numero(jcPartidoVicePartido.getSelectedItem().toString().substring(jcPartidoVicePartido.getSelectedItem().toString().indexOf("-") + 2)));
             }
         });
 
@@ -238,15 +241,14 @@ public class TelaCadastroCandidato extends JInternalFrame {
         /*MaskFormatter maskVice = new MaskFormatter();
         mask.setMask("###");
         mask.setPlaceholderCharacter('_');*/
-        lblNumeroVicePartido = new JTextField();
-        lblNumeroVicePartido.setBounds(80, 190, 30, 25);
-        lblNumeroVicePartido.setForeground(Color.black);
-        lblNumeroVicePartido.setEditable(false);
+        txtNumeroVicePartido = new JTextField();
+        txtNumeroVicePartido.setBounds(80, 190, 30, 25);
+        txtNumeroVicePartido.setForeground(Color.black);
+        txtNumeroVicePartido.setEditable(false);
 
         /*txtNumeroViceP = new JFormattedTextField(maskVice);
         txtNumeroViceP.setBounds(100, 160, 65, 25);
         txtNumeroViceP.setVisible(true);*/
-        
         //ADD ELEMENTOS VICE_PREFEITO
         panelVicePrefeito.add(lblIdViceP);
         panelVicePrefeito.add(txtIdViceP);
@@ -264,7 +266,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
 
         panelVicePrefeito.add(lblPartidoViceP);
         panelVicePrefeito.add(jcPartidoVicePartido);
-        panelVicePrefeito.add(lblNumeroVicePartido);
+        panelVicePrefeito.add(txtNumeroVicePartido);
 
         panelVicePrefeito.add(btnEnviarViceP);
 
@@ -282,20 +284,31 @@ public class TelaCadastroCandidato extends JInternalFrame {
                 }
                 try {
 
-                    addPrefeito.setIdPartido(PartidosNumeros.getID(Integer.parseInt(txtNumeroPartido.getText())));
+                    addPrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
                     addPrefeito.setNome(txtNomePrefeito.getText());
                     addPrefeito.setDataNascimento(Data.convertSql(jdNascimentoPrefeito.getDate()));
                     addPrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText()));
                     addPrefeito.setFoto(ManipularImagem.getImgBytes(imgPrefeito));
-                    
+
                     new PrefeitoDao().insert(addPrefeito);
-                    JOptionPane.showMessageDialog(null, "Prefeito cadastradado com sucesso!");
                     
+                    VicePrefeito addVicePrefeito = new VicePrefeito();
+                    addVicePrefeito.setIdPartidoViceP(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroVicePartido.getText())));
+                    addVicePrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.valueOf(txtNumeroPartido.getText())));
+                    addVicePrefeito.setNome(txtNomeViceP.getText());
+                    addVicePrefeito.setDataNascimento(Data.convertSql(jdNascimentoViceP.getDate()));
+                    addVicePrefeito.setFotoViceP(ManipularImagem.getImgBytes(imgViceP));
+                    
+                    new VicePrefeitoDao().insert(addVicePrefeito);
+
+                    JOptionPane.showMessageDialog(null, "Prefeito cadastradado com sucesso!");
+
                 } catch (HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
         }
         );
@@ -319,16 +332,26 @@ public class TelaCadastroCandidato extends JInternalFrame {
                 }
                 try {
 
-                    updatePrefeito.setIdPartido(PartidosNumeros.getID(Integer.parseInt(txtNumeroPartido.getText())));
+                    updatePrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
                     updatePrefeito.setNome(txtNomePrefeito.getText());
                     updatePrefeito.setDataNascimento(Data.convertSql(jdNascimentoPrefeito.getDate()));
                     updatePrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText()));
                     updatePrefeito.setFoto(ManipularImagem.getImgBytes(imgPrefeito));
                     updatePrefeito.setIdPrefeito(Integer.parseInt(txtIdPrefeito.getText()));
+
+                    VicePrefeito updateVicePrefeito = new VicePrefeito();
+                    updateVicePrefeito.setIdPartidoViceP(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroVicePartido.getText())));
+                    //updateVicePrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.valueOf(txtNumeroPartido.getText())));
+                    updateVicePrefeito.setNome(txtNomeViceP.getText());
+                    updateVicePrefeito.setDataNascimento(Data.convertSql(jdNascimentoViceP.getDate()));
+                    updateVicePrefeito.setFotoViceP(ManipularImagem.getImgBytes(imgViceP));
+                    updateVicePrefeito.setIdViceP(Integer.parseInt(txtIdViceP.getText()));
                     
                     new PrefeitoDao().update(updatePrefeito);
-                    JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
+                    new VicePrefeitoDao().update(updateVicePrefeito);
                     
+                    JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
+
                 } catch (HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
@@ -402,9 +425,18 @@ public class TelaCadastroCandidato extends JInternalFrame {
                     jcPartidoPrefeito.setSelectedItem(PartidosNumeros.partido(prefeito.getNumero()));
                     //txtNumeroPrefeito.setText(String.valueOf(prefeito.getNumero()).substring(2, 5));
                     txtNomePrefeito.setText(prefeito.getNome());
-                    txtNumeroPartido.setText(PartidosNumeros.numero(jcPartidoVicePartido.getSelectedItem().toString().substring(jcPartidoVicePartido.getSelectedItem().toString().indexOf("-") + 2)));
+                    txtNumeroPartido.setText(String.valueOf(PartidosNumeros.getNumeroPartido(prefeito.getIdPartido())));
                     jdNascimentoPrefeito.setDate(Data.convertDate(prefeito.getDataNascimento()));
                     ManipularImagem.exibirImagemLabel(prefeito.getFoto(), lblImagemPrefeito);
+
+                    VicePrefeito vicePrefeito = new VicePrefeitoDao().findById(numero);
+                    txtIdViceP.setText(String.valueOf(vicePrefeito.getIdViceP()));
+                    txtNomeViceP.setText(vicePrefeito.getNome());
+                    jdNascimentoViceP.setDate(Data.convertDate(vicePrefeito.getDataNascimento()));
+                    ManipularImagem.exibirImagemLabel(vicePrefeito.getFotoViceP(), lblImagemViceP);
+                    jcPartidoVicePartido.setSelectedItem(PartidosNumeros.partido(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
+                    System.err.println(String.valueOf(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
+                    txtNumeroVicePartido.setText(String.valueOf(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
 
                     habilita();
 
@@ -527,7 +559,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
     //Atributos prefeito
     private JLabel lblIdPrefeito;
     private JTextField txtIdPrefeito;
-    
+
     private JLabel lblNumeroPrefeito;
     //private JFormattedTextField txtNumeroPrefeito;*/
 
@@ -553,7 +585,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
     //Atributos prefeito_vice
     private JLabel lblIdViceP;
     private JTextField txtIdViceP;
-    
+
     private JLabel lblNumeroViceP;
     //private JFormattedTextField txtNumeroViceP;
 
@@ -571,7 +603,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
     private JButton btnEnviarViceP;
     private JLabel lblImagemViceP;
 
-    private JTextField lblNumeroVicePartido;
+    private JTextField txtNumeroVicePartido;
     private JComboBox<String> jcPartidoVicePartido;
 
     public static File filePrefeitoVicePrefeito;

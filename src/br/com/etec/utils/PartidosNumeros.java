@@ -75,6 +75,7 @@ public class PartidosNumeros {
             
             while (rs.next()) {
                 result = rs.getString("nome_partido") + " - " + (rs.getString("sigla"));
+                System.err.println(rs.getString("nome_partido") + " - " + (rs.getString("sigla")));
 
             }
             return result;
@@ -114,7 +115,7 @@ public class PartidosNumeros {
         return numero;
     }
 
-    public static int getID(int numero) {
+    public static int getIDPartido(int numero) {
         int result = 0;
         try {
             connection = DbUtils.getConnection();
@@ -125,6 +126,70 @@ public class PartidosNumeros {
 
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, numero);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                result = rs.getInt(1);
+            }
+
+            if (connection != null) {
+                connection.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaCadastroCandidato.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(PartidosNumeros.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+    
+    public static int getIDPrefeito(int numero) {
+        int result = 0;
+        try {
+            connection = DbUtils.getConnection();
+
+            ResultSet rs = null;
+            String sql = "select id_prefeito from prefeito where numero= ?";
+            //JOptionPane.showMessageDialog(null, selecionado);
+
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setInt(1, numero);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                result = rs.getInt(1);
+            }
+
+            if (connection != null) {
+                connection.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaCadastroCandidato.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(PartidosNumeros.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+    
+    public static int getNumeroPartido(int id) {
+        int result = 0;
+        try {
+            connection = DbUtils.getConnection();
+
+            ResultSet rs = null;
+            String sql = "select numero from partido where id_partido= ?";
+            //JOptionPane.showMessageDialog(null, selecionado);
+
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setInt(1, id);
 
             rs = statement.executeQuery();
 

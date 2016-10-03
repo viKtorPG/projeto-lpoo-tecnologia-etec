@@ -5,8 +5,8 @@
  */
 package br.com.etec.view.jinternalframe;
 
-import br.com.etec.dao.ViceDao;
-import br.com.etec.model.Vice;
+import br.com.etec.dao.VicePrefeitoDao;
+import br.com.etec.model.VicePrefeito;
 import br.com.etec.utils.ManipularImagem;
 import br.com.etec.utils.PartidosNumeros;
 import java.awt.Color;
@@ -115,7 +115,7 @@ public class TelaCadastroVice extends JInternalFrame {
         btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vice addVice = new Vice();
+                /*VicePrefeito addVice = new VicePrefeito();
                 if ((txtNome.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
                 } else {
@@ -139,7 +139,7 @@ public class TelaCadastroVice extends JInternalFrame {
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
                         Logger.getLogger(TelaCadastroVice.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                }*/
             }
         }
         );
@@ -157,7 +157,7 @@ public class TelaCadastroVice extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                Vice addVice = new Vice();
+                /*VicePrefeito addVice = new VicePrefeito();
                 if ((txtNome.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
                 } else {
@@ -181,7 +181,7 @@ public class TelaCadastroVice extends JInternalFrame {
                     } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
                         Logger.getLogger(TelaCadastroVice.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                }*/
             }
         }
         );
@@ -200,8 +200,8 @@ public class TelaCadastroVice extends JInternalFrame {
             public void actionPerformed(ActionEvent e
             ) {
 
-                int numero;
-                Vice excVice = new Vice();
+                /*int numero;
+                VicePrefeito excVice = new VicePrefeito();
 
                 try {
                     numero = Integer.parseInt(JOptionPane.showInputDialog("Número do Partido"));
@@ -217,7 +217,7 @@ public class TelaCadastroVice extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Candidato excluído com sucesso!");
                 } catch (IllegalAccessException | ClassNotFoundException | SQLException | InstantiationException ex) {
                     Logger.getLogger(TelaCadastroVice.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
             }
         }
         );
@@ -236,7 +236,7 @@ public class TelaCadastroVice extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                try {
+                /*try {
                     int numero = 0;
                     try {
                         numero = Integer.parseInt(JOptionPane.showInputDialog("Número do Partido"));
@@ -255,7 +255,7 @@ public class TelaCadastroVice extends JInternalFrame {
 
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao pesquisar" + ex.getMessage());
-                }
+                }*/
             }
         }
         );
@@ -370,7 +370,7 @@ public class TelaCadastroVice extends JInternalFrame {
     private JTextField txtId;
     private JLabel lblImagem;
     private JLabel lblValorNumero;
-    private Vice vice;
+    private VicePrefeito vice;
     private JTextField txtFoto;
     Connection connection;
 

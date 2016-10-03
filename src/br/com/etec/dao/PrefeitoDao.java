@@ -63,9 +63,9 @@ public class PrefeitoDao implements IAbstractDaoCandidato<Prefeito> {
     public void delete(Prefeito entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         try {
             connection = DbUtils.getConnection();
-            String sql = "delete from prefeito where id_prefeito = ?";
+            String sql = "delete from prefeito where prefeito.numero = ?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, entidade.getIdPrefeito());
+            statement.setInt(1, entidade.getNumero());
 
             statement.execute();
         } finally {
