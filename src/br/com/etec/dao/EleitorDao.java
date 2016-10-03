@@ -100,7 +100,7 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
         try {
             connection = DbUtils.getConnection();
 
-            String sql = "insert into eleitor(id_cidade, nome, zona, secao, data_nascimento) values(?, ?, ?, ?)";
+            String sql = "insert into eleitor(id_cidade, nome, zona, secao, data_nascimento) values(?, ?, ?, ?, ?)";
 
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, entidade.getIdCidade());

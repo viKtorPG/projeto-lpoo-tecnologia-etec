@@ -126,12 +126,13 @@ public class TelaCadastroPartido extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Partido addPartido = new Partido();
-                if ((txtNome.getText().isEmpty() || txtNumero.getText().isEmpty() || txtPartido.getText().isEmpty())) {
+                if ((txtNome.getText().isEmpty() || txtPartido.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
-                } else if ((txtNumero.getText().length() < 2)) {
+                } else if (txtNumero.getText().equals("  ")) {
                     JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente");
                 } else {
                     try {
+                        System.err.println(">>"+txtNumero.getText()+"<<");
                         addPartido.setNome(txtNome.getText());
                         addPartido.setNumero(Integer.parseInt(txtNumero.getText()));
                         addPartido.setSigla(txtPartido.getText());
@@ -148,7 +149,6 @@ public class TelaCadastroPartido extends JInternalFrame {
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao criar partido" + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                        Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
                         if (ex instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
                             JOptionPane.showMessageDialog(null, "Partido já cadastrado");
                         }
@@ -196,7 +196,9 @@ public class TelaCadastroPartido extends JInternalFrame {
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao atualizar partido " + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                        Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
+                        if (ex instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
+                            JOptionPane.showMessageDialog(null, "Partido já cadastrado");
+                        }
                     }
                 }
             }

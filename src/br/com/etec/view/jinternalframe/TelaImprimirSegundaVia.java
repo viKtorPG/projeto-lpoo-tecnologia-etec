@@ -168,7 +168,9 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
                 int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
 
                 int rowLine = tblEleitor.getSelectedRow();
-                Long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
+                long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
+                
+                System.err.println("Long: " + idEleitor);
 
                 ImageIcon imgTitulo = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTitulo.jpg"));
                 ImageIcon imgTituloVerso = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTituloVerso.jpg"));
@@ -274,7 +276,7 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
 
             String sql = "select eleitor.id_eleitor as ID, eleitor.nome as Nome,"
                     + " DATE_FORMAT(eleitor.data_nascimento, '%d/%m/%Y') as Nascimento,"
-                    + " DATE_FORMAT(eleitor.data_emissao, '%d/%m/%Y') as Emissao,"
+                    + " DATE_FORMAT(eleitor.data_cadastro, '%d/%m/%Y') as Emissao,"
                     + " eleitor.zona as Zona, eleitor.secao as Secao, cidade.nome as Cidade, estado.uf as UF \n"
                     + "from eleitor left join cidade \n"
                     + "on eleitor.id_cidade = cidade.id_cidade \n"

@@ -197,25 +197,34 @@ public class TelaCadastroVereador extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Vereador addPrefeito = new Vereador();
-                if ((txtNomeVereador.getText().isEmpty() || txtNumeroPartido.getText().isEmpty()) || txtFotoVereador.getText().isEmpty()) {
+                if ((txtNomeVereador.getText().isEmpty() || txtFotoVereador.getText().isEmpty()) || txtNumeroVereador.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
-                }
-                try {
+                } else if (txtNumeroPartido.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Selecione um partido");
+                } else if (txtNumeroVereador.getText().equals("___")) {
+                    JOptionPane.showMessageDialog(null, "Campo numero obrigatorio");
+                } else if (txtNumeroPrefeito.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Um vereador deve associar-se a um prefeito");
+                } else {
+                    try {
 
-                    addPrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
-                    addPrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.parseInt(txtNumeroPartido.getText())));
-                    addPrefeito.setNome(txtNomeVereador.getText());
-                    addPrefeito.setDataNascimento(Data.convertSql(jdNascimentoVereador.getDate()));
-                    addPrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText() + txtNumeroVereador.getText()));
-                    addPrefeito.setFoto(ManipularImagem.getImgBytes(imgVereador));
+                        addPrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
+                        addPrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.parseInt(txtNumeroPartido.getText())));
+                        addPrefeito.setNome(txtNomeVereador.getText());
+                        addPrefeito.setDataNascimento(Data.convertSql(jdNascimentoVereador.getDate()));
+                        addPrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText() + txtNumeroVereador.getText()));
+                        addPrefeito.setFoto(ManipularImagem.getImgBytes(imgVereador));
 
-                    new VereadorDao().insert(addPrefeito);
-                    JOptionPane.showMessageDialog(null, "Prefeito cadastradado com sucesso!");
+                        new VereadorDao().insert(addPrefeito);
+                        JOptionPane.showMessageDialog(null, "Vereador cadastradado com sucesso!");
 
-                } catch (HeadlessException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    //Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (HeadlessException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
+                        if (ex instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
+                            JOptionPane.showMessageDialog(null, "Vereador já cadastrado");
+                        }
+                    }
                 }
             }
         }
@@ -235,26 +244,35 @@ public class TelaCadastroVereador extends JInternalFrame {
             public void actionPerformed(ActionEvent e
             ) {
                 Vereador updateVereador = new Vereador();
-                if ((txtNomeVereador.getText().isEmpty() || txtNumeroPartido.getText().isEmpty()) || txtNumeroVereador.getText().isEmpty()) {
+                if ((txtNomeVereador.getText().isEmpty() || txtFotoVereador.getText().isEmpty()) || txtNumeroVereador.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
-                }
-                try {
+                } else if (txtNumeroPartido.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Selecione um partido");
+                } else if (txtNumeroVereador.getText().equals("___")) {
+                    JOptionPane.showMessageDialog(null, "Campo numero obrigatorio");
+                } else if (txtNumeroPrefeito.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Um vereador deve associar-se a um prefeito");
+                } else {
+                    try {
 
-                    updateVereador.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
-                    updateVereador.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.parseInt(txtNumeroPartido.getText())));
-                    updateVereador.setNome(txtNomeVereador.getText());
-                    updateVereador.setDataNascimento(Data.convertSql(jdNascimentoVereador.getDate()));
-                    updateVereador.setNumero(Integer.parseInt(txtNumeroPartido.getText() + txtNumeroVereador.getText()));
-                    updateVereador.setFoto(ManipularImagem.getImgBytes(imgVereador));
-                    updateVereador.setIdVereador(Integer.parseInt(txtIdVereador.getText()));
-                    
-                    new VereadorDao().update(updateVereador);
-                    JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
-                    
-                } catch (HeadlessException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    
+                        updateVereador.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
+                        updateVereador.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.parseInt(txtNumeroPartido.getText())));
+                        updateVereador.setNome(txtNomeVereador.getText());
+                        updateVereador.setDataNascimento(Data.convertSql(jdNascimentoVereador.getDate()));
+                        updateVereador.setNumero(Integer.parseInt(txtNumeroPartido.getText() + txtNumeroVereador.getText()));
+                        updateVereador.setFoto(ManipularImagem.getImgBytes(imgVereador));
+                        updateVereador.setIdVereador(Integer.parseInt(txtIdVereador.getText()));
+
+                        new VereadorDao().update(updateVereador);
+                        JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
+
+                    } catch (HeadlessException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
+                        if (ex instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
+                            JOptionPane.showMessageDialog(null, "Vereador já cadastrado");
+                        }
+                    }
                 }
             }
         }
@@ -291,7 +309,7 @@ public class TelaCadastroVereador extends JInternalFrame {
                     clearCampos();
                     JOptionPane.showMessageDialog(null, "Candidato excluído com sucesso!");
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    
+
                 }
             }
         }

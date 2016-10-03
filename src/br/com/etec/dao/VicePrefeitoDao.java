@@ -109,7 +109,7 @@ public class VicePrefeitoDao implements IAbstractDao<VicePrefeito> {
                 statement.setBytes(4, entidade.getFotoViceP());
                 statement.setInt(5, entidade.getIdViceP());
             } else {
-                String sql = "update vice_prefeito set id_partido=?, id_prefeito=?, nome=?, data_nascimento=? where id_vice=?";
+                String sql = "update vice_prefeito set id_partido=?,  nome=?, data_nascimento=? where id_vice=?";
                 statement = DbUtils.getPreparedStatement(connection, sql);
                 statement.setInt(1, entidade.getIdPartidoViceP());
                 //statement.setInt(2, entidade.getIdPrefeito());

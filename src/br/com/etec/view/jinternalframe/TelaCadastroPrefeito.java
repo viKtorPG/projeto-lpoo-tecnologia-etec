@@ -279,34 +279,39 @@ public class TelaCadastroPrefeito extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Prefeito addPrefeito = new Prefeito();
-                if ((txtNomePrefeito.getText().isEmpty() || txtFotoPrefeito.getText().isEmpty()) || txtNomePrefeito.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
-                }
-                try {
+                if ((txtNomePrefeito.getText().isEmpty() || txtFotoPrefeito.getText().isEmpty()) || txtNumeroPartido.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Todos os prefeito campos (*) obrigatórios");
+                } else if (txtNomeViceP.getText().isEmpty() || txtFotoViceP.getText().isEmpty() || txtNumeroVicePartido.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Todos os vice-prefeito campos (*) obrigatórios");
+                } else {
+                    try {
 
-                    addPrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
-                    addPrefeito.setNome(txtNomePrefeito.getText());
-                    addPrefeito.setDataNascimento(Data.convertSql(jdNascimentoPrefeito.getDate()));
-                    addPrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText()));
-                    addPrefeito.setFoto(ManipularImagem.getImgBytes(imgPrefeito));
+                        addPrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
+                        addPrefeito.setNome(txtNomePrefeito.getText());
+                        addPrefeito.setDataNascimento(Data.convertSql(jdNascimentoPrefeito.getDate()));
+                        addPrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText()));
+                        addPrefeito.setFoto(ManipularImagem.getImgBytes(imgPrefeito));
 
-                    new PrefeitoDao().insert(addPrefeito);
-                    
-                    VicePrefeito addVicePrefeito = new VicePrefeito();
-                    addVicePrefeito.setIdPartidoViceP(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroVicePartido.getText())));
-                    addVicePrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.valueOf(txtNumeroPartido.getText())));
-                    addVicePrefeito.setNome(txtNomeViceP.getText());
-                    addVicePrefeito.setDataNascimento(Data.convertSql(jdNascimentoViceP.getDate()));
-                    addVicePrefeito.setFotoViceP(ManipularImagem.getImgBytes(imgViceP));
-                    
-                    new VicePrefeitoDao().insert(addVicePrefeito);
+                        new PrefeitoDao().insert(addPrefeito);
 
-                    JOptionPane.showMessageDialog(null, "Prefeito cadastradado com sucesso!");
+                        VicePrefeito addVicePrefeito = new VicePrefeito();
+                        addVicePrefeito.setIdPartidoViceP(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroVicePartido.getText())));
+                        addVicePrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.valueOf(txtNumeroPartido.getText())));
+                        addVicePrefeito.setNome(txtNomeViceP.getText());
+                        addVicePrefeito.setDataNascimento(Data.convertSql(jdNascimentoViceP.getDate()));
+                        addVicePrefeito.setFotoViceP(ManipularImagem.getImgBytes(imgViceP));
 
-                } catch (HeadlessException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
+                        new VicePrefeitoDao().insert(addVicePrefeito);
+
+                        JOptionPane.showMessageDialog(null, "Prefeito cadastradado com sucesso!");
+
+                    } catch (HeadlessException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
+                        if (ex instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
+                            JOptionPane.showMessageDialog(null, "Candidato já cadastrado/Um candidato por partido");
+                        }
+                    }
                 }
 
             }
@@ -326,36 +331,47 @@ public class TelaCadastroPrefeito extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
+                /* Foto não e obrigatorio */
+                lblFotoPrefeito.setText("Foto");
+                lblFotoViceP.setText("Foto");
+
                 Prefeito updatePrefeito = new Prefeito();
-                if ((txtNomePrefeito.getText().isEmpty() || txtFotoPrefeito.getText().isEmpty()) || txtNomePrefeito.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
-                }
-                try {
+                if ((txtNomePrefeito.getText().isEmpty() || txtNumeroPartido.getText().isEmpty())) {
+                    JOptionPane.showMessageDialog(null, "Todos os campos prefeito (*) obrigatórios");
+                } else if ((txtNomeViceP.getText().isEmpty() || txtNumeroVicePartido.getText().isEmpty())) {
+                    JOptionPane.showMessageDialog(null, "Todos os campos vice-prefeito (*) obrigatórios");
+                } else {
+                    try {
 
-                    updatePrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
-                    updatePrefeito.setNome(txtNomePrefeito.getText());
-                    updatePrefeito.setDataNascimento(Data.convertSql(jdNascimentoPrefeito.getDate()));
-                    updatePrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText()));
-                    updatePrefeito.setFoto(ManipularImagem.getImgBytes(imgPrefeito));
-                    updatePrefeito.setIdPrefeito(Integer.parseInt(txtIdPrefeito.getText()));
+                        updatePrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
+                        updatePrefeito.setNome(txtNomePrefeito.getText());
+                        updatePrefeito.setDataNascimento(Data.convertSql(jdNascimentoPrefeito.getDate()));
+                        updatePrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText()));
+                        if(imgPrefeito != null){
+                            updatePrefeito.setFoto(ManipularImagem.getImgBytes(imgPrefeito));
+                        }
+                        updatePrefeito.setIdPrefeito(Integer.parseInt(txtIdPrefeito.getText()));
 
-                    VicePrefeito updateVicePrefeito = new VicePrefeito();
-                    updateVicePrefeito.setIdPartidoViceP(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroVicePartido.getText())));
-                    //updateVicePrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.valueOf(txtNumeroPartido.getText())));
-                    updateVicePrefeito.setNome(txtNomeViceP.getText());
-                    updateVicePrefeito.setDataNascimento(Data.convertSql(jdNascimentoViceP.getDate()));
-                    updateVicePrefeito.setFotoViceP(ManipularImagem.getImgBytes(imgViceP));
-                    updateVicePrefeito.setIdViceP(Integer.parseInt(txtIdViceP.getText()));
-                    
-                    new PrefeitoDao().update(updatePrefeito);
-                    new VicePrefeitoDao().update(updateVicePrefeito);
-                    
-                    JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
+                        VicePrefeito updateVicePrefeito = new VicePrefeito();
+                        updateVicePrefeito.setIdPartidoViceP(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroVicePartido.getText())));
+                        //updateVicePrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.valueOf(txtNumeroPartido.getText())));
+                        updateVicePrefeito.setNome(txtNomeViceP.getText());
+                        updateVicePrefeito.setDataNascimento(Data.convertSql(jdNascimentoViceP.getDate()));
+                        if(imgViceP != null){
+                            updateVicePrefeito.setFotoViceP(ManipularImagem.getImgBytes(imgViceP));
+                        }
+                        updateVicePrefeito.setIdViceP(Integer.parseInt(txtIdViceP.getText()));
 
-                } catch (HeadlessException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
+                        new PrefeitoDao().update(updatePrefeito);
+                        new VicePrefeitoDao().update(updateVicePrefeito);
+
+                        JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
+
+                    } catch (HeadlessException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
+                        Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
