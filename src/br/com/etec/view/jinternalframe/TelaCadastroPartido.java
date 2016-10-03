@@ -60,9 +60,17 @@ public class TelaCadastroPartido extends JInternalFrame {
         lblCamposObri.setBounds(600, 20, 200, 20);
         lblCamposObri.setForeground(Color.red);
 
-        // Nome do Candidato
+        //ID Partido
+        lblIdPartido = new JLabel("N° Partido");
+        lblIdPartido.setBounds(130, 120, 80, 25);
+        
+        txtIdPartido = new JTextField();
+        txtIdPartido.setBounds(205, 120, 80, 25);
+        txtIdPartido.setEditable(false);
+        
+        // Nome do Partido
         lblNome = new JLabel("*Nome");
-        lblNome.setBounds(150, 150, 200, 25);
+        lblNome.setBounds(130, 150, 200, 25);
         lblNome.setForeground(Color.black);
 
         txtNome = new JTextField(10);
@@ -74,11 +82,11 @@ public class TelaCadastroPartido extends JInternalFrame {
         lblPartido.setForeground(Color.black);
 
         txtPartido = new JTextField();
-        txtPartido.setBounds(410, 150, 60, 25);
+        txtPartido.setBounds(410, 150, 80, 25);
 
         // Número
         lblNumero = new JLabel("*Número");
-        lblNumero.setBounds(150, 180, 80, 25);
+        lblNumero.setBounds(130, 180, 80, 25);
         lblNumero.setForeground(Color.black);
 
         txtNumero = new JFormattedTextField(new MaskFormatter("##"));
@@ -86,7 +94,7 @@ public class TelaCadastroPartido extends JInternalFrame {
 
         //Sloga
         lblSlogan = new JLabel("Slogan");
-        lblSlogan.setBounds(150, 210, 80, 25);
+        lblSlogan.setBounds(130, 210, 80, 25);
         lblSlogan.setForeground(Color.black);
 
         txtSlogan = new JTextField();
@@ -94,7 +102,7 @@ public class TelaCadastroPartido extends JInternalFrame {
 
         //Imagem
         lblFoto = new JLabel("Logo");
-        lblFoto.setBounds(150, 240, 80, 25);
+        lblFoto.setBounds(130, 240, 80, 25);
         lblFoto.setForeground(Color.black);
 
         txtFoto = new JTextField(10);
@@ -124,9 +132,8 @@ public class TelaCadastroPartido extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente");
                 } else {
                     try {
-                        addPartido.setIdNumero(Integer.parseInt(txtNumero.getText()));
-                        System.err.println("Erro: " + txtNumero.getText());
                         addPartido.setNome(txtNome.getText());
+                        addPartido.setNumero(Integer.parseInt(txtNumero.getText()));
                         addPartido.setSigla(txtPartido.getText());
                         addPartido.setSlogan(txtSlogan.getText());
                         if (imagem != null) {
@@ -172,10 +179,11 @@ public class TelaCadastroPartido extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente");
                 } else {
                     try {
-                        addPartido.setIdNumero(Integer.parseInt(txtNumero.getText()));
+                        addPartido.setIdPartido(Integer.valueOf(txtIdPartido.getText()));
                         addPartido.setNome(txtNome.getText());
                         addPartido.setSigla(txtPartido.getText());
                         addPartido.setSlogan(txtSlogan.getText());
+                        addPartido.setNumero(Integer.parseInt(txtNumero.getText()));
                         if (imagem != null) {
                             addPartido.setLogo(ManipularImagem.getImgBytes(imagem));
                         }
@@ -210,7 +218,7 @@ public class TelaCadastroPartido extends JInternalFrame {
             public void actionPerformed(ActionEvent e
             ) {
                 Partido excPart = new Partido();
-                excPart.setIdNumero(Integer.parseInt(txtNumero.getText()));
+                excPart.setIdPartido(Integer.parseInt(txtIdPartido.getText()));
                 try {
                     int confir = JOptionPane.showConfirmDialog(null, "Deseja excluir", "Atenção", JOptionPane.YES_NO_CANCEL_OPTION);
                     if (confir == JOptionPane.YES_OPTION) {
@@ -240,18 +248,18 @@ public class TelaCadastroPartido extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                try {
+               try {
                     int numero = 0;
                     try {
                         numero = Integer.parseInt(JOptionPane.showInputDialog("Número do Partido"));
                         partido = new PartidoDao().findById(numero);
 
                             System.err.println(partido);
+                            txtIdPartido.setText("" +partido.getIdPartido());
                             txtNome.setText(partido.getNome());
-                            txtNumero.setText("" + partido.getIdNumero());
+                            txtNumero.setText("" + partido.getNumero());
                             txtPartido.setText(partido.getSigla());
                             txtSlogan.setText(partido.getSlogan());
-
                             ManipularImagem.exibirImagemLabel(partido.getLogo(), lblImagem);
 
                             habilita();
@@ -303,6 +311,9 @@ public class TelaCadastroPartido extends JInternalFrame {
 
         //container.add(lblDtCriacao);
         //container.add(txtDtCriacao);
+        container.add(lblIdPartido);
+        container.add(txtIdPartido);
+        
         container.add(lblNome);
         container.add(txtNome);
 
@@ -335,6 +346,7 @@ public class TelaCadastroPartido extends JInternalFrame {
     }
 
     public void clearCampos() {
+        txtIdPartido.setText(null);
         txtNome.setText(null);
         txtFoto.setText(null);
         txtNumero.setValue(null);
@@ -347,14 +359,12 @@ public class TelaCadastroPartido extends JInternalFrame {
     public void habilita() {
         btnAtualizar.setEnabled(true);
         btnExcluir.setEnabled(true);
-        txtNumero.setEditable(false);
     }
 
     // Desabilita os botões de Excluir e atualizar
     public void desabilita() {
         btnAtualizar.setEnabled(false);
         btnExcluir.setEnabled(false);
-        txtNumero.setEditable(true);
     }
 
     private JButton btnAdicionar;
@@ -370,6 +380,8 @@ public class TelaCadastroPartido extends JInternalFrame {
     private BufferedImage imagem;
     private JButton btnEnviar;
     private JLabel lblImagem;
+    private JLabel lblIdPartido;
+    private JTextField txtIdPartido;
     private Partido partido;
     private JTextField txtFoto;
     private Connection connection;
