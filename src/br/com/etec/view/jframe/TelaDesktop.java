@@ -5,11 +5,11 @@ package br.com.etec.view.jframe;
 
 import br.com.etec.components.BackgroundedDesktopPane;
 import br.com.etec.utils.DbUtils;
-import br.com.etec.view.jinternalframe.TelaCadastroCandidato;
+import br.com.etec.view.jinternalframe.TelaCadastroPrefeito;
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
 import br.com.etec.view.jinternalframe.TelaCadastroPartido;
 import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
-import br.com.etec.view.jinternalframe.TelaCadastroVice;
+import br.com.etec.view.jinternalframe.TelaCadastroVereador;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioCandidato;
 import br.com.etec.view.jinternalframe.TelaGerarRelatorioPartido;
 import br.com.etec.view.jinternalframe.TelaImprimirSegundaVia;
@@ -96,13 +96,13 @@ public class TelaDesktop {
         });
         jmCadastado.add(jmCadastadoPartido);
 
-        JMenuItem jmCadastadoCandidato = new JMenuItem("Candidato");
+        JMenuItem jmCadastadoCandidato = new JMenuItem("Prefeito");
         jmCadastadoCandidato.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaCadastroCandidato candidato = null;
+                TelaCadastroPrefeito candidato = null;
                 try {
-                    candidato = new TelaCadastroCandidato();
+                    candidato = new TelaCadastroPrefeito();
                     candidato.setVisible(true);
                     desktopPane.add(candidato);
                 } catch (ParseException ex) {
@@ -114,13 +114,13 @@ public class TelaDesktop {
         );
         jmCadastado.add(jmCadastadoCandidato);
 
-        JMenuItem jmCadastadoVice = new JMenuItem("Vice");
+        JMenuItem jmCadastadoVice = new JMenuItem("Vereador");
         jmCadastadoVice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaCadastroVice vice = null;
+                TelaCadastroVereador vice = null;
                 try {
-                    vice = new TelaCadastroVice();
+                    vice = new TelaCadastroVereador();
                 } catch (ParseException ex) {
                     Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -42,9 +42,9 @@ import javax.swing.text.MaskFormatter;
  *
  * @author Aluno
  */
-public class TelaCadastroCandidato extends JInternalFrame {
+public class TelaCadastroPrefeito extends JInternalFrame {
 
-    public TelaCadastroCandidato() throws ParseException {
+    public TelaCadastroPrefeito() throws ParseException {
         iniciandoCompomentes();
     }
 
@@ -306,7 +306,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
                 } catch (HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -355,7 +355,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
                 } catch (HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -370,8 +370,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
                 400, 300, 60, 60);
         btnExcluir.setEnabled(
                 false);
-        btnExcluir.addActionListener(
-                new ActionListener() {
+        btnExcluir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
@@ -392,7 +391,7 @@ public class TelaCadastroCandidato extends JInternalFrame {
                     clearCampos();
                     JOptionPane.showMessageDialog(null, "Candidato excluído com sucesso!");
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

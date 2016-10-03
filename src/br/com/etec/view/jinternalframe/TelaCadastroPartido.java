@@ -148,7 +148,7 @@ public class TelaCadastroPartido extends JInternalFrame {
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao criar partido" + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                        Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
                         if (ex instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
                             JOptionPane.showMessageDialog(null, "Partido já cadastrado");
                         }
@@ -196,7 +196,7 @@ public class TelaCadastroPartido extends JInternalFrame {
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao atualizar partido " + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                        Logger.getLogger(TelaCadastroCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
