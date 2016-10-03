@@ -411,7 +411,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
             String sql = "select eleitor.id_eleitor as ID, eleitor.nome as Nome,"
                     + " DATE_FORMAT(eleitor.data_nascimento, '%d/%m/%Y') as Nascimento,"
-                    + " DATE_FORMAT(eleitor.data_emissao, '%d/%m/%Y') as Emissao,"
+                    + " DATE_FORMAT(eleitor.data_cadastro, '%d/%m/%Y') as Emissao,"
                     + " eleitor.zona as Zona, eleitor.secao as Secao, cidade.nome as Cidade, estado.uf as UF \n"
                     + "from eleitor left join cidade \n"
                     + "on eleitor.id_cidade = cidade.id_cidade \n"
@@ -443,7 +443,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         //Faz a conexão com o BD e retorna o ultimo registro cadastrado na tabela eleitor
         try {
             connection = DbUtils.getConnection();
-            PreparedStatement ps = DbUtils.getPreparedStatement(connection, "SELECT id_eleitor FROM eleitor ORDER BY data_emissao DESC limit 1");
+            PreparedStatement ps = DbUtils.getPreparedStatement(connection, "SELECT id_eleitor FROM eleitor ORDER BY data_cadastro DESC limit 1");
             resultSet = ps.executeQuery();
 
             //Se resultSet retorna algum registro

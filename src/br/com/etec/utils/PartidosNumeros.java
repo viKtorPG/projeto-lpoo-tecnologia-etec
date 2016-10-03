@@ -68,26 +68,23 @@ public class PartidosNumeros {
                     .getName()).log(Level.SEVERE, null, ex);            
         }
         ResultSet rs = null;
-        String sql = "select numero from partido where sigla='" + sigla + "'";
+        String sql = "select id_partido from partido where sigla= ?";
         //JOptionPane.showMessageDialog(null, selecionado);
         try {
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setString(1, sigla);
+            
             rs = statement.executeQuery();
+            
+            while(rs.next()){
+                numero = rs.getString(1);
+            }
             
         } catch (SQLException ex) {
             Logger.getLogger(TelaCadastroCandidato.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            if (rs.next()) {
-                numero = "" + rs.getInt("numero");
-                
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroCandidato.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        
+
         return numero;
     }
 }

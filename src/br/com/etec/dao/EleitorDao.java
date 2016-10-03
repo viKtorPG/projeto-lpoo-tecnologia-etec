@@ -26,7 +26,7 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
 
     @Override
     public List<Eleitor> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-        try {
+        /*try {
             connection = DbUtils.getConnection();
             ResultSet resultSet = DbUtils.getResultSet(connection, "select * from eleitor");
             List<Eleitor> list = new ArrayList<>();
@@ -46,13 +46,15 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
+        
+        return null;
 
     }
 
     @Override
     public Eleitor findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-        ResultSet resultSet;
+        /*ResultSet resultSet;
 
         try {
             connection = DbUtils.getConnection();
@@ -88,7 +90,9 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
+        
+        return null;
     }
 
     @Override
@@ -96,14 +100,14 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
         try {
             connection = DbUtils.getConnection();
 
-            String sql = "insert into eleitor(nome, data_nascimento, zona, secao, id_cidade) values(?, ?, ?, ?, ?)";
+            String sql = "insert into eleitor(id_cidade, nome, zona, secao, data_nascimento) values(?, ?, ?, ?)";
 
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setString(1, entidade.getNome());
-            statement.setString(2, entidade.getDataNascimento());
+            statement.setInt(1, entidade.getIdCidade());
+            statement.setString(2, entidade.getNome());
             statement.setString(3, entidade.getZona());
             statement.setString(4, entidade.getSecao());
-            statement.setInt(5, entidade.getIdCidade());
+            statement.setString(5, entidade.getDataNascimento());
 
             statement.execute();
         } finally {
