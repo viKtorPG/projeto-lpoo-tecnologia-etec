@@ -15,23 +15,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javafx.scene.input.KeyCode.T;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -86,12 +82,6 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
         Container container = getContentPane();
         container.setLayout(null);
 
-        /*//Formatando o campo NumeroEleitor
-        try{
-            formatTxtNumeroEleitor = new MaskFormatter("#### #### #### ####");
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaImprimirSegundaVia.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
         lblCamposObri = new JLabel("(*)Campos Obrigatórios");
         lblCamposObri.setBounds(600, 20, 200, 20);
         lblCamposObri.setForeground(Color.red);
@@ -165,92 +155,45 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
-
                 int rowLine = tblEleitor.getSelectedRow();
-                long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
-                
-                System.err.println("Long: " + idEleitor);
 
-                ImageIcon imgTitulo = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTitulo.jpg"));
-                ImageIcon imgTituloVerso = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTituloVerso.jpg"));
-                final Map<String, Object> paramEleitor = new HashMap<>();
-                paramEleitor.put("paramsID", idEleitor);
-                paramEleitor.put("paramsImgTitulo", imgTitulo.getImage());
-                paramEleitor.put("paramsImgTituloVerso", imgTituloVerso.getImage());
+                if (rowLine > 0) {
+                    int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
 
-                if (confirmar == JOptionPane.YES_NO_OPTION) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            try {
+                    long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
 
-                                Connection connection = DbUtils.getConnection();
-                                JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTitulo.jasper", paramEleitor, connection);
+                    System.err.println("Long: " + idEleitor);
 
-                                JasperViewer.viewReport(viewer, false);
-                            } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                    ImageIcon imgTitulo = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTitulo.jpg"));
+                    ImageIcon imgTituloVerso = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTituloVerso.jpg"));
+                    final Map<String, Object> paramEleitor = new HashMap<>();
+                    paramEleitor.put("paramsID", idEleitor);
+                    paramEleitor.put("paramsImgTitulo", imgTitulo.getImage());
+                    paramEleitor.put("paramsImgTituloVerso", imgTituloVerso.getImage());
+
+                    if (confirmar == JOptionPane.YES_NO_OPTION) {
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+
+                                    Connection connection = DbUtils.getConnection();
+                                    JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTitulo.jasper", paramEleitor, connection);
+
+                                    JasperViewer.viewReport(viewer, false);
+                                } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+                                    Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
-                        }
-                    }.start();
+                        }.start();
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Selecione um eleitor");
                 }
+
             }
         });
 
-        /*ImageIcon imgPesquisar = new ImageIcon(getClass().getResource("/br/com/etec/imgs/search.png"));
-        btnPesquisar = new JButton(imgPesquisar);
-        btnPesquisar.setToolTipText("Pesquisar");
-        btnPesquisar.setBounds(260, 280, 60, 60);*/
- /*
-        //Panel de retorno
-        JPanel conteudoRetorno = new JPanel();
-        conteudoRetorno.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações do eleitor"));
-        conteudoRetorno.setLayout(null);
-        //conteudoRetorno.setBackground(Color.red);
-        conteudoRetorno.setBounds(450, 120, 250, 200);
-
-        //Nome
-        lblNome = new JLabel("Nome:");
-        lblNome.setBounds(16, 30, 50, 20);
-        
-        lblNomeRetorno = new JLabel("**************");
-        lblNomeRetorno.setBounds(16, 50, 200, 20);
-        
-        // Data de cadastramento
-        lblDataCadastramento = new JLabel("Data de cadastramento:");
-        lblDataCadastramento.setBounds(16, 80, 200, 20);
-        
-        lblDataCadastramentoRetorno = new JLabel("**************");
-        lblDataCadastramentoRetorno.setBounds(16, 100, 200, 20);
-        
-        // Zona
-        lblZona = new JLabel("Zona:");
-        lblZona.setBounds(16, 130, 200, 20);
-        
-        lblZonaRetorno = new JLabel("**************");
-        lblZonaRetorno.setBounds(16, 150, 200, 20);
-        
-        // Seção
-        lblSecao = new JLabel("Seção:");
-        lblSecao.setBounds(150, 130, 200, 20);
-        
-        lblSecaoRetorno = new JLabel("**************");
-        lblSecaoRetorno.setBounds(150, 150, 200, 20);
-        
-        // ADD elementos ao conteudoRetorno
-        conteudoRetorno.add(lblNome);
-        conteudoRetorno.add(lblNomeRetorno);
-        
-        conteudoRetorno.add(lblDataCadastramento);
-        conteudoRetorno.add(lblDataCadastramentoRetorno);
-        
-        conteudoRetorno.add(lblZona);
-        conteudoRetorno.add(lblZonaRetorno);
-        
-        conteudoRetorno.add(lblSecao);
-        conteudoRetorno.add(lblSecaoRetorno);
-         */
         //ADD
         container.add(lblCamposObri);
         container.add(lblNumeroEleitor);
@@ -311,18 +254,8 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
     private JLabel lblCamposObri;
     private JLabel lblNumeroEleitor;
     private JLabel lblImagemPesquisa;
-    private JLabel lblNome;
-    private JLabel lblNomeRetorno;
-    private JLabel lblDataCadastramento;
-    private JLabel lblDataCadastramentoRetorno;
-    private JLabel lblZona;
-    private JLabel lblZonaRetorno;
-    private JLabel lblSecao;
-    private JLabel lblSecaoRetorno;
     private JFormattedTextField txtNumeroEleitor;
-    private MaskFormatter formatTxtNumeroEleitor;
     private JButton btnImprimir;
-    private JButton btnPesquisar;
     private ImageIcon imgPesquisar;
     private JTable tblEleitor;
     private JScrollPane jScrollPane;

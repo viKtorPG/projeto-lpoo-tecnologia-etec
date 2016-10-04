@@ -6,7 +6,6 @@ package br.com.etec.view.jinternalframe;
 import br.com.etec.dao.VereadorDao;
 import br.com.etec.model.Vereador;
 import br.com.etec.utils.DbUtils;
-import br.com.etec.utils.PartidosNumeros;
 import br.com.etec.view.jframe.TelaDesktop;
 import java.awt.Color;
 import java.awt.Container;
@@ -107,6 +106,7 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
                 }
                 
                 clearCampos();
+                btnImprimir.setEnabled(false);
             }
         });
 
