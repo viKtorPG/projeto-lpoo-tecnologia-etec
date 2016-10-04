@@ -30,7 +30,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -305,6 +304,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
 
                         JOptionPane.showMessageDialog(null, "Prefeito cadastradado com sucesso!");
 
+                        clearCampos();
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
@@ -347,7 +347,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
                         updatePrefeito.setNome(txtNomePrefeito.getText());
                         updatePrefeito.setDataNascimento(Data.convertSql(jdNascimentoPrefeito.getDate()));
                         updatePrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText()));
-                        if(imgPrefeito != null){
+                        if (imgPrefeito != null) {
                             updatePrefeito.setFoto(ManipularImagem.getImgBytes(imgPrefeito));
                         }
                         updatePrefeito.setIdPrefeito(Integer.parseInt(txtIdPrefeito.getText()));
@@ -357,7 +357,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
                         //updateVicePrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.valueOf(txtNumeroPartido.getText())));
                         updateVicePrefeito.setNome(txtNomeViceP.getText());
                         updateVicePrefeito.setDataNascimento(Data.convertSql(jdNascimentoViceP.getDate()));
-                        if(imgViceP != null){
+                        if (imgViceP != null) {
                             updateVicePrefeito.setFotoViceP(ManipularImagem.getImgBytes(imgViceP));
                         }
                         updateVicePrefeito.setIdViceP(Integer.parseInt(txtIdViceP.getText()));
@@ -367,6 +367,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
 
                         JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
 
+                        clearCampos();
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
@@ -431,30 +432,29 @@ public class TelaCadastroPrefeito extends JInternalFrame {
                     int numero = 0;
                     try {
                         numero = Integer.parseInt(JOptionPane.showInputDialog("Número do Candidato"));
+
+                        Prefeito prefeito = new PrefeitoDao().findById(numero);
+
+                        txtIdPrefeito.setText(String.valueOf(prefeito.getIdPrefeito()));
+                        jcPartidoPrefeito.setSelectedItem(PartidosNumeros.partido(prefeito.getNumero()));
+                        //txtNumeroPrefeito.setText(String.valueOf(prefeito.getNumero()).substring(2, 5));
+                        txtNomePrefeito.setText(prefeito.getNome());
+                        txtNumeroPartido.setText(String.valueOf(PartidosNumeros.getNumeroPartido(prefeito.getIdPartido())));
+                        jdNascimentoPrefeito.setDate(Data.convertDate(prefeito.getDataNascimento()));
+                        ManipularImagem.exibirImagemLabel(prefeito.getFoto(), lblImagemPrefeito);
+
+                        VicePrefeito vicePrefeito = new VicePrefeitoDao().findById(numero);
+                        txtIdViceP.setText(String.valueOf(vicePrefeito.getIdViceP()));
+                        txtNomeViceP.setText(vicePrefeito.getNome());
+                        jdNascimentoViceP.setDate(Data.convertDate(vicePrefeito.getDataNascimento()));
+                        ManipularImagem.exibirImagemLabel(vicePrefeito.getFotoViceP(), lblImagemViceP);
+                        jcPartidoVicePartido.setSelectedItem(PartidosNumeros.partido(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
+                        System.err.println(String.valueOf(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
+                        txtNumeroVicePartido.setText(String.valueOf(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
                     } catch (NumberFormatException nfe) {
                         JOptionPane.showMessageDialog(null, "Apenas números");
                     }
-                    Prefeito prefeito = new PrefeitoDao().findById(numero);
-
-                    txtIdPrefeito.setText(String.valueOf(prefeito.getIdPrefeito()));
-                    jcPartidoPrefeito.setSelectedItem(PartidosNumeros.partido(prefeito.getNumero()));
-                    //txtNumeroPrefeito.setText(String.valueOf(prefeito.getNumero()).substring(2, 5));
-                    txtNomePrefeito.setText(prefeito.getNome());
-                    txtNumeroPartido.setText(String.valueOf(PartidosNumeros.getNumeroPartido(prefeito.getIdPartido())));
-                    jdNascimentoPrefeito.setDate(Data.convertDate(prefeito.getDataNascimento()));
-                    ManipularImagem.exibirImagemLabel(prefeito.getFoto(), lblImagemPrefeito);
-
-                    VicePrefeito vicePrefeito = new VicePrefeitoDao().findById(numero);
-                    txtIdViceP.setText(String.valueOf(vicePrefeito.getIdViceP()));
-                    txtNomeViceP.setText(vicePrefeito.getNome());
-                    jdNascimentoViceP.setDate(Data.convertDate(vicePrefeito.getDataNascimento()));
-                    ManipularImagem.exibirImagemLabel(vicePrefeito.getFotoViceP(), lblImagemViceP);
-                    jcPartidoVicePartido.setSelectedItem(PartidosNumeros.partido(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
-                    System.err.println(String.valueOf(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
-                    txtNumeroVicePartido.setText(String.valueOf(PartidosNumeros.getNumeroPartido(vicePrefeito.getIdPartidoViceP())));
-
                     habilita();
-
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao pesquisar" + ex.getMessage());
                 }
@@ -493,6 +493,31 @@ public class TelaCadastroPrefeito extends JInternalFrame {
         }
         );
 
+        ImageIcon imgLista = new ImageIcon(getClass().getResource("/br/com/etec/imgs/list.png"));
+        btnLista = new JButton(imgLista);
+
+        btnLista.setBounds(
+                100, 350, 60, 60);
+        btnLista.setToolTipText("Lista de usuários cadastrados");
+        btnLista.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                ViewTable table = new ViewTable("select prefeito.nome as Prefeito, date_format(prefeito.data_nascimento, '%d/%m/%Y') as Nascimento,\n" +
+" prefeito.numero as Numero,\n" +
+" partido.nome_partido as Partido,\n" +
+" prefeito.votos as Votos,\n" +
+" vice_prefeito.nome as Vice\n" +
+" from prefeito left join partido \n" +
+" on partido.id_partido = prefeito.id_partido \n" +
+" inner join vice_prefeito\n" +
+" on vice_prefeito.id_prefeito = prefeito.id_prefeito where prefeito.nome like ?");
+                table.execute();
+            }
+        }
+        );
+        
         btnEnviarViceP.addActionListener(
                 new ActionListener() {
             @Override
@@ -538,6 +563,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
         container.add(btnAtualizar);
         container.add(btnExcluir);
         container.add(btnPesquisar);
+        container.add(btnLista);
 
         setClosable(true);
         setIconifiable(true);
@@ -545,13 +571,22 @@ public class TelaCadastroPrefeito extends JInternalFrame {
     }
 
     public void clearCampos() {
-        /* txtId.setText(null);
-        txtNome.setText(null);
-        txtFoto.setText(null);
-        txtNumero.setValue(null);
-        lblImagem.setIcon(null);
-        jcPartido.setSelectedIndex(0);
-        jcCargo.setSelectedIndex(0);*/
+        ImageIcon imgUser = new ImageIcon(getClass().getResource("/br/com/etec/imgs/logoUserBD.png"));
+
+        txtIdPrefeito.setText(null);
+        txtNomePrefeito.setText(null);
+        txtFotoPrefeito.setText(null);
+        jcPartidoPrefeito.setSelectedIndex(0);
+        lblImagemPrefeito.setIcon(imgUser);
+        txtNumeroPartido.setText(null);
+
+        txtIdViceP.setText(null);
+        txtNomeViceP.setText(null);
+        txtFotoViceP.setText(null);
+        jcPartidoVicePartido.setSelectedIndex(0);
+        lblImagemViceP.setIcon(imgUser);
+        txtNumeroVicePartido.setText(null);
+
     }
 
     // Habilita os botões de Excluir e atualizar
@@ -625,6 +660,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
 
     /**/
     private Prefeito candidato;
+    private JButton btnLista;
 
     Connection connection;
 

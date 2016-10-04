@@ -29,13 +29,13 @@ public class PartidoDao implements IAbstractDao<Partido> {
     }
 
     @Override
-    public Partido findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+    public Partido findById(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
-            String sql = "select * from partido where id_partido=?";
+            String sql = "select * from partido where numero=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 
             resultSet = statement.executeQuery();
 

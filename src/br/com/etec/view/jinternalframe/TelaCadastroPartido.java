@@ -7,7 +7,6 @@ package br.com.etec.view.jinternalframe;
 
 import br.com.etec.dao.PartidoDao;
 import br.com.etec.model.Partido;
-import br.com.etec.utils.DbUtils;
 import br.com.etec.utils.ManipularImagem;
 import java.awt.Color;
 import java.awt.Container;
@@ -17,12 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -277,6 +272,23 @@ public class TelaCadastroPartido extends JInternalFrame {
         }
         );
 
+        ImageIcon imgLista = new ImageIcon(getClass().getResource("/br/com/etec/imgs/list.png"));
+        btnLista = new JButton(imgLista);
+
+        btnLista.setBounds(
+                100, 350, 60, 60);
+        btnLista.setToolTipText("Lista de usuários cadastrados");
+        btnLista.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                ViewTable table = new ViewTable("select id_partido as ID, nome_partido as Nome, sigla as Sigla, slogan as Slogan, numero as Numero, data_criacao as Cricao, votos as Votos from partido where nome_partido like ?");
+                table.execute();
+            }
+        }
+        );
+        
         btnEnviar.addActionListener(
                 new ActionListener() {
             @Override
@@ -333,6 +345,7 @@ public class TelaCadastroPartido extends JInternalFrame {
         container.add(btnAtualizar);
         container.add(btnExcluir);
         container.add(btnPesquisar);
+        container.add(btnLista);
 
         container.add(lblImagem);
 
@@ -387,5 +400,6 @@ public class TelaCadastroPartido extends JInternalFrame {
     private Partido partido;
     private JTextField txtFoto;
     private Connection connection;
+    private JButton btnLista;
 
 }

@@ -53,20 +53,15 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
     }
 
     @Override
-    public Eleitor findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-        /*ResultSet resultSet;
+    public Eleitor findById(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        ResultSet resultSet;
 
         try {
             connection = DbUtils.getConnection();
-            String sql = "select eleitor.id_eleitor, eleitor.nome, DATE_FORMAT(eleitor.data_nascimento, '%d/%m/%y'), DATE_FORMAT(eleitor.data_emissao, '%d/%m/%Y'), eleitor.zona, eleitor.secao, cidade.nome, estado.uf  \n"
-                    + "from eleitor left join cidade \n"
-                    + "on eleitor.id_cidade = cidade.id_cidade \n"
-                    + "left join estado \n"
-                    + "on cidade.id_estado = estado.id_estado \n"
-                    + "where id_eleitor = ?";
+            String sql = "select nome, DATE_FORMAT(eleitor.data_cadastro, '%d/%m/%Y'), zona, secao from eleitor where id_eleitor = ?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
 
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 
             resultSet = statement.executeQuery();
 
@@ -75,14 +70,10 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
                 return null;
             } else {
                 Eleitor eleitor = new Eleitor();
-                eleitor.setIdCod(resultSet.getInt(1));
-                eleitor.setNome(resultSet.getString(2));
-                eleitor.setDataNascimento(resultSet.getString(3));
-                eleitor.setDataEmissao(resultSet.getString(4));
-                eleitor.setZona(resultSet.getString(5));
-                eleitor.setSecao(resultSet.getString(6));
-                eleitor.setNomeCidade(resultSet.getString(7));
-                eleitor.setNomeUF(resultSet.getString(8));
+                eleitor.setNome(resultSet.getString(1));
+                eleitor.setDataEmissao(resultSet.getString(2));
+                eleitor.setZona(resultSet.getString(3));
+                eleitor.setSecao(resultSet.getString(4));
 
                 return eleitor;
             }
@@ -90,9 +81,7 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
             if (connection != null) {
                 connection.close();
             }
-        }*/
-        
-        return null;
+        }
     }
 
     @Override

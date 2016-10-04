@@ -26,13 +26,13 @@ public class VicePrefeitoDao implements IAbstractDao<VicePrefeito> {
     Blob blob;
 
     @Override
-    public VicePrefeito findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+    public VicePrefeito findById(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
             String sql = "select vice_prefeito.id_vice, vice_prefeito.id_partido, vice_prefeito.id_prefeito, vice_prefeito.nome, DATE_FORMAT(vice_prefeito.data_nascimento, '%d/%m/%Y'), vice_prefeito.foto from vice_prefeito, prefeito where (vice_prefeito.id_prefeito = prefeito.id_prefeito) and prefeito.numero = ?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 
             resultSet = statement.executeQuery();
 

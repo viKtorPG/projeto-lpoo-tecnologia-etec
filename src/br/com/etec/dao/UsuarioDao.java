@@ -102,13 +102,13 @@ public class UsuarioDao implements IAbstractDao<Usuario> {
     }
 
     @Override
-    public Usuario findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+    public Usuario findById(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
             String sql = "select * from usuario where id_user=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 
             resultSet = statement.executeQuery();
 

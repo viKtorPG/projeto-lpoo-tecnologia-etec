@@ -209,7 +209,7 @@ public class TelaCadastroVereador extends JInternalFrame {
                     try {
 
                         addPrefeito.setIdPartido(PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroPartido.getText())));
-                        addPrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.parseInt(txtNumeroPartido.getText())));
+                        addPrefeito.setIdPrefeito(PartidosNumeros.getIDPrefeito(Integer.parseInt(txtNumeroPrefeito.getText())));
                         addPrefeito.setNome(txtNomeVereador.getText());
                         addPrefeito.setDataNascimento(Data.convertSql(jdNascimentoVereador.getDate()));
                         addPrefeito.setNumero(Integer.parseInt(txtNumeroPartido.getText() + txtNumeroVereador.getText()));
@@ -218,6 +218,7 @@ public class TelaCadastroVereador extends JInternalFrame {
                         new VereadorDao().insert(addPrefeito);
                         JOptionPane.showMessageDialog(null, "Vereador cadastradado com sucesso!");
 
+                        clearCampos();
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
@@ -266,6 +267,7 @@ public class TelaCadastroVereador extends JInternalFrame {
                         new VereadorDao().update(updateVereador);
                         JOptionPane.showMessageDialog(null, "Prefeito atualizado com sucesso!");
 
+                        clearCampos();
                     } catch (HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
@@ -355,6 +357,23 @@ public class TelaCadastroVereador extends JInternalFrame {
         }
         );
 
+        ImageIcon imgLista = new ImageIcon(getClass().getResource("/br/com/etec/imgs/list.png"));
+        btnLista = new JButton(imgLista);
+
+        btnLista.setBounds(
+                100, 350, 60, 60);
+        btnLista.setToolTipText("Lista de usuários cadastrados");
+        btnLista.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                ViewTable table = new ViewTable("select id_partido as ID, nome as Nome, numero as Numero, votos as Votos from vereador where nome like ?");
+                table.execute();
+            }
+        }
+        );
+        
         btnEnviarVereador.addActionListener(
                 new ActionListener() {
             @Override
@@ -397,6 +416,7 @@ public class TelaCadastroVereador extends JInternalFrame {
         container.add(btnAtualizar);
         container.add(btnExcluir);
         container.add(btnPesquisar);
+        container.add(btnLista);
 
         setClosable(true);
         setIconifiable(true);
@@ -404,13 +424,16 @@ public class TelaCadastroVereador extends JInternalFrame {
     }
 
     public void clearCampos() {
-        /* txtId.setText(null);
-        txtNome.setText(null);
-        txtFoto.setText(null);
-        txtNumero.setValue(null);
-        lblImagem.setIcon(null);
-        jcPartido.setSelectedIndex(0);
-        jcCargo.setSelectedIndex(0);*/
+        ImageIcon imgUser = new ImageIcon(getClass().getResource("/br/com/etec/imgs/logoUserBD.png"));
+        
+        txtIdVereador.setText(null);
+        txtNomeVereador.setText(null);
+        txtNumeroPartido.setText(null);
+        txtNumeroPrefeito.setText(null);
+        txtNumeroVereador.setText(null);
+        jcNumeroPrefeito.setSelectedIndex(0);
+        jcPartidoVereador.setSelectedIndex(0);
+        lblImagemVereador.setIcon(imgUser);
     }
 
     // Habilita os botões de Excluir e atualizar
@@ -457,6 +480,8 @@ public class TelaCadastroVereador extends JInternalFrame {
     private JLabel lblNumeroPrefeito;
     private JTextField txtNumeroPrefeito;
     private JComboBox<String> jcNumeroPrefeito;
+    
+    private JButton btnLista;
 
     public static File filePrefeito;
 

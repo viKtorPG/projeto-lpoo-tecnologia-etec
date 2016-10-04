@@ -279,4 +279,33 @@ public class PartidosNumeros {
 
         return result;
     }
+    
+    public static int getIdVereador(int numero) {
+        try {
+            connection = DbUtils.getConnection();
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+            Logger.getLogger(TelaCadastroPrefeito.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        ResultSet rs = null;
+        String sql = "select id_vereador from vereador where numero= ?";
+        //JOptionPane.showMessageDialog(null, selecionado);
+        try {
+            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
+            statement.setInt(1, numero);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                numero = rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaCadastroPrefeito.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return numero;
+    }
 }

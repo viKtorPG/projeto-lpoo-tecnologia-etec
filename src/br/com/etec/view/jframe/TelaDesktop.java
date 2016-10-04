@@ -152,7 +152,7 @@ public class TelaDesktop {
         jmRelatorio.setVisible(
                 false);
 
-        JMenuItem jmRelatorioPartido = new JMenuItem("Partido");
+        JMenuItem jmRelatorioPartido = new JMenuItem("Relatório Partido");
 
         jmRelatorioPartido.addActionListener(
                 new ActionListener() {
@@ -167,7 +167,7 @@ public class TelaDesktop {
         );
         jmRelatorio.add(jmRelatorioPartido);
 
-        JMenuItem jmRelatorioCandidato = new JMenuItem("Candidato");
+        JMenuItem jmRelatorioCandidato = new JMenuItem("Relatório Vereador");
 
         jmRelatorioCandidato.addActionListener(
                 new ActionListener() {
@@ -182,19 +182,34 @@ public class TelaDesktop {
         );
         jmRelatorio.add(jmRelatorioCandidato);
 
-        JMenuItem jmRelatorioGeral = new JMenuItem("Geral");
+        JMenuItem jmRelatorioGeral = new JMenuItem("Todos os partidos");
 
         jmRelatorioGeral.addActionListener(
                 new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
+                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                if (confirmar == JOptionPane.YES_NO_OPTION) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                Connection connection = DbUtils.getConnection();
+                                JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectPartido.jasper", null, connection);
 
+                                JasperViewer.viewReport(viewer, false);
+                            } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }.start();
+                }
             }
         });
         jmRelatorio.add(jmRelatorioGeral);
 
-        JMenuItem jmRelatorioUsuarios = new JMenuItem("Usuários");
+        JMenuItem jmRelatorioUsuarios = new JMenuItem("Todos os Usuários");
 
         jmRelatorioUsuarios.addActionListener(
                 new ActionListener() {
@@ -202,9 +217,6 @@ public class TelaDesktop {
             public void actionPerformed(ActionEvent e
             ) {
                 int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
-
-                
-                
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override

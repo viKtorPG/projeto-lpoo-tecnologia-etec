@@ -16,7 +16,7 @@ public interface IAbstractDao<T> {
 
     List<T> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
 
-    T findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
+    T findById(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
 
     void insert(T entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException;
 
