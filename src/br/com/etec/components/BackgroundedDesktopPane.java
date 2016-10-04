@@ -39,7 +39,6 @@ public class BackgroundedDesktopPane extends JDesktopPane{
         }else{
             graphics.drawString("Imagem não encontrada", 50, 50);
         }
-            
     }
     
     
