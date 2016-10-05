@@ -6,6 +6,7 @@ package br.com.etec.view.jframe;
 import br.com.etec.components.BackgroundedDesktopPane;
 import br.com.etec.log.Log;
 import br.com.etec.utils.DbUtils;
+import br.com.etec.view.jinternalframe.TelaApuracaoEtec;
 import br.com.etec.view.jinternalframe.TelaCadastroPrefeito;
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
 import br.com.etec.view.jinternalframe.TelaCadastroPartido;
@@ -207,7 +208,61 @@ public class TelaDesktop {
             }
         });
         jmRelatorio.add(jmRelatorioGeral);
+        
+        JMenuItem jmRelatorioVotosBranco = new JMenuItem("Votos em Branco");
 
+        jmRelatorioVotosBranco.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                if (confirmar == JOptionPane.YES_NO_OPTION) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                Connection connection = DbUtils.getConnection();
+                                JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectBranco.jasper", null, connection);
+
+                                JasperViewer.viewReport(viewer, false);
+                            } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+                                Log.e("TelaDesktop", ex.getMessage());
+                            }
+                        }
+                    }.start();
+                }
+            }
+        });
+        jmRelatorio.add(jmRelatorioVotosBranco);
+        
+        JMenuItem jmRelatorioVotosNulo = new JMenuItem("Votos Nulo");
+
+        jmRelatorioVotosNulo.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                if (confirmar == JOptionPane.YES_NO_OPTION) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                Connection connection = DbUtils.getConnection();
+                                JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectNulo.jasper", null, connection);
+
+                                JasperViewer.viewReport(viewer, false);
+                            } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+                                Log.e("TelaDesktop", ex.getMessage());
+                            }
+                        }
+                    }.start();
+                }
+            }
+        });
+        jmRelatorio.add(jmRelatorioVotosNulo);
+        
         JMenuItem jmRelatorioUsuarios = new JMenuItem("Todos os Usuários");
 
         jmRelatorioUsuarios.addActionListener(
@@ -236,6 +291,24 @@ public class TelaDesktop {
         );
         jmRelatorio.add(jmRelatorioUsuarios);
 
+        //Item de Menu (Apuração)
+        JMenu jmApuracao = new JMenu("Apuração");
+
+        JMenuItem jmRelatorioApuracao = new JMenuItem("Apuração etec");
+
+        jmRelatorioApuracao.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e
+            ) {
+                TelaApuracaoEtec apuracaoEtec = new TelaApuracaoEtec();
+                apuracaoEtec.setVisible(true);
+                desktopPane.add(apuracaoEtec);
+            }
+        }
+        );
+        jmApuracao.add(jmRelatorioApuracao);
+        
         //Item de Menu (Imprimir)
         JMenu jmImprimir = new JMenu("Imprimir");
 
@@ -253,7 +326,7 @@ public class TelaDesktop {
         }
         );
         jmImprimir.add(jmRelatorioSTitulo);
-
+        
         //Item de Menu (Válidar voto)
         JMenu jmValidar = new JMenu("Válidar");
         JMenuItem jmValidarValor = new JMenuItem("Voto");
@@ -322,6 +395,8 @@ public class TelaDesktop {
 
         jMenu.add(jmRelatorio);
 
+        jMenu.add(jmApuracao);
+        
         jMenu.add(jmImprimir);
 
         jMenu.add(jmValidar);

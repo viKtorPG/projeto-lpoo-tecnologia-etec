@@ -20,35 +20,35 @@ public class Log {
 
     //Debug
     public static void d(String tag, String msg, Class classe) {
-        System.out.printf("%s D %s %s %s", getDateTime(), tag, msg, classe.toString());
+        System.out.printf("%s D %s %s %s\n", getDateTime(), tag, msg, classe.toString());
     }
 
     public static void d(String tag, String msg) {
-        System.out.printf("%s D %s %s", getDateTime(), tag, msg);
+        System.out.printf("%s D %s %s\n", getDateTime(), tag, msg);
     }
 
     //Error
     public static void e(String tag, String msg, Class classe) {
-        System.err.printf("%s E %s %s %s", getDateTime(), tag, msg, classe.toString());
+        System.err.printf("%s E %s %s %s\n", getDateTime(), tag, msg, classe.toString());
     }
 
     public static void e(String tag, String msg) {
-        System.err.printf("%s D %s %s", getDateTime(), tag, msg);
+        System.err.printf("%s D %s %s\n", getDateTime(), tag, msg);
     }
 
     //Info
     public static void i(String tag, String msg) {
-        System.out.printf("%s I %s %s", getDateTime(), tag, msg);
+        System.out.printf("%s I %s %s\n", getDateTime(), tag, msg);
     }
 
     //Verbose
     public static void v(String tag, String msg) {
-        System.out.printf("%s V %s %s", getDateTime(), tag, msg);
+        System.out.printf("%s V %s %s\n", getDateTime(), tag, msg);
     }
 
     //Warning
     public static void w(String tag, String msg) {
-        System.err.printf("%s D %s %s", getDateTime(), tag, msg);
+        System.err.printf("%s D %s %s\n", getDateTime(), tag, msg);
     }
 
     
