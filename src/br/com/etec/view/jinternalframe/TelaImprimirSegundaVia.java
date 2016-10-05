@@ -3,6 +3,7 @@
  */
 package br.com.etec.view.jinternalframe;
 
+import br.com.etec.log.Log;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.view.jframe.TelaDesktop;
 import java.awt.Color;
@@ -157,12 +158,12 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
 
                 int rowLine = tblEleitor.getSelectedRow();
 
-                if (rowLine > 0) {
+                if (rowLine > -1) {
                     int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
 
                     long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
 
-                    System.err.println("Long: " + idEleitor);
+                    Log.d("idEleitor", idEleitor  +" ");
 
                     ImageIcon imgTitulo = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTitulo.jpg"));
                     ImageIcon imgTituloVerso = new ImageIcon(getClass().getResource("/br/com/etec/imgs/imgTituloVerso.jpg"));
