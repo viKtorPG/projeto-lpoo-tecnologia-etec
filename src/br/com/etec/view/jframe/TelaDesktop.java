@@ -42,6 +42,7 @@ public class TelaDesktop {
 
     public static JMenu jmCadastado;
     public static JMenu jmRelatorio;
+    public static JMenu jmApuracao;
 
     public TelaDesktop() {
 
@@ -292,7 +293,8 @@ public class TelaDesktop {
         jmRelatorio.add(jmRelatorioUsuarios);
 
         //Item de Menu (Apuração)
-        JMenu jmApuracao = new JMenu("Apuração");
+        jmApuracao = new JMenu("Apuração");
+        jmApuracao.setVisible(false);
 
         JMenuItem jmRelatorioApuracao = new JMenuItem("Apuração etec");
 

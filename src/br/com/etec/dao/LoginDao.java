@@ -45,6 +45,7 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
                         Log.i("FazerLogin", "admin");
                         TelaDesktop.jmCadastado.setVisible(true);
                         TelaDesktop.jmRelatorio.setVisible(true);
+                        TelaDesktop.jmApuracao.setVisible(true);
                     }
                 }
             } else {
