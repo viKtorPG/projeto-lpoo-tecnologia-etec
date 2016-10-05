@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.dao;
 
 import br.com.etec.interfaces.dao.IAbstractDao;
@@ -58,20 +53,9 @@ public class VicePrefeitoDao implements IAbstractDao<VicePrefeito> {
         }
     }
 
+    //A exclusão já acontece por parte do prefeito.
     @Override
     public void delete(VicePrefeito entidade) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-        /*try {
-            connection = DbUtils.getConnection();
-            String sql = "delete from vice where numero=?";
-            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, entidade.getNumero());
-
-            statement.execute();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }*/
     }
 
     @Override
@@ -103,7 +87,6 @@ public class VicePrefeitoDao implements IAbstractDao<VicePrefeito> {
                 String sql = "update vice_prefeito set id_partido=?, nome=?, data_nascimento=?, foto=? where id_vice=?";
                 statement = DbUtils.getPreparedStatement(connection, sql);
                 statement.setInt(1, entidade.getIdPartidoViceP());
-                //statement.setInt(2, entidade.getIdPrefeito());
                 statement.setString(2, entidade.getNome());
                 statement.setString(3, entidade.getDataNascimento());
                 statement.setBytes(4, entidade.getFotoViceP());
@@ -112,7 +95,6 @@ public class VicePrefeitoDao implements IAbstractDao<VicePrefeito> {
                 String sql = "update vice_prefeito set id_partido=?,  nome=?, data_nascimento=? where id_vice=?";
                 statement = DbUtils.getPreparedStatement(connection, sql);
                 statement.setInt(1, entidade.getIdPartidoViceP());
-                //statement.setInt(2, entidade.getIdPrefeito());
                 statement.setString(2, entidade.getNome());
                 statement.setString(3, entidade.getDataNascimento());
                 statement.setInt(4, entidade.getIdViceP());

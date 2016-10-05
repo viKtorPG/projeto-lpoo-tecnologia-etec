@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.dao;
 
 import br.com.etec.interfaces.dao.IAbstractDao;
@@ -12,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -24,30 +18,9 @@ public class EleitorDao implements IAbstractDao<Eleitor> {
 
     private Connection connection = null;
 
+    //Os eleitores são carregados em um jtable
     @Override
     public List<Eleitor> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-        /*try {
-            connection = DbUtils.getConnection();
-            ResultSet resultSet = DbUtils.getResultSet(connection, "select * from eleitor");
-            List<Eleitor> list = new ArrayList<>();
-            while (resultSet.next()) {
-                Eleitor eleitor = new Eleitor();
-                eleitor.setIdCod(resultSet.getInt(1));
-                eleitor.setNome(resultSet.getString(2));
-                eleitor.setZona(resultSet.getString(3));
-                eleitor.setSecao(resultSet.getString(4));
-                eleitor.setDataNascimento(resultSet.getString(5));
-                eleitor.setDataEmissao(resultSet.getString(6));
-                eleitor.setIdCidade(resultSet.getInt(7));
-
-            }
-            return list;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }*/
-        
         return null;
 
     }

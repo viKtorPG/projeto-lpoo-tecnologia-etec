@@ -1,19 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.utils;
 
-import br.com.etec.view.jinternalframe.TelaCadastroPrefeito;
+import br.com.etec.log.Log;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,36 +14,28 @@ import java.util.logging.Logger;
 public class PartidosNumeros {
 
     private static Connection connection;
+    private static final String TAG = "PartidosNumeros";
 
     public static String[] partidos() {
-        try {
-            connection = DbUtils.getConnection();
+        ArrayList<String> list = new ArrayList<>();
 
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-
-        }
         ResultSet rs = null;
         String sql = "select nome_partido, sigla from partido";
         try {
+            try {
+                connection = DbUtils.getConnection();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                Log.e(TAG, ex.getMessage());
+            }
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             rs = statement.executeQuery();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-
-        ArrayList<String> list = new ArrayList<>();
-        try {
+            
             while (rs.next()) {
                 list.add(rs.getString("nome_partido") + " - " + (rs.getString("sigla")));
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Log.e(TAG, ex.getMessage());
         }
 
         String[] result = new String[list.size()];
@@ -62,11 +46,10 @@ public class PartidosNumeros {
 
     /* Retorna o nome e a sigla do partido pelo parametros idPartido e numeroPrefeito */
     public static String partido(int numeroPrefeito) {
-
         String result = null;
+        
         try {
             connection = DbUtils.getConnection();
-
             ResultSet rs = null;
             String sql = "select partido.nome_partido, partido.sigla from partido, prefeito where (partido.id_partido = prefeito.id_partido) and prefeito.numero=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
@@ -81,24 +64,23 @@ public class PartidosNumeros {
             }
             return result;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(PartidosNumeros.class.getName()).log(Level.SEVERE, null, ex);
+            Log.e(TAG, ex.getMessage());
             return null;
         }
     }
 
     public static String numero(String sigla) {
         String numero = "";
-        try {
-            connection = DbUtils.getConnection();
-
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
+       
         ResultSet rs = null;
         String sql = "select numero from partido where sigla= ?";
-        //JOptionPane.showMessageDialog(null, selecionado);
+
         try {
+            try {
+                connection = DbUtils.getConnection();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                Log.e(TAG, ex.getMessage());
+            }
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setString(1, sigla);
 
@@ -107,20 +89,17 @@ public class PartidosNumeros {
             while (rs.next()) {
                 numero = rs.getString(1);
             }
-
         } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Log.e(TAG, ex.getMessage());
         }
-
         return numero;
     }
 
     public static int getIDPartido(int numero) {
         int result = 0;
+        
         try {
             connection = DbUtils.getConnection();
-
             ResultSet rs = null;
             String sql = "select id_partido from partido where numero= ?";
             //JOptionPane.showMessageDialog(null, selecionado);
@@ -137,22 +116,17 @@ public class PartidosNumeros {
             if (connection != null) {
                 connection.close();
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(PartidosNumeros.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Log.e(TAG, ex.getMessage());
         }
-
         return result;
     }
 
     public static int getIDPrefeito(int numero) {
         int result = 0;
+        
         try {
             connection = DbUtils.getConnection();
-
             ResultSet rs = null;
             String sql = "select id_prefeito from prefeito where numero= ?";
             //JOptionPane.showMessageDialog(null, selecionado);
@@ -169,22 +143,17 @@ public class PartidosNumeros {
             if (connection != null) {
                 connection.close();
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(PartidosNumeros.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Log.e(TAG, ex.getMessage());
         }
-
         return result;
     }
 
     public static int getNumeroPartido(int id) {
         int result = 0;
+        
         try {
             connection = DbUtils.getConnection();
-
             ResultSet rs = null;
             String sql = "select numero from partido where id_partido= ?";
             //JOptionPane.showMessageDialog(null, selecionado);
@@ -201,14 +170,9 @@ public class PartidosNumeros {
             if (connection != null) {
                 connection.close();
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(PartidosNumeros.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Log.e(TAG, ex.getMessage());
         }
-
         return result;
     }
 
@@ -217,10 +181,8 @@ public class PartidosNumeros {
 
         try {
             connection = DbUtils.getConnection();
-
             ResultSet rs = null;
             String sql = "select prefeito.nome, partido.sigla from  prefeito inner join partido on prefeito.id_partido = partido.id_partido where prefeito.numero = ?";
-            //JOptionPane.showMessageDialog(null, selecionado);
 
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, id);
@@ -232,46 +194,32 @@ public class PartidosNumeros {
                 System.err.println(rs.getString("prefeito.nome") + " - " + (rs.getString("partido.sigla")));
 
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(PartidosNumeros.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Log.e(TAG, ex.getMessage());
         }
-
         return result;
     }
 
     public static String[] getInfoPrefeito() {
-        try {
-            connection = DbUtils.getConnection();
-
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-
-        }
         ResultSet rs = null;
+        ArrayList<String> list = new ArrayList<>();
         String sql = "select prefeito.nome, prefeito.id_prefeito, partido.sigla from  prefeito inner join partido on prefeito.id_partido = partido.id_partido";
+
         try {
+            try {
+                connection = DbUtils.getConnection();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                Log.e(TAG, ex.getMessage());
+            }
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             rs = statement.executeQuery();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-
-        ArrayList<String> list = new ArrayList<>();
-        try {
             while (rs.next()) {
                 list.add(rs.getString("prefeito.nome") + " - " + (rs.getString("partido.sigla")));
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Log.e(TAG, ex.getMessage());
         }
 
         String[] result = new String[list.size()];
@@ -279,19 +227,17 @@ public class PartidosNumeros {
 
         return result;
     }
-    
-    public static int getIdVereador(int numero) {
-        try {
-            connection = DbUtils.getConnection();
 
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
+    public static int getIdVereador(int numero) {
         ResultSet rs = null;
         String sql = "select id_vereador from vereador where numero= ?";
-        //JOptionPane.showMessageDialog(null, selecionado);
+
         try {
+            try {
+                connection = DbUtils.getConnection();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                Log.e(TAG, ex.getMessage());
+            }
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, numero);
 
@@ -302,8 +248,7 @@ public class PartidosNumeros {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroPrefeito.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Log.e(TAG, ex.getMessage());
         }
 
         return numero;

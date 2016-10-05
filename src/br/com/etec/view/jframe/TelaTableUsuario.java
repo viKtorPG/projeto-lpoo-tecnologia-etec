@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.view.jframe;
 
 import br.com.etec.components.UsuarioJTable;
 import br.com.etec.dao.UsuarioDao;
-import br.com.etec.view.jinternalframe.TelaCadastroUsuario;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import br.com.etec.log.Log;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -69,6 +62,7 @@ public class TelaTableUsuario {
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
             // TODO Auto-generated catch block
             JOptionPane.showMessageDialog(null, "Houve um erro ao carregar dados do bando de dados.");
+            Log.e("Houve um erro ao carregar dados do bando de dados.", e.getMessage());
         }
 
     }

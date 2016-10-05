@@ -1,36 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.dao;
 
-import br.com.etec.interfaces.dao.IAbstractDaoCandidato;
-import br.com.etec.model.Prefeito;
+import br.com.etec.interfaces.dao.IAbstractDao;
 import br.com.etec.model.Vereador;
 import br.com.etec.utils.DbUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Victor
  */
-public class VereadorDao implements IAbstractDaoCandidato<Vereador> {
+public class VereadorDao implements IAbstractDao<Vereador> {
 
     Connection connection;
 
     @Override
-    public Vereador findById(int id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+    public Vereador findById(long id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
         ResultSet resultSet;
         try {
             connection = DbUtils.getConnection();
             String sql = "select id_vereador, id_partido, id_prefeito, nome, DATE_FORMAT(data_nascimento, '%d/%m/%Y'), numero, foto from vereador where numero=?";
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 
             resultSet = statement.executeQuery();
 
@@ -48,9 +43,6 @@ public class VereadorDao implements IAbstractDaoCandidato<Vereador> {
                 vereador.setNumero(resultSet.getInt(6));
                 vereador.setFoto(resultSet.getBytes(7));
 
-                // Blob blob = resultSet.getBlob(5);
-                // ImageIcon imagem = new ImageIcon(blob.getBytes(1, (int)blob.length()));
-                // candidato.setFoto(new File(""));
                 return vereador;
             }
 
@@ -136,19 +128,7 @@ public class VereadorDao implements IAbstractDaoCandidato<Vereador> {
     }
 
     @Override
-    public void updateVotos(Vereador entidade) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        /*try {
-            connection = DbUtils.getConnection();
-            String sql = "update candidato votos=? where id=?";
-            PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            statement.setInt(1, entidade.getVotos());
-            statement.setInt(2, entidade.getId());
-            statement.execute();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }*/
+    public List<Vereador> all() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        return null;
     }
-
 }

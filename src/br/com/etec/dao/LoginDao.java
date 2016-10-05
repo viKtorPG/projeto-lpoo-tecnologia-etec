@@ -4,6 +4,7 @@
 package br.com.etec.dao;
 
 import br.com.etec.interfaces.dao.IAbstractDaoLogin;
+import br.com.etec.log.Log;
 import br.com.etec.model.Login;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.view.jframe.TelaDesktop;
@@ -41,12 +42,14 @@ public class LoginDao implements IAbstractDaoLogin<Login> {
                     TelaDesktop.execute();
 
                     if (perfil.equals("admin")) {
+                        Log.i("FazerLogin", "admin");
                         TelaDesktop.jmCadastado.setVisible(true);
                         TelaDesktop.jmRelatorio.setVisible(true);
                     }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Usuário não existe");
+                Log.i("FazerLogin", "Usuário não existe");
                 new TelaLogin().execute();
             }
         } finally {

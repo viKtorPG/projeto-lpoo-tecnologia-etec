@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,19 +20,14 @@ public class CidadeEstado {
     
     private Connection connection;
 
-    
     public String[] allEstado() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
         List<String> list = new ArrayList<>();
-        
         String sql = "select id_estado, uf from estado;";
-        
         ResultSet resultSet = null;
         
         try{
             connection = DbUtils.getConnection();
-            
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
-            
             resultSet = statement.executeQuery();
             
             while(resultSet.next()){
@@ -53,15 +46,12 @@ public class CidadeEstado {
     
     
     public String[] allCidade(int id) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
-        
         String sql = "select cidade.nome from cidade inner join estado on cidade.id_estado = estado.id_estado where estado.id_estado = ?";
         List<String> list = new ArrayList<>();
-
         ResultSet resultSet = null;
         
         try{
             connection = DbUtils.getConnection();
-            
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, id);
             
@@ -83,16 +73,12 @@ public class CidadeEstado {
     }
     
     public int retornaIdCidade(String cidade, int estado) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
-        
         int idCidade = 0;
-        
         String sql = "select cidade.id_cidade from cidade where cidade.nome = ? and cidade.id_estado = ?";
-
         ResultSet resultSet = null;
         
         try{
             connection = DbUtils.getConnection();
-            
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setString(1, cidade);
             statement.setInt(2, estado);
@@ -102,7 +88,6 @@ public class CidadeEstado {
             while(resultSet.next()){
                 idCidade = resultSet.getInt(1);
             }
-
         }finally{
             if(connection != null){
                 connection.close();
@@ -112,16 +97,12 @@ public class CidadeEstado {
     }
     
     public int retornaIdEstado(String estado) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
-        
         int idCidade = 0;
-        
         String sql = "select estado.id_estado from estado where estado.uf = ?";
-
         ResultSet resultSet = null;
         
         try{
             connection = DbUtils.getConnection();
-            
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setString(1, estado);
             
@@ -130,7 +111,6 @@ public class CidadeEstado {
             while(resultSet.next()){
                 idCidade = resultSet.getInt(1);
             }
-
         }finally{
             if(connection != null){
                 connection.close();

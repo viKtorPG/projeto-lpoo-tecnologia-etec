@@ -4,6 +4,7 @@
 package br.com.etec.view.jframe;
 
 import br.com.etec.components.BackgroundedDesktopPane;
+import br.com.etec.log.Log;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.view.jinternalframe.TelaCadastroPrefeito;
 import br.com.etec.view.jinternalframe.TelaCadastroEleitor;
@@ -20,8 +21,6 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -88,7 +87,7 @@ public class TelaDesktop {
                 try {
                     partido = new TelaCadastroPartido();
                 } catch (ParseException ex) {
-                    Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                    Log.e("TelaDesktop", ex.getMessage());
                 }
                 partido.setVisible(true);
                 desktopPane.add(partido);
@@ -106,7 +105,7 @@ public class TelaDesktop {
                     candidato.setVisible(true);
                     desktopPane.add(candidato);
                 } catch (ParseException ex) {
-                    Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                    Log.e("TelaDesktop", ex.getMessage());
                 }
 
             }
@@ -122,7 +121,7 @@ public class TelaDesktop {
                 try {
                     vice = new TelaCadastroVereador();
                 } catch (ParseException ex) {
-                    Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                    Log.e("TelaDesktop", ex.getMessage());
                 }
                 vice.setVisible(true);
                 desktopPane.add(vice);
@@ -200,7 +199,7 @@ public class TelaDesktop {
 
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                Log.e("TelaDesktop", ex.getMessage());
                             }
                         }
                     }.start();
@@ -227,7 +226,7 @@ public class TelaDesktop {
 
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-                                Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                Log.e("TelaDesktop", ex.getMessage());
                             }
                         }
                     }.start();

@@ -1,5 +1,6 @@
 package br.com.etec.utils;
 
+import br.com.etec.log.Log;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,9 +15,8 @@ public class ValidaData {
             df.parse(data);
             return true;
         } catch (ParseException ex) {
-            System.out.println("Data incorreta" + data);
+            Log.e("validarData", ex.getMessage());
         }
-
         return false;
     }
 }

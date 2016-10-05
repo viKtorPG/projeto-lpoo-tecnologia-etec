@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.dao;
 
-import br.com.etec.model.Eleitor;
+import br.com.etec.log.Log;
 import br.com.etec.utils.DbUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,6 +54,8 @@ public class Validar {
             statement.setLong(1, 1);
             statement.setLong(2, numero);
             statement.execute();
+            
+            Log.i("ValidarVoto", "OK");
 
         } finally {
             if (connection != null) {
@@ -66,7 +63,5 @@ public class Validar {
             }
         }
     }
-
     private Connection connection;
-
 }

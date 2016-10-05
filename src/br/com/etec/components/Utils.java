@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.components;
 
 /**
  *
  * @author Victor
  */
+import br.com.etec.log.Log;
 import java.io.File;
 import javax.swing.ImageIcon;
 
@@ -46,7 +42,7 @@ public class Utils {
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            System.err.println("Couldn't find file: " + path);
+            Log.e("Couldn't find file: ", path);
             return null;
         }
     }

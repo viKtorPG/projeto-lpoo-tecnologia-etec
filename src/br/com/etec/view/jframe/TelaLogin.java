@@ -4,6 +4,7 @@
 package br.com.etec.view.jframe;
 
 import br.com.etec.dao.LoginDao;
+import br.com.etec.log.Log;
 import br.com.etec.model.Login;
 import br.com.etec.utils.DbUtils;
 import java.awt.Color;
@@ -41,6 +42,7 @@ public class TelaLogin {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "Sem conexão");
             icon = new ImageIcon(getClass().getResource("/br/com/etec/imgs/bola_vermelha.png"));
+            Log.i("TelaLogin Sem Conexão", ex.getMessage());
         }
     }
 
@@ -108,6 +110,7 @@ public class TelaLogin {
                             jf.dispose();
                         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                             JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário" + ex.getMessage());
+                            Log.e("TelaLogin Sem Conexão", ex.getMessage());
                         }
                     }
                 } else {

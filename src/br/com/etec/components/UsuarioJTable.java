@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.etec.components;
 
 import br.com.etec.model.Usuario;
@@ -19,7 +14,7 @@ public class UsuarioJTable extends JTable{
     
     public UsuarioJTable(){
         this.model = new UsuarioTableModel();
-        setModel(this.model);
+        super.setModel(this.model);
     }
     
     public void load(List<Usuario> list){

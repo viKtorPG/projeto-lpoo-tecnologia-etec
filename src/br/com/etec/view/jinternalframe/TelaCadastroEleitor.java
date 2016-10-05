@@ -4,12 +4,12 @@
 package br.com.etec.view.jinternalframe;
 
 import br.com.etec.dao.EleitorDao;
+import br.com.etec.log.Log;
 import br.com.etec.model.Eleitor;
 import br.com.etec.utils.CidadeEstado;
 import br.com.etec.utils.Data;
 import br.com.etec.utils.DbUtils;
 import br.com.etec.utils.ValidaData;
-import br.com.etec.view.jframe.TelaDesktop;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Container;
@@ -26,8 +26,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -102,7 +100,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
         try {
             formatTxtNumeroEleitor = new MaskFormatter("### ### ### ###");
         } catch (ParseException ex) {
-            Logger.getLogger(TelaImprimirSegundaVia.class.getName()).log(Level.SEVERE, null, ex);
+            Log.e("TelaCadastroEleitor", ex.getMessage());
         }
 
         //Pesquisa Eleitor
@@ -208,9 +206,10 @@ public class TelaCadastroEleitor extends JInternalFrame {
             jcEstado.setBounds(400, 240, 55, 25);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao carregar estados");
-            System.err.println(ex.getMessage());
+            Log.e("TelaCadastroEleitor", ex.getMessage());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
+            Log.e("TelaCadastroEleitor", ex.getMessage());
         }
 
         jcCidadeMuni = new JComboBox<>();
@@ -221,6 +220,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
                     jcCidadeMuni.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allCidade(jcEstado.getSelectedIndex() + 1)));
                 } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
+                    Log.e("TelaCadastroEleitor", ex.getMessage());
                 }
             }
         });
@@ -263,10 +263,8 @@ public class TelaCadastroEleitor extends JInternalFrame {
                                         JasperPrint viewer = JasperFillManager.fillReport("src/br/com/etec/ireport/projectTitulo.jasper", resultParamsEleitor(), connection);
 
                                         JasperViewer.viewReport(viewer, false);
-                                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-                                        Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
-                                    } catch (JRException ex) {
-                                        Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
+                                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException | JRException ex) {
+                                        Log.e("TelaCadastroEleitor", ex.getMessage());
                                     }
                                 }
                             }.start();
@@ -316,7 +314,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
                     }
 
                 } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                    Logger.getLogger(TelaCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex);
+                    Log.e("TelaCadastroEleitor", ex.getMessage());
                 }
             }
         }
@@ -345,6 +343,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
                     }
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário");
+                    Log.e("TelaCadastroEleitor", ex.getMessage());
                 }
 
             }
@@ -431,6 +430,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
+            Log.e("TelaCadastroEleitor", ex.getMessage());
         }
     }
 

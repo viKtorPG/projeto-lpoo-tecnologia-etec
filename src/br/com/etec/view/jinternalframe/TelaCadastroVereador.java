@@ -71,6 +71,7 @@ public class TelaCadastroVereador extends JInternalFrame {
 
         txtIdVereador = new JTextField(10);
         txtIdVereador.setBounds(80, 40, 175, 25);
+        txtIdVereador.setEditable(false);
 
         // Nome do Prefeito
         lblNomeVereador = new JLabel("*Nome");
