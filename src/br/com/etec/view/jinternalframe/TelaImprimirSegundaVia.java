@@ -46,7 +46,7 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() {
-        setTitle("Imprimir 2º via do Eleitor");
+        setTitle("Imprimir 2º via do título de Eleitor");
         setSize(800, 500);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             @Override
@@ -159,7 +159,7 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
                 int rowLine = tblEleitor.getSelectedRow();
 
                 if (rowLine > -1) {
-                    int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                    int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão da 2° via do título de eleitor", "Atenção", JOptionPane.YES_NO_OPTION);
 
                     long idEleitor = Long.parseLong(tblEleitor.getModel().getValueAt(rowLine, 0).toString());
 

@@ -35,7 +35,7 @@ public class TelaCadastroUsuario extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() {
-        setTitle("Usuários");
+        setTitle("Cadastro de Usuários");
         setSize(800, 500);
 
         //Panel

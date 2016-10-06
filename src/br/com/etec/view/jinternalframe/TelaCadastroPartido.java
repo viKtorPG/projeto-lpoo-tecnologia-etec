@@ -38,7 +38,7 @@ public class TelaCadastroPartido extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() throws ParseException {
-        setTitle("Partido");
+        setTitle("Cadastro de Partido");
         setSize(800, 500);
 
         //Panel
@@ -272,7 +272,7 @@ public class TelaCadastroPartido extends JInternalFrame {
 
         btnLista.setBounds(
                 100, 350, 60, 60);
-        btnLista.setToolTipText("Lista de usuários cadastrados");
+        btnLista.setToolTipText("Lista de Partidos cadastrados");
         btnLista.addActionListener(
                 new ActionListener() {
             @Override

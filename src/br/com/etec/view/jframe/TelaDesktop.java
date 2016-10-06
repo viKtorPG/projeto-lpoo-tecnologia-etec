@@ -190,7 +190,7 @@ public class TelaDesktop extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão do relatório de todos os partidos", "Atenção", JOptionPane.YES_NO_OPTION);
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override
@@ -218,7 +218,7 @@ public class TelaDesktop extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão do relatório de votos em braco", "Atenção", JOptionPane.YES_NO_OPTION);
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override
@@ -246,7 +246,7 @@ public class TelaDesktop extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão do relatório votos nulo", "Atenção", JOptionPane.YES_NO_OPTION);
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override
@@ -274,7 +274,7 @@ public class TelaDesktop extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão do relatório de todos os usuário do sistema", "Atenção", JOptionPane.YES_NO_OPTION);
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override

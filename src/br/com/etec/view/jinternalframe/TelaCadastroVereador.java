@@ -45,7 +45,7 @@ public class TelaCadastroVereador extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() throws ParseException {
-        setTitle("Candidato");
+        setTitle("Cadastro de Vereador");
         setSize(800, 500);
 
         //Panel
@@ -370,7 +370,7 @@ public class TelaCadastroVereador extends JInternalFrame {
 
         btnLista.setBounds(
                 100, 350, 60, 60);
-        btnLista.setToolTipText("Lista de usuários cadastrados");
+        btnLista.setToolTipText("Lista de vereadores cadastrados");
         btnLista.addActionListener(
                 new ActionListener() {
             @Override

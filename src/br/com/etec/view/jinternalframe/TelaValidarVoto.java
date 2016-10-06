@@ -46,7 +46,7 @@ public class TelaValidarVoto extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() {
-        setTitle("Validar voto");
+        setTitle("Validação de voto");
         setSize(800, 500);
 
         //Panel
@@ -209,7 +209,7 @@ public class TelaValidarVoto extends JInternalFrame {
     }
 
     private void imprime(long numero) {
-        int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+        int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão do comprovante de votação", "Atenção", JOptionPane.YES_NO_OPTION);
 
         final Map<String, Object> paramEleitor = new HashMap<>();
         paramEleitor.put("paramsNumero", numero);

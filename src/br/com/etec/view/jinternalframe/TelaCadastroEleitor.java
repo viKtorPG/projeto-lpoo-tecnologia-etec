@@ -54,7 +54,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() {
-        setTitle("Eleitor");
+        setTitle("Cadastro de Eleitor");
         setSize(800, 500);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             @Override
@@ -252,7 +252,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
                         new EleitorDao().insert(addEleitor);
                         JOptionPane.showMessageDialog(null, "Eleitor cadastradado com sucesso!");
 
-                        int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão do titulo", "Atenção", JOptionPane.YES_NO_OPTION);
+                        int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão do título", "Atenção", JOptionPane.YES_NO_OPTION);
 
                         if (confirmar == JOptionPane.YES_NO_OPTION) {
                             new Thread() {

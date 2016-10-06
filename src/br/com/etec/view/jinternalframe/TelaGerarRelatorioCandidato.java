@@ -43,7 +43,7 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() {
-        setTitle("Gerar relatório vereador");
+        setTitle("Relatório vereador");
         setSize(800, 500);
 
         //Panel
@@ -63,7 +63,7 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
         lblCamposObri.setForeground(Color.red);
 
         //Número do Eleitor
-        lblNumeroEleitor = new JLabel("*Número do candidato");
+        lblNumeroEleitor = new JLabel("*Número do vereador");
         lblNumeroEleitor.setBounds(200, 150, 130, 25);
 
         //Número do eleitor caixa de texto
@@ -88,7 +88,7 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
                 final Map<String, Object> paramEleitor = new HashMap<>();
                 paramEleitor.put("paramsNumeroVereador", Integer.parseInt(lblNumeroCandidatoRetorno.getText()));
 
-                int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
                         @Override

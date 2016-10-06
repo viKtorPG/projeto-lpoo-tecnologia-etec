@@ -48,7 +48,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() throws ParseException {
-        setTitle("Candidato");
+        setTitle("Cadastro de Prefeito e Vice-Prefeito");
         setSize(800, 500);
 
         //Panel
@@ -500,7 +500,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
 
         btnLista.setBounds(
                 100, 350, 60, 60);
-        btnLista.setToolTipText("Lista de usuários cadastrados");
+        btnLista.setToolTipText("Lista de Prefeitos cadastrados");
         btnLista.addActionListener(
                 new ActionListener() {
             @Override

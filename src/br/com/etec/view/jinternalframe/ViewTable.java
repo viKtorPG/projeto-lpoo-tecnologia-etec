@@ -33,7 +33,7 @@ public class ViewTable {
     public void execute() {
 
         // Criação da Tela
-        final JFrame jf = new JFrame("Desktop");
+        final JFrame jf = new JFrame("Lista de cadastrados");
         jf.setSize(800, 300);
         jf.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override

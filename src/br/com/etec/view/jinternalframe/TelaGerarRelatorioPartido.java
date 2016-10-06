@@ -46,7 +46,7 @@ public class TelaGerarRelatorioPartido extends JInternalFrame {
     }
 
     private void iniciandoCompomentes() {
-        setTitle("Gerar relatório partido");
+        setTitle("Relatório partido");
         setSize(800, 500);
 
         //Panel
@@ -92,7 +92,7 @@ public class TelaGerarRelatorioPartido extends JInternalFrame {
                 paramEleitor.put("paramsNumeroPartido", Integer.parseInt(txtNumeroEleitor.getText()));
 
                 if (prefeito) {
-                    int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                    int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
                     if (confirmar == JOptionPane.YES_NO_OPTION) {
                         new Thread() {
                             @Override
@@ -111,7 +111,7 @@ public class TelaGerarRelatorioPartido extends JInternalFrame {
                         }.start();
                     }
                 } else {
-                    int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
+                    int confirmar = JOptionPane.showConfirmDialog(null, "Confirma a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
                     if (confirmar == JOptionPane.YES_NO_OPTION) {
                         new Thread() {
                             @Override
@@ -150,7 +150,7 @@ public class TelaGerarRelatorioPartido extends JInternalFrame {
                     int result = PartidosNumeros.getIDPartido(Integer.parseInt(txtNumeroEleitor.getText()));
                     if (result > 0) {
                         btnImprimir.setEnabled(true);
-                        JOptionPane.showMessageDialog(null, "Relatório pronto pra impressão");
+                        JOptionPane.showMessageDialog(null, "Relatório pronto para impressão");
 
                     } else {
                         JOptionPane.showMessageDialog(null, "Esse número não conrresponde a nenhum partido");
