@@ -184,6 +184,7 @@ public class TelaImprimirSegundaVia extends JInternalFrame {
                                     JasperViewer.viewReport(viewer, false);
                                 } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                     Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                    JOptionPane.showMessageDialog(null, "Erro ao imprimir título de eleitor " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                                 }
                             }
                         }.start();

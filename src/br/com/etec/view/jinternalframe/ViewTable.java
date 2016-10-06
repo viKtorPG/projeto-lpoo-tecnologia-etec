@@ -130,7 +130,7 @@ public class ViewTable {
                 connection.close();
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Erro do Sistema", JOptionPane.ERROR_MESSAGE);
         }
     }
     

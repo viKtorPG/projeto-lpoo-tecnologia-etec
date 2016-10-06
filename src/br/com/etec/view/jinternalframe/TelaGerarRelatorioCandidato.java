@@ -84,10 +84,10 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
         btnImprimir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 final Map<String, Object> paramEleitor = new HashMap<>();
                 paramEleitor.put("paramsNumeroVereador", Integer.parseInt(lblNumeroCandidatoRetorno.getText()));
-                
+
                 int confirmar = JOptionPane.showConfirmDialog(null, "Conrfima a impressão desse relatorio", "Atenção", JOptionPane.YES_NO_OPTION);
                 if (confirmar == JOptionPane.YES_NO_OPTION) {
                     new Thread() {
@@ -100,11 +100,12 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                 Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                JOptionPane.showMessageDialog(null, "Erro ao imprimir relatório " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }.start();
                 }
-                
+
                 clearCampos();
                 btnImprimir.setEnabled(false);
             }
@@ -123,17 +124,20 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
                 } else {
                     try {
                         Vereador vereador = new VereadorDao().findById(Integer.parseInt(txtNumeroEleitor.getText()));
-                        lblNomeRetorno.setText(vereador.getNome());
-                        lblNumeroCandidatoRetorno.setText(String.valueOf(vereador.getNumero()));
-                        lblDataCadastramentoRetorno.setText(vereador.getDataNascimento());
 
-                        btnImprimir.setEnabled(true);
-                        
-                        txtNumeroEleitor.setText(null);
-                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Não existe vereador com esse número");
-                        clearCampos();
-                    }catch (java.lang.NullPointerException npe){
+                        if (vereador != null) {
+                            lblNomeRetorno.setText(vereador.getNome());
+                            lblNumeroCandidatoRetorno.setText(String.valueOf(vereador.getNumero()));
+                            lblDataCadastramentoRetorno.setText(vereador.getDataNascimento());
+
+                            btnImprimir.setEnabled(true);
+
+                            txtNumeroEleitor.setText(null);
+                        }else{
+                            clearCampos();
+                        }
+
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | java.lang.NullPointerException ex) {
                         JOptionPane.showMessageDialog(null, "Não existe vereador com esse número");
                         clearCampos();
                     }
@@ -195,14 +199,14 @@ public class TelaGerarRelatorioCandidato extends JInternalFrame {
         setIconifiable(true);
         setLocation(100, 50);
     }
-    
-    private void clearCampos(){
+
+    private void clearCampos() {
         txtNumeroEleitor.setText(null);
         lblDataCadastramentoRetorno.setText("----------------");
         lblNomeRetorno.setText("----------------");
         lblNumeroCandidatoRetorno.setText("----------------");
     }
-    
+
     // Atributos da Classe
     private JLabel lblCamposObri;
     private JLabel lblNumeroEleitor;

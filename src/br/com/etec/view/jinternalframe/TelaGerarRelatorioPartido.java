@@ -105,6 +105,7 @@ public class TelaGerarRelatorioPartido extends JInternalFrame {
                                     JasperViewer.viewReport(viewer, false);
                                 } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                     Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                        JOptionPane.showMessageDialog(null, "Erro ao imprimir relatório " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                                 }
                             }
                         }.start();
@@ -123,6 +124,7 @@ public class TelaGerarRelatorioPartido extends JInternalFrame {
                                     JasperViewer.viewReport(viewer, false);
                                 } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                     Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                                    JOptionPane.showMessageDialog(null, "Erro ao imprimir relatório " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                                 }
                             }
                         }.start();

@@ -246,7 +246,7 @@ public class TelaCadastroVereador extends JInternalFrame {
             public void actionPerformed(ActionEvent e
             ) {
                 Vereador updateVereador = new Vereador();
-                if ((txtNomeVereador.getText().isEmpty() || txtFotoVereador.getText().isEmpty()) || txtNumeroVereador.getText().isEmpty()) {
+                if ((txtNomeVereador.getText().isEmpty() || txtNumeroVereador.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Todos os campos (*) obrigatórios");
                 } else if (txtNumeroPartido.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Selecione um partido");
@@ -262,7 +262,9 @@ public class TelaCadastroVereador extends JInternalFrame {
                         updateVereador.setNome(txtNomeVereador.getText());
                         updateVereador.setDataNascimento(Data.convertSql(jdNascimentoVereador.getDate()));
                         updateVereador.setNumero(Integer.parseInt(txtNumeroPartido.getText() + txtNumeroVereador.getText()));
-                        updateVereador.setFoto(ManipularImagem.getImgBytes(imgVereador));
+                        if(imgVereador != null){
+                            updateVereador.setFoto(ManipularImagem.getImgBytes(imgVereador));
+                        }
                         updateVereador.setIdVereador(Integer.parseInt(txtIdVereador.getText()));
 
                         new VereadorDao().update(updateVereador);
@@ -338,15 +340,20 @@ public class TelaCadastroVereador extends JInternalFrame {
                         numero = Integer.parseInt(JOptionPane.showInputDialog("Número do Candidato"));
 
                         Vereador vereador = new VereadorDao().findById(numero);
-                        txtIdVereador.setText(String.valueOf(vereador.getIdVereador()));
-                        jcPartidoVereador.setSelectedItem(PartidosNumeros.partido(Integer.parseInt(String.valueOf(vereador.getNumero()).substring(0, 2))));
-                        jcNumeroPrefeito.setSelectedItem(PartidosNumeros.getInfoPrefeito(Integer.parseInt(String.valueOf(vereador.getNumero()).substring(0, 2))));
-                        txtNomeVereador.setText(vereador.getNome());
-                        jdNascimentoVereador.setDate(Data.convertDate(vereador.getDataNascimento()));
-                        txtNumeroVereador.setText(String.valueOf(vereador.getNumero()).substring(2, 5));
-                        ManipularImagem.exibirImagemLabel(vereador.getFoto(), lblImagemVereador);
 
-                        habilita();
+                        if (vereador != null) {
+                            txtIdVereador.setText(String.valueOf(vereador.getIdVereador()));
+                            jcPartidoVereador.setSelectedItem(PartidosNumeros.partido(Integer.parseInt(String.valueOf(vereador.getNumero()).substring(0, 2))));
+                            jcNumeroPrefeito.setSelectedItem(PartidosNumeros.getInfoPrefeito(Integer.parseInt(String.valueOf(vereador.getNumero()).substring(0, 2))));
+                            txtNomeVereador.setText(vereador.getNome());
+                            jdNascimentoVereador.setDate(Data.convertDate(vereador.getDataNascimento()));
+                            txtNumeroVereador.setText(String.valueOf(vereador.getNumero()).substring(2, 5));
+                            ManipularImagem.exibirImagemLabel(vereador.getFoto(), lblImagemVereador);
+
+                            habilita();
+                        } else {
+                            clearCampos();
+                        }
 
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | HeadlessException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao pesquisar" + ex.getMessage());
@@ -374,7 +381,7 @@ public class TelaCadastroVereador extends JInternalFrame {
             }
         }
         );
-        
+
         btnEnviarVereador.addActionListener(
                 new ActionListener() {
             @Override
@@ -426,7 +433,7 @@ public class TelaCadastroVereador extends JInternalFrame {
 
     public void clearCampos() {
         ImageIcon imgUser = new ImageIcon(getClass().getResource("/br/com/etec/imgs/logoUserBD.png"));
-        
+
         txtIdVereador.setText(null);
         txtNomeVereador.setText(null);
         txtNumeroPartido.setText(null);
@@ -441,12 +448,14 @@ public class TelaCadastroVereador extends JInternalFrame {
     public void habilita() {
         btnAtualizar.setEnabled(true);
         btnExcluir.setEnabled(true);
+        lblFotoVereador.setText("Foto");
     }
 
     // Desabilita os botões de Excluir e atualizar
     public void desabilita() {
         btnAtualizar.setEnabled(false);
         btnExcluir.setEnabled(false);
+        lblFotoVereador.setText("*Foto");
     }
 
     private JButton btnAdicionar;
@@ -481,7 +490,7 @@ public class TelaCadastroVereador extends JInternalFrame {
     private JLabel lblNumeroPrefeito;
     private JTextField txtNumeroPrefeito;
     private JComboBox<String> jcNumeroPrefeito;
-    
+
     private JButton btnLista;
 
     public static File filePrefeito;

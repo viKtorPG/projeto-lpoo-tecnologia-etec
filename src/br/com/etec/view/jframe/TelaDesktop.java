@@ -45,7 +45,7 @@ public class TelaDesktop extends JFrame{
     public static JMenu jmApuracao;
 
     public TelaDesktop() {
-        setSize(1010, 700);
+        super.setSize(1010, 700);
     }
 
     public void execute() {
@@ -202,6 +202,7 @@ public class TelaDesktop extends JFrame{
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                 Log.e("TelaDesktop", ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Erro ao imprimir relatório " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }.start();
@@ -229,6 +230,7 @@ public class TelaDesktop extends JFrame{
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                 Log.e("TelaDesktop", ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Erro ao imprimir relatório " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }.start();
@@ -256,6 +258,7 @@ public class TelaDesktop extends JFrame{
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                 Log.e("TelaDesktop", ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Erro ao imprimir relatório " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }.start();
@@ -283,6 +286,7 @@ public class TelaDesktop extends JFrame{
                                 JasperViewer.viewReport(viewer, false);
                             } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
                                 Log.e("TelaDesktop", ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Erro ao imprimir relatório " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }.start();

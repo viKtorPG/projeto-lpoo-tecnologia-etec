@@ -104,11 +104,11 @@ public class TelaCadastroEleitor extends JInternalFrame {
         }
 
         //Pesquisa Eleitor
-        lblNomePes = new JLabel("*Nome");
-        lblNomePes.setBounds(10, 10, 50, 25);
+        lblNomePes = new JLabel("Consulta por nome:");
+        lblNomePes.setBounds(10, 10, 120, 25);
 
         txtNomePes = new JTextField();
-        txtNomePes.setBounds(65, 10, 200, 25);
+        txtNomePes.setBounds(130, 10, 200, 25);
         txtNomePes.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -184,10 +184,11 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         txtNome = new JTextField(10);
         txtNome.setBounds(255, 180, 200, 25);
+        txtNome.setFocusable(true);
 
         // Data Nascimento
-        lblDataNascimento = new JLabel("Data de Nascimento");
-        lblDataNascimento.setBounds(130, 210, 150, 25);
+        lblDataNascimento = new JLabel("*Data de Nascimento");
+        lblDataNascimento.setBounds(110, 210, 150, 25);
         lblDataNascimento.setForeground(Color.black);
 
         jdNascimento = new JDateChooser();
@@ -197,7 +198,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
 
         // Cidade/Estado
         lblCidadeMuni = new JLabel("*Cidade/Estado");
-        lblCidadeMuni.setBounds(140, 240, 150, 25);
+        lblCidadeMuni.setBounds(150, 240, 150, 25);
         lblCidadeMuni.setForeground(Color.black);
 
         try {
@@ -265,6 +266,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
                                         JasperViewer.viewReport(viewer, false);
                                     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException | JRException ex) {
                                         Log.e("TelaCadastroEleitor", ex.getMessage());
+                                        JOptionPane.showMessageDialog(null, "Erro ao imprimir titulo de eleitor", "Erro impressão", JOptionPane.ERROR_MESSAGE);
                                     }
                                 }
                             }.start();

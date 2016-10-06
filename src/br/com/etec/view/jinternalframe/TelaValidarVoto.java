@@ -103,6 +103,7 @@ public class TelaValidarVoto extends JInternalFrame {
                     }
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(TelaValidarVoto.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Erro de validação/ou impressão do comprovante" + ex.getMessage(), "Erro do sistema", JOptionPane.ERROR_MESSAGE);
                 }
 
             }
@@ -124,12 +125,16 @@ public class TelaValidarVoto extends JInternalFrame {
                     try {
                         Eleitor eleitor = new EleitorDao().findById(Long.parseLong(result));
 
-                        lblNomeRetorno.setText(eleitor.getNome());
-                        lblDataCadastramentoRetorno.setText(eleitor.getDataEmissao());
-                        lblSecaoRetorno.setText(eleitor.getSecao());
-                        lblZonaRetorno.setText(eleitor.getZona());
-                        
-                        btnImprimir.setEnabled(true);
+                        if (eleitor != null) {
+                            lblNomeRetorno.setText(eleitor.getNome());
+                            lblDataCadastramentoRetorno.setText(eleitor.getDataEmissao());
+                            lblSecaoRetorno.setText(eleitor.getSecao());
+                            lblZonaRetorno.setText(eleitor.getZona());
+
+                            btnImprimir.setEnabled(true);
+                        }else{
+                            clearCampos();
+                        }
 
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
                         JOptionPane.showMessageDialog(null, "Não existe vereador com esse número");
@@ -221,7 +226,7 @@ public class TelaValidarVoto extends JInternalFrame {
 
                         JasperViewer.viewReport(viewer, false);
                     } catch (JRException | ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-                        Logger.getLogger(TelaDesktop.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Erro ao imprimir comprovante " + ex.getMessage(), "Erro impressão", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }.start();

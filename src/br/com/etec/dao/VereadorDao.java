@@ -30,7 +30,7 @@ public class VereadorDao implements IAbstractDao<Vereador> {
             resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
-                JOptionPane.showMessageDialog(null, "Não há candidato com esse id");
+                JOptionPane.showMessageDialog(null, "Não existe vereador com esse número");
                 return null;
             } else {
 

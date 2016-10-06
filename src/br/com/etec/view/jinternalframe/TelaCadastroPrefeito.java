@@ -372,6 +372,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage());
                     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
                         Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Erro ao cadastrar candidato" + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -409,6 +410,7 @@ public class TelaCadastroPrefeito extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Candidato excluído com sucesso!");
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(TelaCadastroPrefeito.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Erro ao excluir candidato" + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -504,20 +506,20 @@ public class TelaCadastroPrefeito extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-                ViewTable table = new ViewTable("select prefeito.nome as Prefeito, date_format(prefeito.data_nascimento, '%d/%m/%Y') as Nascimento,\n" +
-" prefeito.numero as Numero,\n" +
-" partido.nome_partido as Partido,\n" +
-" prefeito.votos as Votos,\n" +
-" vice_prefeito.nome as Vice\n" +
-" from prefeito left join partido \n" +
-" on partido.id_partido = prefeito.id_partido \n" +
-" inner join vice_prefeito\n" +
-" on vice_prefeito.id_prefeito = prefeito.id_prefeito where prefeito.nome like ?");
+                ViewTable table = new ViewTable("select prefeito.nome as Prefeito, date_format(prefeito.data_nascimento, '%d/%m/%Y') as Nascimento,\n"
+                        + " prefeito.numero as Numero,\n"
+                        + " partido.nome_partido as Partido,\n"
+                        + " prefeito.votos as Votos,\n"
+                        + " vice_prefeito.nome as Vice\n"
+                        + " from prefeito left join partido \n"
+                        + " on partido.id_partido = prefeito.id_partido \n"
+                        + " inner join vice_prefeito\n"
+                        + " on vice_prefeito.id_prefeito = prefeito.id_prefeito where prefeito.nome like ?");
                 table.execute();
             }
         }
         );
-        
+
         btnEnviarViceP.addActionListener(
                 new ActionListener() {
             @Override
@@ -593,12 +595,16 @@ public class TelaCadastroPrefeito extends JInternalFrame {
     public void habilita() {
         btnAtualizar.setEnabled(true);
         btnExcluir.setEnabled(true);
+        lblFotoPrefeito.setText("Foto");
+        lblFotoViceP.setText("Foto");
     }
 
     // Desabilita os botões de Excluir e atualizar
     public void desabilita() {
         btnAtualizar.setEnabled(false);
         btnExcluir.setEnabled(false);
+        lblFotoPrefeito.setText("*Foto");
+        lblFotoViceP.setText("*Foto");
     }
 
     private JButton btnAdicionar;
