@@ -184,7 +184,7 @@ public class ResultadosDao {
             while (rs.next()) {
                 result += rs.getInt(1);
             }
-            Log.i("Result", result + "");
+            
             return result;
             
         } finally {
@@ -321,10 +321,7 @@ public class ResultadosDao {
     }
 
     public int selectVereadoresEleitos(int qE, int partido) {
-        String sql = "SELECT COUNT(vereador.id_vereador) as eleitos, partido.numero from vereador, partido where vereador.votos >= ROUND(" + (qE * 0.1) + ",0) and partido.numero= " + partido;
-
-        Log.i("EQ", qE + "");
-        
+        String sql = "SELECT COUNT(vereador.id_vereador) as eleitos, partido.* from vereador, partido where vereador.votos >= ROUND(" + (qE * 0.1) + ",0) and partido.numero = " + partido + " and vereador.id_partido = partido.id_partido ";
         ResultSet rs;
 
         try {
@@ -390,7 +387,7 @@ public class ResultadosDao {
             }
         };
 
-        String sql = "select vereador.nome, vereador.numero, vereador.votos, partido.numero, partido.nome_partido from vereador, partido where vereador.votos >= ROUND(" + (qE * 0.1) + ",0) and partido.numero = " + partido;
+        String sql = "select vereador.*, partido.* from vereador, partido where vereador.votos >= ROUND(" + (qE * 0.1) + ",0) and partido.numero = " + partido + " and vereador.id_partido = partido.id_partido ";
         PreparedStatement ps;
         ResultSet rs;
         try {
@@ -418,3 +415,4 @@ public class ResultadosDao {
         return dtm;
     }
 }
+

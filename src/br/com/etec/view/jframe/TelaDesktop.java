@@ -38,21 +38,21 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author jose
  */
-public class TelaDesktop {
+public class TelaDesktop extends JFrame{
 
     public static JMenu jmCadastado;
     public static JMenu jmRelatorio;
     public static JMenu jmApuracao;
 
     public TelaDesktop() {
-
+        setSize(1010, 700);
     }
 
-    public static void execute() {
+    public void execute() {
 
-        // Criação da Tela
+        /*// Criação da Tela
         final JFrame jf = new JFrame("Desktop");
-        jf.setSize(1010, 700);
+        jf.setSize(1010, 700);*/
 
         // Panel que será responsavel por add todos os elementos
         JPanel panel = new JPanel();
@@ -358,7 +358,7 @@ public class TelaDesktop {
             ) {
                 TelaLogin login = new TelaLogin();
                 login.execute();
-                jf.dispose();
+                disposeFrame();
             }
         }
         );
@@ -387,7 +387,7 @@ public class TelaDesktop {
             @Override
             public void actionPerformed(ActionEvent e
             ) {
-
+                new TelaSobre().execute();
             }
         });
         jmAjuda.add(jmAjudaSobre);
@@ -415,16 +415,20 @@ public class TelaDesktop {
         panel.add(desktopPane);
 
         // Add elementos ao JFrame
-        jf.add(panel);
+        this.add(panel);
 
-        jf.setVisible(
+        this.setVisible(
                 true);
-        jf.setResizable(
+        this.setResizable(
                 false);
-        jf.setLocationRelativeTo(
+        this.setLocationRelativeTo(
                 null);
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+    }
+    
+    private void disposeFrame(){
+        this.dispose();
     }
 
 }
