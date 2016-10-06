@@ -5,6 +5,7 @@
  */
 package br.com.etec.utils;
 
+import br.com.etec.log.Log;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +23,7 @@ public class CidadeEstado {
 
     public String[] allEstado() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
         List<String> list = new ArrayList<>();
-        String sql = "select id_estado, uf from estado;";
+        String sql = "select id_estado, uf from estado order by id_estado";
         ResultSet resultSet = null;
         
         try{
@@ -41,6 +42,7 @@ public class CidadeEstado {
         
         String[] listEstadoUF = new String[list.size()];
         listEstadoUF = list.toArray(listEstadoUF);
+        Log.i("Select Estado", list.get(0));
         return listEstadoUF;
     }
     
@@ -51,6 +53,7 @@ public class CidadeEstado {
         ResultSet resultSet = null;
         
         try{
+            Log.i("Select Cidade", id + "");
             connection = DbUtils.getConnection();
             PreparedStatement statement = DbUtils.getPreparedStatement(connection, sql);
             statement.setInt(1, id);

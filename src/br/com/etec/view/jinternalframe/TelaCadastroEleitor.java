@@ -218,7 +218,7 @@ public class TelaCadastroEleitor extends JInternalFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    jcCidadeMuni.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allCidade(jcEstado.getSelectedIndex())));
+                    jcCidadeMuni.setModel(new javax.swing.DefaultComboBoxModel<>(new CidadeEstado().allCidade(jcEstado.getSelectedIndex() + 1)));
                 } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                     JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
                     Log.e("TelaCadastroEleitor", ex.getMessage());
